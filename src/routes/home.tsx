@@ -1,13 +1,15 @@
 import styled from "@emotion/styled";
 
-const Button = styled.button`
+const Title = styled.h1`
   color: hotpink;
+  font-size: 48px;
+  margin-top: 80px;
 `;
 
 export default function Home() {
   return (
     <>
-      <Button>뭐야 왜 안돼</Button>
+      <Title>Welcome to Bullgaemi FC MVP Suvery!</Title>
     </>
   );
 }
