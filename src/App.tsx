@@ -11,6 +11,7 @@ import CreateAccount from "./routes/create-account";
 import { useEffect, useState } from "react";
 import LoadingScreen from "./component/loading-screen";
 import { auth } from "./firebase";
+import Wrapper from "./style/layout";
 
 const router = createBrowserRouter([
   {
@@ -46,8 +47,10 @@ function App() {
 
   return (
     <>
-      <Global styles={reset} />
-      {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
+      <Wrapper>
+        <Global styles={reset} />
+        {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
+      </Wrapper>
     </>
   );
 }
