@@ -10,6 +10,7 @@ import Login from "./routes/login";
 import CreateAccount from "./routes/create-account";
 import { useEffect, useState } from "react";
 import LoadingScreen from "./component/loading-screen";
+import { auth } from "./firebase";
 
 const router = createBrowserRouter([
   {
@@ -36,7 +37,7 @@ const router = createBrowserRouter([
 function App() {
   const [isLoading, setLoading] = useState(true);
   const init = async () => {
-    // Firebase 기다리기
+    await auth.authStateReady();
     setLoading(false);
   };
   useEffect(() => {
