@@ -5,7 +5,7 @@ const Wrapper = styled.button<ButtonProps>`
   height: 48px;
   padding: 24px;
   font-size: 16px;
-  border-radius: 8px;
+  border-radius: ${(props) => (props.isRadiusFull ? "1000px" : "8px")};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -18,21 +18,27 @@ const Wrapper = styled.button<ButtonProps>`
 `;
 
 interface ButtonProps {
-  isLoading?: boolean;
   isWidthFull?: boolean;
+  isRadiusFull?: boolean;
   label: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const ButtonPrimary = ({
   onClick,
   label,
-  isLoading,
   isWidthFull,
+  isRadiusFull,
 }: ButtonProps) => {
   return (
-    <Wrapper type="submit" onClick={onClick} isWidthFull={isWidthFull}>
-      {isLoading ? "Loading..." : label}
+    <Wrapper
+      type="submit"
+      onClick={onClick}
+      isWidthFull={isWidthFull}
+      isRadiusFull={isRadiusFull}
+      label={label}
+    >
+      {label}
     </Wrapper>
   );
 };

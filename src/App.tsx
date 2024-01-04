@@ -1,20 +1,21 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-import global from "./global";
+import { auth } from "./firebase";
+
 import { Global } from "@emotion/react";
-
-import Layout from "./component/layout";
 
 import Home from "./routes/home";
 import Profile from "./routes/profile";
 import Login from "./routes/login";
 import CreateAccount from "./routes/create-account";
-import { useEffect, useState } from "react";
-import LoadingScreen from "./component/loading-screen";
-import { auth } from "./firebase";
 
-import Wrapper from "./style/Layout";
-import ProtectedRoute from "./component/protected-route";
+import Layout from "./component/Layout";
+import LoadingScreen from "./component/LoadingScreen";
+import ProtectedRoute from "./component/ProtectedRoute";
+
+import { Wrapper } from "./style/layout";
+import global from "./style/global";
 
 const router = createBrowserRouter([
   {

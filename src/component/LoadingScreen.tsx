@@ -8,7 +8,6 @@ export default function LoadingScreen() {
     align-items: center;
   `;
   const Text = styled.span`
-    color: black;
     font-size: 48px;
   `;
 
