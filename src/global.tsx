@@ -1,11 +1,6 @@
 import { css } from "@emotion/react";
 
-const reset = css`
-  /* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
-*/
-
+const global = css`
   html,
   body,
   div,
@@ -139,9 +134,30 @@ const reset = css`
     overflow: visible;
     cursor: pointer;
   }
+
+  :root {
+    // Base
+    font-size: 16px;
+    color: var(--white);
+
+    // Colorgraphy
+    --white: #fff;
+    --black: #121212;
+
+    // Primary
+    --main: #528ff9;
+    --main-hover: #417bde;
+  }
+
   h1 {
     color: white;
   }
+  a {
+    color: #528ff9;
+    &:hover {
+      color: #417bde;
+    }
+  }
 `;
 
-export default reset;
+export default global;

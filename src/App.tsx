@@ -1,6 +1,6 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import reset from "./reset";
+import global from "./global";
 import { Global } from "@emotion/react";
 
 import Layout from "./component/layout";
@@ -55,7 +55,7 @@ function App() {
   return (
     <>
       <Wrapper>
-        <Global styles={reset} />
+        <Global styles={global} />
         {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
       </Wrapper>
     </>
