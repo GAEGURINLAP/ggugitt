@@ -1,6 +1,7 @@
 import { Navigate, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import Alert from "./alert";
+import ButtonPrimary from "./button-primary";
 
 export default function ProtectedRoute({
   children,
@@ -16,10 +17,12 @@ export default function ProtectedRoute({
 
   if (user === null) {
     return (
-      <>
-        <Alert error={"로그인이 필요합니다."} onConfirm={clickConfirm}></Alert>
-        {/* <Navigate to="/login" /> */}
-      </>
+      <Alert
+        message={"로그인이 필요합니다."}
+        buttons={[
+          <ButtonPrimary label={"확인"} onClick={clickConfirm} isWidthFull />,
+        ]}
+      />
     );
   }
   return children;

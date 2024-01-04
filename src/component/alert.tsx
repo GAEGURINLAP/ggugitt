@@ -12,13 +12,15 @@ const Dim = styled.div`
 `;
 
 const Wrapper = styled.div`
+  color: var(--black);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  padding: 24px;
+  gap: 32px;
+  padding: 32px 24px 24px;
   width: fit-content;
-  background-color: white;
+  min-width: 320px;
+  background-color: var(--white);
   z-index: 99999;
   border-radius: 8px;
 `;
@@ -29,32 +31,38 @@ const Title = styled.div`
 const Message = styled.div`
   font-size: 16px;
 `;
-const Button = styled.button`
-  background-color: #528ff9;
-  color: white;
-  height: 48px;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
   width: 100%;
-  border-radius: 8px;
-  cursor: pointer;
-  &:hover {
-    background-color: #417bde;
-  }
+  gap: 8px;
+`;
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
 `;
 
 interface AlertProps {
-  showTitle: boolean;
-  title: string;
-  error: string;
-  onClose: () => void;
+  title?: string;
+  message: string;
+  isShowTitle?: boolean;
+  buttons: React.ReactNode[];
 }
-const Alert = ({ showTitle, title, error, onClose }: AlertProps) => {
+
+const Alert = ({ title, message, isShowTitle, buttons }: AlertProps) => {
   return (
     <>
       <Dim>
         <Wrapper>
-          {showTitle && <Title>{title}</Title>}
-          <Message>{error}</Message>
-          <Button onClick={onClose}>확인</Button>
+          {isShowTitle && <Title>{title}</Title>}
+          <Message>{message}</Message>
+          <ButtonContainer>
+            {buttons.map((button, index) => (
+              <ButtonWrapper key={index}>{button}</ButtonWrapper>
+            ))}
+          </ButtonContainer>
         </Wrapper>
       </Dim>
     </>

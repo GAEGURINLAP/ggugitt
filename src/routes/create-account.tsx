@@ -1,12 +1,15 @@
 import styled from "@emotion/styled";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { useState } from "react";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+
 import { auth } from "../firebase";
-import { useNavigate } from "react-router-dom";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
+
 import Alert from "../component/alert";
+import ButtonPrimary from "../component/button-primary";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -44,8 +47,8 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  height: 48px;
   background-color: #528ff9;
+  height: 48px;
   color: white;
   border-radius: 100px;
   display: flex;
@@ -61,6 +64,11 @@ const Error = styled.span`
   margin-left: 20px;
   font-size: 14px;
   color: tomato;
+`;
+
+const Switcher = styled.span`
+  margin-top: 24px;
+  color: white;
 `;
 
 type FormInputs = {
@@ -120,7 +128,7 @@ export default function CreateAccount() {
   return (
     <>
       <Wrapper>
-        <Title>Join Our Bullgaemi</Title>
+        <Title>불개미 회원가입</Title>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Input
             {...register("name", {
@@ -148,7 +156,7 @@ export default function CreateAccount() {
               },
             })}
             id="email"
-            placeholder="이메일을 입력하렴"
+            placeholder="이메일 뭐에요"
           />
           {errors.email && <Error>{errors.email.message}</Error>}
           <Input
@@ -160,23 +168,44 @@ export default function CreateAccount() {
               },
             })}
             id="password"
-            placeholder="패스워드 뭐에여"
+            placeholder="패스워드 뭐에요"
             type="password"
           />
           {errors.password && <Error>{errors.password.message}</Error>}
+          {/* <Input
+            {...register("password", {
+              required: "비밀번호는 필수 입력입니다.",
+              minLength: {
+                value: 8,
+                message: "8자리 이상 비밀번호를 사용하세요.",
+              },
+            })}
+            id="password"
+            placeholder="패스워드 2번 뭐에요"
+            type="password"
+          /> */}
           <Button type="submit" disabled={isSubmitting}>
             {isLoading ? "Loading..." : "회원 가입"}
           </Button>
         </Form>
+        <Switcher>
+          계정이 이미 있으신가요? {""}
+          <Link to="/login">로그인 &rarr;</Link>
+        </Switcher>
       </Wrapper>
-      {isShowAlert ? (
+
+      {isShowAlert && (
         <Alert
-          showTitle={false}
-          title={"타이틀입니다."}
-          error={error}
-          onClose={handleAlertClose}
+          message={error}
+          buttons={[
+            <ButtonPrimary
+              label={"확인"}
+              onClick={handleAlertClose}
+              isWidthFull
+            />,
+          ]}
         />
-      ) : null}
+      )}
     </>
   );
 }

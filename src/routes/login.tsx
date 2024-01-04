@@ -2,11 +2,14 @@ import styled from "@emotion/styled";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+
 import { auth } from "../firebase";
-import { useNavigate } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
-import Alert from "../component/alert";
 import { signInWithEmailAndPassword } from "firebase/auth";
+
+import Alert from "../component/alert";
+import ButtonPrimary from "../component/button-primary";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -63,6 +66,11 @@ const Error = styled.span`
   color: tomato;
 `;
 
+const Switcher = styled.span`
+  margin-top: 24px;
+  color: white;
+`;
+
 type FormInputs = {
   name: string;
   email: string;
@@ -112,7 +120,7 @@ export default function Login() {
   return (
     <>
       <Wrapper>
-        <Title>로그인</Title>
+        <Title>불개미 로그인</Title>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Input
             {...register("email", {
@@ -123,7 +131,7 @@ export default function Login() {
               },
             })}
             id="email"
-            placeholder="이메일을 입력하렴"
+            placeholder="이메일 뭐에요"
           />
           {errors.email && <Error>{errors.email.message}</Error>}
           <Input
@@ -135,7 +143,7 @@ export default function Login() {
               },
             })}
             id="password"
-            placeholder="패스워드 뭐에여"
+            placeholder="패스워드 뭐에요"
             type="password"
           />
           {errors.password && <Error>{errors.password.message}</Error>}
@@ -143,13 +151,22 @@ export default function Login() {
             {isLoading ? "Loading..." : "로그인"}
           </Button>
         </Form>
+        <Switcher>
+          계정이 없으신가요? {""}
+          <Link to="/create-account">회원 가입 &rarr;</Link>
+        </Switcher>
       </Wrapper>
+
       {isShowAlert && (
         <Alert
-          showTitle={false}
-          title={"타이틀입니다."}
-          error={error}
-          onClose={handleAlertClose}
+          message={error}
+          buttons={[
+            <ButtonPrimary
+              label={"확인"}
+              onClick={handleAlertClose}
+              isWidthFull
+            />,
+          ]}
         />
       )}
     </>
