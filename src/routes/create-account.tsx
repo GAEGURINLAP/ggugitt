@@ -1,5 +1,3 @@
-import styled from "@emotion/styled";
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,74 +6,16 @@ import { auth } from "../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 
-import Alert from "../component/alert";
-import ButtonPrimary from "../component/button-primary";
+import Alert from "../component/Alert";
+import ButtonPrimary from "../component/ButtonPrimary";
 
-const Wrapper = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 420px;
-  padding: 50px 0px;
-`;
+import { Wrapper, Title, Form, Input, Error, Switcher } from "../style/form";
 
-const Title = styled.h1`
-  font-size: 42px;
-  color: white;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  margin-top: 50px;
-  width: 100%;
-  gap: 10px;
-`;
-
-const Input = styled.input`
-  padding: 10px 20px;
-  border-radius: 50px;
-  border: none;
-  font-size: 16px;
-  &[type="submit"] {
-    cursor: pointer;
-    &:hover {
-      opacity: 0.8;
-    }
-  }
-`;
-
-const Button = styled.button`
-  background-color: #528ff9;
-  height: 48px;
-  color: white;
-  border-radius: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  &:hover {
-    background-color: #417bde;
-  }
-`;
-
-const Error = styled.span`
-  margin-left: 20px;
-  font-size: 14px;
-  color: tomato;
-`;
-
-const Switcher = styled.span`
-  margin-top: 24px;
-  color: white;
-`;
-
-type FormInputs = {
+interface FormInputs {
   name: string;
   email: string;
   password: string;
-};
+}
 
 export default function CreateAccount() {
   // Todo
@@ -92,7 +32,7 @@ export default function CreateAccount() {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting, errors },
+    formState: { errors },
   } = useForm<FormInputs>({});
 
   const onSubmit = async (data: FormInputs) => {
@@ -172,21 +112,10 @@ export default function CreateAccount() {
             type="password"
           />
           {errors.password && <Error>{errors.password.message}</Error>}
-          {/* <Input
-            {...register("password", {
-              required: "비밀번호는 필수 입력입니다.",
-              minLength: {
-                value: 8,
-                message: "8자리 이상 비밀번호를 사용하세요.",
-              },
-            })}
-            id="password"
-            placeholder="패스워드 2번 뭐에요"
-            type="password"
-          /> */}
-          <Button type="submit" disabled={isSubmitting}>
-            {isLoading ? "Loading..." : "회원 가입"}
-          </Button>
+          <ButtonPrimary
+            label={isLoading ? "Loading..." : "회원가입"}
+            isRadiusFull
+          />
         </Form>
         <Switcher>
           계정이 이미 있으신가요? {""}

@@ -1,11 +1,11 @@
 import styled from "@emotion/styled";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
-import Alert from "../component/alert";
+import Alert from "../component/Alert";
 import { useState } from "react";
 
-import ButtonPrimary from "../component/button-primary";
-import ButtonSecondary from "../component/button-secondary";
+import ButtonPrimary from "../component/ButtonPrimary";
+import ButtonSecondary from "../component/ButtonSecondary";
 
 const Title = styled.h1`
   color: hotpink;
