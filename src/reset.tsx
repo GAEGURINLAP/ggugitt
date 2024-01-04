@@ -139,6 +139,9 @@ const reset = css`
     overflow: visible;
     cursor: pointer;
   }
+  h1 {
+    color: white;
+  }
 `;
 
 export default reset;

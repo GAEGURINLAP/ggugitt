@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import { FirebaseError } from "firebase/app";
+import Alert from "../component/alert";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -74,6 +76,9 @@ export default function CreateAccount() {
   // home page로 리다이렉션
 
   const [isLoading, setLoading] = useState(false);
+  const [isShowAlert, setShowAlert] = useState(false);
+  const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
   const {
@@ -96,11 +101,20 @@ export default function CreateAccount() {
         displayName: name,
       });
       navigate("/");
-    } catch (data) {
+    } catch (e) {
       // setError
+      if (e instanceof FirebaseError) {
+        console.log(e.code, e.message);
+        setShowAlert(true);
+        setError(e.message);
+      }
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleAlertClose = () => {
+    setShowAlert(false);
   };
 
   return (
@@ -155,6 +169,13 @@ export default function CreateAccount() {
           </Button>
         </Form>
       </Wrapper>
+      {isShowAlert ? (
+        <Alert
+          title={"타이틀입니다."}
+          error={error}
+          onClose={handleAlertClose}
+        />
+      ) : null}
     </>
   );
 }
