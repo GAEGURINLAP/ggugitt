@@ -30,7 +30,6 @@ const Message = styled.div`
   font-size: 16px;
 `;
 const Button = styled.button`
-  margin-top: 16px;
   background-color: #528ff9;
   color: white;
   height: 48px;
@@ -43,20 +42,23 @@ const Button = styled.button`
 `;
 
 interface AlertProps {
+  showTitle: boolean;
   title: string;
   error: string;
   onClose: () => void;
 }
-const Alert = ({ title, error, onClose }: AlertProps) => (
-  <>
-    <Dim>
-      <Wrapper>
-        <Title>{title}</Title>
-        <Message>{error}</Message>
-        <Button onClick={onClose}>확인</Button>
-      </Wrapper>
-    </Dim>
-  </>
-);
+const Alert = ({ showTitle, title, error, onClose }: AlertProps) => {
+  return (
+    <>
+      <Dim>
+        <Wrapper>
+          {showTitle && <Title>{title}</Title>}
+          <Message>{error}</Message>
+          <Button onClick={onClose}>확인</Button>
+        </Wrapper>
+      </Dim>
+    </>
+  );
+};
 
 export default Alert;

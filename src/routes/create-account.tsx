@@ -171,6 +171,7 @@ export default function CreateAccount() {
       </Wrapper>
       {isShowAlert ? (
         <Alert
+          showTitle={false}
           title={"타이틀입니다."}
           error={error}
           onClose={handleAlertClose}

@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { auth } from "../firebase";
+import { Navigate } from "react-router-dom";
 
 const Title = styled.h1`
   color: hotpink;
@@ -15,6 +16,8 @@ const Button = styled.button`
 export default function Home() {
   const logOut = () => {
     auth.signOut();
+    <Navigate to="/login" />;
+    console.log(auth.currentUser);
   };
   return (
     <>
