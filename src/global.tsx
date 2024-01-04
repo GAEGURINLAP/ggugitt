@@ -153,9 +153,9 @@ const global = css`
     color: white;
   }
   a {
-    color: #528ff9;
+    color: var(--main);
     &:hover {
-      color: #417bde;
+      color: var(--main-hover);
     }
   }
 `;
