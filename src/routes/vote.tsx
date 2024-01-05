@@ -215,7 +215,7 @@ export default function Vote() {
           </div>
           <VoteWrapper>
             {voteItems.map((item, index) => (
-              <VoteItem key={item[index]}>
+              <VoteItem key={`item${index}`}>
                 <VoteContent>
                   {item}
                   <img
