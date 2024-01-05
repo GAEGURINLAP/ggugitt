@@ -13,7 +13,11 @@ export const Wrapper = styled.div`
 
 export const Title = styled.h1`
   font-size: 40px;
-  font-weight: 700;
+  font-weight: 300;
+  b {
+    color: tomato;
+    font-weight: 700;
+  }
 `;
 
 export const Form = styled.form`

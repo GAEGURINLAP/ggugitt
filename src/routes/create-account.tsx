@@ -76,7 +76,9 @@ export default function CreateAccount() {
   return (
     <>
       <Wrapper>
-        <Title>불개미 회원가입</Title>
+        <Title>
+          <b>불개미</b> 회원가입
+        </Title>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Input
             {...register("name", {

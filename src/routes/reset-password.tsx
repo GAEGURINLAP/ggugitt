@@ -17,7 +17,7 @@ interface FormInputs {
 export default function ForgotPassword() {
   const [isLoading, setLoading] = useState(false);
   const [isShowAlert, setShowAlert] = useState(false);
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
 
   const {
     register,
@@ -38,7 +38,7 @@ export default function ForgotPassword() {
       if (e instanceof FirebaseError) {
         setShowAlert(true);
         console.log(e.code);
-        setError(e.message);
+        // setError(e.message);
       }
     } finally {
       setLoading(false);

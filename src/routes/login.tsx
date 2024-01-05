@@ -66,7 +66,9 @@ export default function Login() {
   return (
     <>
       <Wrapper>
-        <Title>불개미 로그인</Title>
+        <Title>
+          <b>불개미</b> 로그인
+        </Title>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Input
             {...register("email", {

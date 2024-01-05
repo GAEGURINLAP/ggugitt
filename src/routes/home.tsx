@@ -24,6 +24,7 @@ export const GNB = styled.div`
   width: 100%;
   max-width: 500px;
   padding: 0 24px;
+  background-color: var(--white);
 `;
 
 const GNBWrapper = styled.div`
@@ -34,7 +35,7 @@ const GNBWrapper = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 48px;
+  font-size: 40px;
   margin-bottom: 64px;
   text-align: center;
   font-weight: 300;
@@ -179,9 +180,24 @@ export default function Home() {
           </>
         ) : (
           <>
-            <Title>
-              과연 오늘의 <b>불개미</b>는? 두구두구두구
-            </Title>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Title>
+                과연 오늘의 <b>불개미</b>는? <br />
+                두구두구두구
+              </Title>
+              <img
+                src="/images/logo/bullgaemi.png"
+                alt="불개미"
+                width={176}
+                height={240}
+              />
+            </div>
             {/* <ButtonPrimary
               onClick={clickSurvey}
               label={"투표 만들기"}
