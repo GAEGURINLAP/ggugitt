@@ -18,12 +18,17 @@ const Wrapper = styled.div`
   gap: 8px;
 `;
 
-const BottomButton = () => {
+interface BottomButtonProps {
+  onClick01?: () => void;
+  onClick02?: () => void;
+}
+
+const BottomButton = ({ onClick01, onClick02 }: BottomButtonProps) => {
   return (
     <Container>
       <Wrapper>
-        <ButtonSecondary label={"추가하기"} isWidthFull />
-        <ButtonPrimary label={"등록하기"} isWidthFull />
+        <ButtonSecondary label={"추가하기"} onClick={onClick01} isWidthFull />
+        <ButtonPrimary label={"등록하기"} onClick={onClick02} isWidthFull />
       </Wrapper>
     </Container>
   );

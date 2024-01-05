@@ -1,5 +1,9 @@
 import styled from "@emotion/styled";
 
+export const Container = styled.div`
+  background-color: #f7f7f7;
+`;
+
 export const Wrapper = styled.div`
   /* position: relative; */
   display: flex;
@@ -10,4 +14,5 @@ export const Wrapper = styled.div`
   margin: 0px auto;
   box-shadow: rgba(130, 130, 130, 0.15) 0px 0px 20px;
   transition: margin-top 0.5s ease 0s;
+  background-color: var(--white);
 `;

@@ -194,7 +194,7 @@ const global = css`
     line-height: 150%;
 
     color: var(--black);
-    background-color: #f7f7f7;
+    /* background-color: #f7f7f7; */
 
     box-sizing: border-box;
   }

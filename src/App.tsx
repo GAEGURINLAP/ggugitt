@@ -14,10 +14,10 @@ import Layout from "./component/Layout";
 import LoadingScreen from "./component/LoadingScreen";
 import ProtectedRoute from "./component/ProtectedRoute";
 
-import { Wrapper } from "./style/layout";
+import { Container, Wrapper } from "./style/layout";
 import global from "./style/global";
 import ResetPaswrd from "./routes/reset-password";
-import Survey from "./routes/survey";
+import Vote from "./routes/vote";
 
 const router = createBrowserRouter([
   {
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
   },
   { path: "/create-account", element: <CreateAccount /> },
   { path: "/reset-password", element: <ResetPaswrd /> },
-  { path: "/survey", element: <Survey /> },
+  { path: "/vote", element: <Vote /> },
 ]);
 
 function App() {
@@ -59,11 +59,13 @@ function App() {
 
   return (
     <>
-      <Wrapper>
-        <Global styles={global} />
-        {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
-        {/* <BottomButton /> */}
-      </Wrapper>
+      <Container>
+        <Wrapper>
+          <Global styles={global} />
+          {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
+          {/* <BottomButton /> */}
+        </Wrapper>
+      </Container>
     </>
   );
 }
