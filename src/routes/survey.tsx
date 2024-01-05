@@ -1,7 +1,5 @@
 import styled from "@emotion/styled";
 import BottomButton from "../component/BottomButon";
-import { Container } from "../style/alert";
-// import { Input } from "../style/form";
 
 // import { ReactComponents as IconX } from "/images/icon/common/icon-x-circle.svg";
 

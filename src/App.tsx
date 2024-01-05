@@ -16,10 +16,8 @@ import ProtectedRoute from "./component/ProtectedRoute";
 
 import { Wrapper } from "./style/layout";
 import global from "./style/global";
-import ForgotPassword from "./routes/reset-password";
 import ResetPaswrd from "./routes/reset-password";
 import Survey from "./routes/survey";
-import BottomButton from "./component/BottomButon";
 
 const router = createBrowserRouter([
   {
