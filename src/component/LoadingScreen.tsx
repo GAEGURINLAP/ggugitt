@@ -1,4 +1,6 @@
 import styled from "@emotion/styled";
+import Lottie from "lottie-react";
+import Loading from "../lottie/Loading-bullgaemi.json";
 
 export default function LoadingScreen() {
   const Wrapper = styled.div`
@@ -7,13 +9,10 @@ export default function LoadingScreen() {
     justify-content: center;
     align-items: center;
   `;
-  const Text = styled.span`
-    font-size: 48px;
-  `;
 
   return (
     <Wrapper>
-      <Text>Loading...</Text>
+      <Lottie animationData={Loading} loop={true} />
     </Wrapper>
   );
 }
