@@ -1,52 +1,36 @@
 import styled from "@emotion/styled";
 
 export const Wrapper = styled.div`
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 420px;
-  padding: 50px 0px;
+  /* justify-content: center; */
+  /* height: 100vh; */
+  height: 100%;
+  padding: 0 24px;
+  padding-top: 120px;
+  /* margin-top: 120px; */
 `;
 
 export const Title = styled.h1`
-  font-size: 42px;
-  color: white;
+  font-size: 40px;
+  /* font-family: "Pretendard"; */
+  font-weight: 700;
 `;
 
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  margin-top: 50px;
+  margin-top: 48px;
   width: 100%;
-  gap: 10px;
+  gap: 12px;
 `;
 
 export const Input = styled.input`
   padding: 10px 20px;
   border-radius: 50px;
   border: none;
-  font-size: 16px;
-  &[type="submit"] {
-    cursor: pointer;
-    &:hover {
-      opacity: 0.8;
-    }
-  }
-`;
-
-export const Button = styled.button`
-  background-color: #528ff9;
-  height: 48px;
-  color: white;
-  border-radius: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  &:hover {
-    background-color: #417bde;
-  }
+  background-color: var(--white);
 `;
 
 export const Error = styled.span`
@@ -56,6 +40,5 @@ export const Error = styled.span`
 `;
 
 export const Switcher = styled.span`
-  margin-top: 24px;
-  color: white;
+  margin-top: 32px;
 `;

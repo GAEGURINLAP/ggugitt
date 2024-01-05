@@ -135,10 +135,63 @@ const global = css`
     cursor: pointer;
   }
 
-  :root {
+  @font-face {
+    font-family: "Pretendard";
+    font-style: black;
+    font-weight: 900;
+    src: local("Pretendard"),
+      url(../../public/fonts/Pretendard-Black.woff2) format("woff2");
+  }
+
+  @font-face {
+    font-family: "Pretendard";
+    font-style: bold;
+    font-weight: 700;
+    src: local("Pretendard"),
+      url(../../public/fonts/Pretendard-Bold.woff2) format("woff2");
+  }
+
+  @font-face {
+    font-family: "Pretendard";
+    font-style: semibold;
+    font-weight: 600;
+    src: local("Pretendard"),
+      url(../../public/fonts/Pretendard-SemiBold.woff2) format("woff2");
+  }
+  @font-face {
+    font-family: "Pretendard";
+    font-style: medium;
+    font-weight: 500;
+    src: local("Pretendard"),
+      url(../../public/fonts/Pretendard-Medium.woff2) format("woff2");
+  }
+  @font-face {
+    font-family: "Pretendard";
+    font-style: regular;
+    font-weight: 400;
+    src: local("Pretendard"),
+      url(../../public/fonts/Pretendard-Regular.woff2) format("woff2");
+  }
+
+  @font-face {
+    font-family: "Pretendard";
+    font-style: light;
+    font-weight: 300;
+    src: local("Pretendard"),
+      url(../../public/fonts/Pretendard-Light.woff2) format("woff2");
+  }
+
+  * {
     // Base
     font-size: 16px;
-    color: var(--white);
+    font-family: "Pretendard";
+
+    color: var(--black);
+    background-color: #f7f7f7;
+  }
+
+  :root {
+    font-family: "Pretendard";
 
     // Colorgraphy
     --white: #fff;
@@ -149,9 +202,6 @@ const global = css`
     --main-hover: #417bde;
   }
 
-  h1 {
-    color: white;
-  }
   a {
     color: var(--main);
     &:hover {
