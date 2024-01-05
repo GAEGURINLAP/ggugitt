@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { auth } from "../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
@@ -9,7 +9,15 @@ import { FirebaseError } from "firebase/app";
 import Alert from "../component/Alert";
 import ButtonPrimary from "../component/ButtonPrimary";
 
-import { Wrapper, Title, Form, Input, Error, Switcher } from "../style/form";
+import {
+  Wrapper,
+  Title,
+  Form,
+  Input,
+  Error,
+  Switcher,
+  StyledLink,
+} from "../style/form";
 
 interface FormInputs {
   name: string;
@@ -119,7 +127,7 @@ export default function CreateAccount() {
         </Form>
         <Switcher>
           계정이 이미 있으신가요? {""}
-          <Link to="/login">로그인 &rarr;</Link>
+          <StyledLink to="/login">로그인 &rarr;</StyledLink>
         </Switcher>
       </Wrapper>
 

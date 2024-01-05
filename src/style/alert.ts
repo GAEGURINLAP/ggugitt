@@ -13,18 +13,24 @@ export const Dim = styled.div`
   z-index: 2;
 `;
 
-export const Wrapper = styled.div`
+export const Container = styled.div`
   color: var(--black);
+  width: 100%;
+  max-width: 327px;
+  background-color: var(--white);
+  z-index: 99999;
+  overflow: hidden;
+  border-radius: 8px;
+`;
+
+export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
   padding: 32px 24px 24px;
-  width: fit-content;
-  min-width: 320px;
-  background-color: var(--white);
-  z-index: 99999;
-  border-radius: 8px;
+  gap: 32px;
+  line-height: 150%;
+  text-align: center;
 `;
 
 export const Title = styled.div`

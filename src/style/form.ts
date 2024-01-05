@@ -1,3 +1,5 @@
+import { Link as RouterLink } from "react-router-dom";
+
 import styled from "@emotion/styled";
 
 export const Wrapper = styled.div`
@@ -37,4 +39,17 @@ export const Error = styled.span`
 
 export const Switcher = styled.span`
   margin-top: 32px;
+`;
+
+export const ForgotPassword = styled.div`
+  display: flex;
+  justify-content: end;
+  font-size: 14px;
+`;
+
+export const StyledLink = styled(RouterLink)`
+  color: var(--main);
+  &:hover {
+    color: var(--main-hover);
+  }
 `;

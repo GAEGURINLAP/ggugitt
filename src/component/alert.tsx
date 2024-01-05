@@ -1,6 +1,7 @@
 import {
   ButtonContainer,
   ButtonWrapper,
+  Container,
   Dim,
   Message,
   Title,
@@ -18,15 +19,17 @@ const Alert = ({ title, message, isShowTitle, buttons }: AlertProps) => {
   return (
     <>
       <Dim>
-        <Wrapper>
-          {isShowTitle && <Title>{title}</Title>}
-          <Message>{message}</Message>
-          <ButtonContainer>
-            {buttons.map((button, index) => (
-              <ButtonWrapper key={index}>{button}</ButtonWrapper>
-            ))}
-          </ButtonContainer>
-        </Wrapper>
+        <Container>
+          <Wrapper>
+            {isShowTitle && <Title>{title}</Title>}
+            <Message>{message}</Message>
+            <ButtonContainer>
+              {buttons.map((button, index) => (
+                <ButtonWrapper key={index}>{button}</ButtonWrapper>
+              ))}
+            </ButtonContainer>
+          </Wrapper>
+        </Container>
       </Dim>
     </>
   );

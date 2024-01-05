@@ -16,6 +16,8 @@ import ProtectedRoute from "./component/ProtectedRoute";
 
 import { Wrapper } from "./style/layout";
 import global from "./style/global";
+import ForgotPassword from "./routes/reset-password";
+import ResetPaswrd from "./routes/reset-password";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +43,7 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   { path: "/create-account", element: <CreateAccount /> },
+  { path: "/reset-password", element: <ResetPaswrd /> },
 ]);
 
 function App() {

@@ -1,41 +1,23 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 
 import { auth } from "../firebase";
 import { FirebaseError } from "firebase/app";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { sendPasswordResetEmail } from "firebase/auth";
 
 import Alert from "../component/Alert";
 import ButtonPrimary from "../component/ButtonPrimary";
 
-import {
-  Error,
-  ForgotPassword,
-  Form,
-  Input,
-  StyledLink,
-  Switcher,
-  Title,
-  Wrapper,
-} from "../style/form";
+import { Error, Form, Input, Title, Wrapper } from "../style/form";
 
 interface FormInputs {
   email: string;
-  password: string;
 }
 
-export default function Login() {
-  // Todo
-  // 계정 생성
-  // 사용자 이름 설정
-  // home page로 리다이렉션
-
+export default function ResetPaswrd() {
   const [isLoading, setLoading] = useState(false);
   const [isShowAlert, setShowAlert] = useState(false);
   const [error, setError] = useState("");
-
-  const navigate = useNavigate();
 
   const {
     register,
@@ -44,14 +26,18 @@ export default function Login() {
   } = useForm<FormInputs>({});
 
   const onSubmit = async (data: FormInputs) => {
-    const { email, password } = data;
+    const { email } = data;
     try {
       setLoading(true);
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate("/");
+      await sendPasswordResetEmail(auth, email);
+      console.log("Password reset email sent successfully");
+      setShowAlert(true);
     } catch (e) {
+      // Todo 1. 존재하는 이메일 여부 판단 로직 추가 필요
+      // Todo 2. 성공, 실패에 따라 Alert 메세지가 다르게 나타도록
       if (e instanceof FirebaseError) {
         setShowAlert(true);
+        console.log(e.code);
         setError(e.message);
       }
     } finally {
@@ -66,7 +52,7 @@ export default function Login() {
   return (
     <>
       <Wrapper>
-        <Title>불개미 로그인</Title>
+        <Title>비밀번호 재설정</Title>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Input
             {...register("email", {
@@ -80,36 +66,19 @@ export default function Login() {
             placeholder="이메일 뭐에요"
           />
           {errors.email && <Error>{errors.email.message}</Error>}
-          <Input
-            {...register("password", {
-              required: "비밀번호는 필수 입력입니다.",
-              minLength: {
-                value: 8,
-                message: "8자리 이상 비밀번호를 사용하세요.",
-              },
-            })}
-            id="password"
-            placeholder="패스워드 뭐에요"
-            type="password"
-          />
-          {errors.password && <Error>{errors.password.message}</Error>}
-          <ForgotPassword>
-            <StyledLink to="/reset-password">비밀번호를 잊으셨나요?</StyledLink>
-          </ForgotPassword>
+
           <ButtonPrimary
-            label={isLoading ? "Loading..." : "로그인"}
+            label={isLoading ? "Loading..." : "비밀번호 재설정"}
             isRadiusFull
           />
         </Form>
-        <Switcher>
-          계정이 없으신가요? {""}
-          <StyledLink to="/create-account">회원 가입 &rarr;</StyledLink>
-        </Switcher>
       </Wrapper>
 
       {isShowAlert && (
         <Alert
-          message={error}
+          message={
+            "입력하신 이메일로 비밀번호 재설정을 위한 이메일이 발송되었습니다."
+          }
           buttons={[
             <ButtonPrimary
               label={"확인"}
