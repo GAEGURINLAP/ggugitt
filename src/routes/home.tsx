@@ -78,6 +78,7 @@ export const VoteItem = styled.div`
   line-height: 32px;
   background-color: #ededed;
   border-radius: 100px;
+  transition: all 0.2s ease;
   cursor: pointer;
   &:hover,
   :active {
