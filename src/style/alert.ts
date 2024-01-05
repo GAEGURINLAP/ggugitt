@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 
 export const Dim = styled.div`
   position: fixed;
+  top: 0;
   left: 0;
   display: flex;
   justify-content: center;

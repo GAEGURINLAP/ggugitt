@@ -4,17 +4,13 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center; */
-  /* height: 100vh; */
   height: 100%;
   padding: 0 24px;
   padding-top: 120px;
-  /* margin-top: 120px; */
 `;
 
 export const Title = styled.h1`
   font-size: 40px;
-  /* font-family: "Pretendard"; */
   font-weight: 700;
 `;
 
