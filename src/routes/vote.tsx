@@ -3,8 +3,11 @@ import BottomButton from "../component/BottomButon";
 import { addDoc, collection } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { useForm } from "react-hook-form";
-import { Error } from "../style/form";
 import { useState } from "react";
+import LoadingScreen from "../component/LoadingScreen";
+import Alert from "../component/Alert";
+import ButtonPrimary from "../component/ButtonPrimary";
+import { useNavigate } from "react-router-dom";
 
 // import { ReactComponents as IconX } from "/images/icon/common/icon-x-circle.svg";
 
@@ -19,6 +22,12 @@ export const Title = styled.h1`
   font-size: 32px;
   font-weight: 600;
   line-height: 140%;
+`;
+
+export const FormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 `;
 
 export const Form = styled.form`
@@ -49,8 +58,14 @@ export const Input = styled.input`
   height: 48px;
 `;
 
+export const Error = styled.span`
+  font-size: 14px;
+  color: tomato;
+`;
+
 export const VoteWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   gap: 8px;
 `;
@@ -81,23 +96,42 @@ interface FormInputs {
 
 export default function Vote() {
   const [voteItems, setVoteItems] = useState<string[]>([]);
-  const [isInputFocused, setIsInputFocused] = useState(false);
 
-  // const onRegister = async () => {
-  //   // e.preventDefault();
-  //   const user = auth.currentUser;
-  //   try {
-  //     await addDoc(collection(db, "vote"), {
-  //       user_id: user?.uid,
-  //       user_name: user?.displayName || "Anonymous",
-  //       vote_state: "In Progress",
-  //       create_at: Date.now(),
-  //     });
-  //   } catch (e) {
-  //     console.log(e);
-  //   } finally {
-  //   }
-  // };
+  const [isLoading, setLoading] = useState(false);
+  const [isShowAlert, setShowAlert] = useState(false);
+
+  const navigate = useNavigate();
+
+  // Todo 인풋 삭제 버튼 먹히도록 만들기
+  // const [isInputFocused, setIsInputFocused] = useState(false);
+
+  const currentDate = new Date();
+  const formattedDate = `${currentDate.getFullYear()}년 ${
+    currentDate.getMonth() + 1
+  }월 ${currentDate.getDate()}일`;
+
+  // Todo02. 투표 데이터 등록하기
+  const onRegister = async () => {
+    // e.preventDefault();
+    const user = auth.currentUser;
+    try {
+      setLoading(true);
+      await addDoc(collection(db, "vote"), {
+        user_id: user?.uid,
+        user_name: user?.displayName || "Anonymous",
+        vote_item: voteItems,
+        vote_name: `${formattedDate}의 불개미 MVP는?`,
+        vote_state: "In Progress",
+        create_at: Date.now(),
+      });
+    } catch (e) {
+      console.log(e);
+      setLoading(false);
+    } finally {
+      setShowAlert(true);
+      setLoading(false);
+    }
+  };
 
   const addItem = async (data: FormInputs) => {
     const { vote_item } = data;
@@ -106,7 +140,6 @@ export default function Vote() {
   };
 
   const deleteItem = (itemToDelete: string) => {
-    // 선택한 아이템을 제외한 새로운 배열 생성
     const updatedVoteItems = voteItems.filter((item) => item !== itemToDelete);
     setVoteItems(updatedVoteItems);
   };
@@ -119,6 +152,11 @@ export default function Vote() {
     deleteItem(item);
   };
 
+  const clickAlertConfirm = () => {
+    setShowAlert(false);
+    navigate("/");
+  };
+
   const {
     register,
     handleSubmit,
@@ -128,72 +166,83 @@ export default function Vote() {
 
   return (
     <>
+      {isLoading && <LoadingScreen />}
       <Wrapper>
         <Title>
           투표를 진행할 <br /> 팀원을 등록해주세요
         </Title>
-        <div>
-          <Form
-            onSubmit={handleSubmit((data) => {
-              addItem(data);
-              reset();
-            })}
-          >
-            <FormWrapper>
-              <Input
-                {...register("vote_item", {
-                  required: true,
-                  pattern: {
-                    value: /^[^a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]*$/,
-                    message: "특수문자,공백,숫자,영문은 입력이 불가능합니다.",
-                  },
-                  minLength: {
-                    value: 2,
-                    message: "이름은 2자 이상이어야 합니다.",
-                  },
-                  maxLength: {
-                    value: 10,
-                    message: "이름은 10자를 초과할 수 없습니다.",
-                  },
-                })}
-                placeholder="투표 팀원 이름을 입력해주세요"
-                // onKeyDown={(e) => {
-                //   const key = e.key;
-                //   if (/^[^0-9a-zA-Z\s]*$/.test(key)) {
-                //     e.preventDefault();
-                //   }
-                // }}
-                onFocus={() => setIsInputFocused(true)}
-                onBlur={() => setIsInputFocused(false)}
-              />
-              {isInputFocused && (
-                <img
-                  src="/images/icon/common/icon-x-circle.svg"
-                  width={20}
-                  style={{ cursor: "pointer" }}
+        <FormContainer>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            <Form
+              onSubmit={handleSubmit((data) => {
+                addItem(data);
+                reset();
+              })}
+            >
+              <FormWrapper>
+                <Input
+                  {...register("vote_item", {
+                    required: true,
+                    pattern: {
+                      value: /^[^a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]*$/,
+                      message: "특수문자,공백,숫자,영문은 입력이 불가능합니다.",
+                    },
+                    minLength: {
+                      value: 2,
+                      message: "이름은 2자 이상이어야 합니다.",
+                    },
+                    maxLength: {
+                      value: 10,
+                      message: "이름은 10자를 초과할 수 없습니다.",
+                    },
+                  })}
+                  placeholder="투표 팀원 이름을 입력해주세요"
+
+                  // Todo 인풋 삭제 버튼 먹히도록 만들기
+                  // onFocus={() => setIsInputFocused(true)}
+                  // onBlur={() => setIsInputFocused(false)}
                 />
-              )}
-            </FormWrapper>
-          </Form>
-          {errors.vote_item && <Error>{errors.vote_item.message}</Error>}
-        </div>
-        <VoteWrapper>
-          {voteItems.map((item, index) => (
-            <VoteItem key={item[index]}>
-              <VoteContent>
-                {item}
-                <img
-                  src="/images/icon/common/icon-x-circle.svg"
-                  width={20}
-                  style={{ cursor: "pointer" }}
-                  onClick={() => clickDeleteItem(item)}
-                />
-              </VoteContent>
-            </VoteItem>
-          ))}
-        </VoteWrapper>
+                {/* {isInputFocused && (
+                  <img
+                    src="/images/icon/common/icon-x-circle.svg"
+                    width={20}
+                    style={{ cursor: "pointer" }}
+                  />
+                )} */}
+              </FormWrapper>
+            </Form>
+            {errors.vote_item && <Error>{errors.vote_item.message}</Error>}
+          </div>
+          <VoteWrapper>
+            {voteItems.map((item, index) => (
+              <VoteItem key={item[index]}>
+                <VoteContent>
+                  {item}
+                  <img
+                    src="/images/icon/common/icon-x-circle.svg"
+                    width={20}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => clickDeleteItem(item)}
+                  />
+                </VoteContent>
+              </VoteItem>
+            ))}
+          </VoteWrapper>
+        </FormContainer>
       </Wrapper>
-      <BottomButton onClick01={clickAddItem} />
+      <BottomButton onClick01={clickAddItem} onClick02={onRegister} />
+      {isShowAlert && (
+        <Alert
+          message={"투표 등록에 성공하였습니다!"}
+          buttons={[
+            <ButtonPrimary
+              label={"확인"}
+              onClick={clickAlertConfirm}
+              isWidthFull
+            />,
+          ]}
+        />
+      )}
     </>
   );
 }

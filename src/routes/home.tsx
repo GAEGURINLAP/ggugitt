@@ -46,7 +46,7 @@ export default function Home() {
   };
 
   const clickSurvey = () => {
-    navigate("/survey");
+    navigate("/vote");
   };
 
   const confirmLogOut = () => {
