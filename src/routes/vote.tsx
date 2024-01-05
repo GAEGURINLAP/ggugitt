@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import BottomButton from "../component/BottomButon";
+import BottomButton02 from "../component/BottomButon02";
 import { addDoc, collection } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { useForm } from "react-hook-form";
@@ -230,7 +230,7 @@ export default function Vote() {
           </VoteWrapper>
         </FormContainer>
       </Wrapper>
-      <BottomButton onClick01={clickAddItem} onClick02={onRegister} />
+      <BottomButton02 onClick01={clickAddItem} onClick02={onRegister} />
       {isShowAlert && (
         <Alert
           message={"투표 등록에 성공하였습니다!"}

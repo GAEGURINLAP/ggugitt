@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import ButtonPrimary from "../component/ButtonPrimary";
 import ButtonSecondary from "../component/ButtonSecondary";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import BottomButton01 from "../component/BottomButon01";
 
 const Wrapper = styled.div`
   padding: 0 24px;
@@ -15,16 +16,21 @@ const Wrapper = styled.div`
   padding-bottom: 80px;
 `;
 
-const ButtonWrapper = styled.div`
+export const GNB = styled.div`
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  height: 80px;
+  width: 100%;
+  max-width: 500px;
+  padding: 0 24px;
+`;
+
+const GNBWrapper = styled.div`
+  width: 100%;
   display: flex;
   justify-content: end;
-  margin-bottom: 24px;
-`;
-const ButtonText = styled.button`
-  color: #525252;
-  &:hover {
-    font-weight: 500;
-  }
+  align-items: center;
 `;
 
 const Title = styled.h1`
@@ -37,6 +43,12 @@ const Title = styled.h1`
     font-weight: 700;
     color: red;
   }
+`;
+
+export const CurrentTitle = styled.h1`
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 140%;
 `;
 
 export const CurrentVote = styled.div`
@@ -53,22 +65,24 @@ export const VoteTitle = styled.h2`
 
 export const Form = styled.form`
   display: flex;
-  flex-direction: column;
-  background-color: #f7f7f7;
-  /* padding: 24px; */
-  border-radius: 8px;
-  overflow: hidden;
-  /* gap: 24px; */
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 8px;
 `;
 export const VoteItem = styled.div`
   display: flex;
-  padding: 24px;
+  padding: 4px 16px;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  line-height: 32px;
+  background-color: #ededed;
+  border-radius: 100px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  &:hover {
-    /* background-color: #eaeaea; */
-    background-color: var(--main);
+  &:hover,
+  :active {
     color: var(--white);
+    background-color: var(--main);
   }
 `;
 
@@ -134,30 +148,45 @@ export default function Home() {
 
   return (
     <>
+      <GNB>
+        <GNBWrapper>
+          {/* <ButtonText onClick={clickLogOut}>로그아웃</ButtonText> */}
+          <img
+            src="/images/icon/common/icon-logout.svg"
+            width={24}
+            height={24}
+            style={{ cursor: "pointer" }}
+            onClick={clickLogOut}
+          />
+        </GNBWrapper>
+      </GNB>
       <Wrapper>
-        <ButtonWrapper>
-          <ButtonText onClick={clickLogOut}>로그아웃</ButtonText>
-        </ButtonWrapper>
         {votes[0]?.vote_state === "In Progress" ? (
-          <CurrentVote>
-            <Title>{votes[0]?.vote_name}</Title>
-            <Form>
-              {votes[0]?.vote_item.map((item, index) => (
-                <VoteItem key={`item${index}`}>{item}</VoteItem>
-              ))}
-            </Form>
-          </CurrentVote>
+          <>
+            <CurrentVote>
+              {/* <Title>{votes[0]?.vote_name}</Title> */}
+              <CurrentTitle>
+                오늘의 불개미를 <br />
+                투표해주세요.
+              </CurrentTitle>
+              <Form>
+                {votes[0]?.vote_item.map((item, index) => (
+                  <VoteItem key={`item${index}`}>{item}</VoteItem>
+                ))}
+              </Form>
+            </CurrentVote>
+          </>
         ) : (
           <>
             <Title>
               과연 오늘의 <b>불개미</b>는? 두구두구두구
             </Title>
-            <ButtonPrimary
+            {/* <ButtonPrimary
               onClick={clickSurvey}
               label={"투표 만들기"}
               isWidthFull
               size={"Large"}
-            />
+            /> */}
           </>
         )}
 
@@ -179,6 +208,11 @@ export default function Home() {
           />
         )}
       </Wrapper>
+      {votes[0]?.vote_state === "In Progress" ? (
+        <BottomButton01 label={"투표하기"} />
+      ) : (
+        <BottomButton01 label={"투표 만들기"} onClick={clickSurvey} />
+      )}
     </>
   );
 }
