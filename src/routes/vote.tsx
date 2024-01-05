@@ -29,9 +29,12 @@ export const Form = styled.form`
   border: none;
   height: fit-content;
   border-bottom: 1px solid #d0d1d2;
-  /* &:hover {
-    border-bottom: 1px solid var(--main);
-  } */
+  transition: border-bottom-color 0.3s ease; /* 트랜지션 효과 추가 */
+
+  & :active,
+  :focus-within {
+    border-bottom-color: var(--main); /* 포커스를 받으면 색상 변경 */
+  }
 `;
 
 export const FormWrapper = styled.div`
@@ -45,6 +48,7 @@ export const Input = styled.input`
   width: 100%;
   height: 48px;
 `;
+
 export const VoteWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -77,6 +81,7 @@ interface FormInputs {
 
 export default function Vote() {
   const [voteItems, setVoteItems] = useState<string[]>([]);
+  const [isInputFocused, setIsInputFocused] = useState(false);
 
   // const onRegister = async () => {
   //   // e.preventDefault();
@@ -94,13 +99,25 @@ export default function Vote() {
   //   }
   // };
 
-  const onAddItem = async (data: FormInputs) => {
+  const addItem = async (data: FormInputs) => {
     const { vote_item } = data;
     const newVoteItems = [...voteItems, vote_item];
     setVoteItems(newVoteItems);
   };
 
-  const clickAddItem = () => handleSubmit(onAddItem)();
+  const deleteItem = (itemToDelete: string) => {
+    // 선택한 아이템을 제외한 새로운 배열 생성
+    const updatedVoteItems = voteItems.filter((item) => item !== itemToDelete);
+    setVoteItems(updatedVoteItems);
+  };
+
+  const clickAddItem = () => {
+    handleSubmit(addItem)();
+  };
+
+  const clickDeleteItem = (item: string) => {
+    deleteItem(item);
+  };
 
   const {
     register,
@@ -118,7 +135,7 @@ export default function Vote() {
         <div>
           <Form
             onSubmit={handleSubmit((data) => {
-              onAddItem(data);
+              addItem(data);
               reset();
             })}
           >
@@ -126,6 +143,10 @@ export default function Vote() {
               <Input
                 {...register("vote_item", {
                   required: true,
+                  pattern: {
+                    value: /^[^a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]*$/,
+                    message: "특수문자,공백,숫자,영문은 입력이 불가능합니다.",
+                  },
                   minLength: {
                     value: 2,
                     message: "이름은 2자 이상이어야 합니다.",
@@ -136,21 +157,36 @@ export default function Vote() {
                   },
                 })}
                 placeholder="투표 팀원 이름을 입력해주세요"
+                // onKeyDown={(e) => {
+                //   const key = e.key;
+                //   if (/^[^0-9a-zA-Z\s]*$/.test(key)) {
+                //     e.preventDefault();
+                //   }
+                // }}
+                onFocus={() => setIsInputFocused(true)}
+                onBlur={() => setIsInputFocused(false)}
               />
-              <img src="/images/icon/common/icon-x-circle.svg" width={20} />
+              {isInputFocused && (
+                <img
+                  src="/images/icon/common/icon-x-circle.svg"
+                  width={20}
+                  style={{ cursor: "pointer" }}
+                />
+              )}
             </FormWrapper>
           </Form>
           {errors.vote_item && <Error>{errors.vote_item.message}</Error>}
         </div>
         <VoteWrapper>
-          {voteItems.map((item) => (
-            <VoteItem>
+          {voteItems.map((item, index) => (
+            <VoteItem key={item[index]}>
               <VoteContent>
                 {item}
                 <img
                   src="/images/icon/common/icon-x-circle.svg"
                   width={20}
                   style={{ cursor: "pointer" }}
+                  onClick={() => clickDeleteItem(item)}
                 />
               </VoteContent>
             </VoteItem>
