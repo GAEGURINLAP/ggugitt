@@ -121,6 +121,15 @@ const global = css`
     content: "";
     content: none;
   }
+  input {
+    border: none;
+    &:focus {
+      outline: none;
+    }
+    &::placeholder {
+      color: #a2a2a2;
+    }
+  }
   table {
     border-collapse: collapse;
     border-spacing: 0;
@@ -186,6 +195,8 @@ const global = css`
 
     color: var(--black);
     background-color: #f7f7f7;
+
+    box-sizing: border-box;
   }
 
   :root {

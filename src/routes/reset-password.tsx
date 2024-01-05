@@ -14,7 +14,7 @@ interface FormInputs {
   email: string;
 }
 
-export default function ResetPaswrd() {
+export default function ForgotPassword() {
   const [isLoading, setLoading] = useState(false);
   const [isShowAlert, setShowAlert] = useState(false);
   const [error, setError] = useState("");
