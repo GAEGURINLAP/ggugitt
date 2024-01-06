@@ -104,7 +104,12 @@ export default function Splash({ progress }: Props) {
       <Wrapper>
         <Logo>
           {/* <SplashIcon /> */}
-          <img src="../../public/images/logo/splash.svg" alt="Splach" />
+          <img
+            src="../../public/images/logo/splash.png"
+            alt="Splash"
+            width={264}
+            height={264}
+          />
         </Logo>
         <WordMark>&copy; GagurinLab</WordMark>
         <Bar>
