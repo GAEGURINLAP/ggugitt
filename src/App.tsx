@@ -18,6 +18,7 @@ import { Container, Wrapper } from "./style/layout";
 import global from "./style/global";
 import ResetPaswrd from "./routes/reset-password";
 import Vote from "./routes/vote";
+import Splash from "./component/Splash";
 
 const router = createBrowserRouter([
   {
@@ -49,16 +50,24 @@ const router = createBrowserRouter([
 
 function App() {
   const [isLoading, setLoading] = useState(true);
+  const [progress, setProgress] = useState<number>(0);
+
+  const handleProgress = () => {
+    setProgress(100);
+  };
+
   const init = async () => {
     await auth.authStateReady();
     setLoading(false);
   };
   useEffect(() => {
     init();
+    handleProgress();
   }, []);
 
   return (
     <>
+      <Splash progress={progress} />
       <Container>
         <Wrapper>
           <Global styles={global} />

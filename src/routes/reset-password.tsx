@@ -52,7 +52,9 @@ export default function ForgotPassword() {
   return (
     <>
       <Wrapper>
-        <Title>비밀번호 재설정</Title>
+        <Title>
+          <b>비밀번호</b> 재설정
+        </Title>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Input
             {...register("email", {
