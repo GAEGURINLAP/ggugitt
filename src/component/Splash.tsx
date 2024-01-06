@@ -105,7 +105,7 @@ export default function Splash({ progress }: Props) {
         <Logo>
           {/* <SplashIcon /> */}
           <img
-            src="/images/logo/splash.svg"
+            src="/images/logo/splash.png"
             alt="Splash"
             width={264}
             height={264}
