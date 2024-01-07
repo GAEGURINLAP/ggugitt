@@ -90,12 +90,19 @@ export const VoteContent = styled.div`
   gap: 10px;
 `;
 
-interface FormInputs {
-  vote_item: string;
+// interface FormInputs {
+//   vote_item: string;
+// }
+
+export interface IVoteList {
+  name: string;
+  votes_cnt: number;
 }
 
 export default function Vote() {
-  const [voteItems, setVoteItems] = useState<string[]>([]);
+  const [voteList, setVoteList] = useState<IVoteList[]>([]);
+
+  console.log("초기 voteList는?", voteList);
 
   const [isLoading, setLoading] = useState(false);
   const [isShowAlert, setShowAlert] = useState(false);
@@ -110,18 +117,18 @@ export default function Vote() {
     currentDate.getMonth() + 1
   }월 ${currentDate.getDate()}일`;
 
-  // Todo02. 투표 데이터 등록하기
   const onRegister = async () => {
-    // e.preventDefault();
     const user = auth.currentUser;
     try {
       setLoading(true);
       await addDoc(collection(db, "vote"), {
         user_id: user?.uid,
         user_name: user?.displayName || "Anonymous",
-        vote_item: voteItems,
+        vote_list: voteList,
         vote_name: `${formattedDate}의 불개미 MVP는?`,
-        vote_state: "In Progress",
+        total_votes_cnt: 0,
+        available_votes_cnt: 11,
+        is_complete: false,
         create_at: Date.now(),
       });
     } catch (e) {
@@ -133,22 +140,22 @@ export default function Vote() {
     }
   };
 
-  const addItem = async (data: FormInputs) => {
-    const { vote_item } = data;
-    const newVoteItems = [...voteItems, vote_item];
-    setVoteItems(newVoteItems);
+  const addItem = async (data: IVoteList) => {
+    const { name } = data;
+    const newVoteItems = [...voteList, { name, votes_cnt: 0 }];
+    setVoteList(newVoteItems);
   };
 
-  const deleteItem = (itemToDelete: string) => {
-    const updatedVoteItems = voteItems.filter((item) => item !== itemToDelete);
-    setVoteItems(updatedVoteItems);
+  const deleteItem = (itemToDelete: IVoteList) => {
+    const updatedVoteItems = voteList.filter((item) => item !== itemToDelete);
+    setVoteList(updatedVoteItems);
   };
 
   const clickAddItem = () => {
     handleSubmit(addItem)();
   };
 
-  const clickDeleteItem = (item: string) => {
+  const clickDeleteItem = (item: IVoteList) => {
     deleteItem(item);
   };
 
@@ -162,7 +169,7 @@ export default function Vote() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormInputs>({});
+  } = useForm<IVoteList>({});
 
   return (
     <>
@@ -181,7 +188,7 @@ export default function Vote() {
             >
               <FormWrapper>
                 <Input
-                  {...register("vote_item", {
+                  {...register("name", {
                     required: true,
                     pattern: {
                       value: /^[^a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]*$/,
@@ -211,13 +218,13 @@ export default function Vote() {
                 )} */}
               </FormWrapper>
             </Form>
-            {errors.vote_item && <Error>{errors.vote_item.message}</Error>}
+            {errors.name && <Error>{errors.name.message}</Error>}
           </div>
           <VoteWrapper>
-            {voteItems.map((item, index) => (
+            {voteList.map((item, index) => (
               <VoteItem key={`item${index}`}>
                 <VoteContent>
-                  {item}
+                  {item.name}
                   <img
                     src="/images/icon/common/icon-x-circle.svg"
                     width={20}
