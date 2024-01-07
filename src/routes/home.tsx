@@ -149,6 +149,8 @@ export default function Home() {
     navigate(0);
   };
 
+  const user = auth.currentUser;
+
   return (
     <>
       <GNB>
@@ -164,7 +166,8 @@ export default function Home() {
         </GNBWrapper>
       </GNB>
       <Wrapper>
-        {votes[0]?.vote_state === "In Progress" ? (
+        {votes[0]?.user_id === user?.uid &&
+        votes[0]?.vote_state === "In Progress" ? (
           <>
             <CurrentVote>
               {/* <Title>{votes[0]?.vote_name}</Title> */}
@@ -226,7 +229,8 @@ export default function Home() {
           />
         )}
       </Wrapper>
-      {votes[0]?.vote_state === "In Progress" ? (
+      {votes[0]?.user_id === user?.uid &&
+      votes[0]?.vote_state === "In Progress" ? (
         <BottomButton01 label={"투표하기"} />
       ) : (
         <BottomButton01 label={"투표 만들기"} onClick={clickSurvey} />
