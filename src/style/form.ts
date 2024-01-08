@@ -12,7 +12,8 @@ export const Wrapper = styled.div`
 `;
 
 export const Title = styled.h1`
-  font-size: 40px;
+  margin-top: 24px;
+  font-size: 32px;
   font-weight: 300;
   b {
     color: tomato;
@@ -23,7 +24,7 @@ export const Title = styled.h1`
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  margin-top: 48px;
+  margin-top: 32px;
   width: 100%;
   gap: 12px;
 `;

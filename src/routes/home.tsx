@@ -7,8 +7,17 @@ import { useEffect, useState } from "react";
 
 import ButtonPrimary from "../component/ButtonPrimary";
 import ButtonSecondary from "../component/ButtonSecondary";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  updateDoc,
+} from "firebase/firestore";
 import BottomButton01 from "../component/BottomButon01";
+import { IVoteList } from "./vote-register";
 
 const Wrapper = styled.div`
   padding: 0 24px;
@@ -36,7 +45,7 @@ const GNBWrapper = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 40px;
+  font-size: 32px;
   margin-bottom: 64px;
   text-align: center;
   font-weight: 300;
@@ -71,14 +80,16 @@ export const Form = styled.form`
   flex-direction: row;
   gap: 8px;
 `;
-export const VoteItem = styled.div`
+export const VoteItem = styled.div<VoteItemProps>`
   display: flex;
   padding: 4px 16px;
   justify-content: center;
   align-items: center;
   font-size: 18px;
   line-height: 32px;
-  background-color: #ededed;
+  color: ${({ isSelected }) => (isSelected ? "var(--white)" : "var(--black)")};
+  background-color: ${({ isSelected }) =>
+    isSelected ? "var(--main)" : "#ededed"};
   border-radius: 100px;
   transition: all 0.2s ease;
   cursor: pointer;
@@ -89,21 +100,81 @@ export const VoteItem = styled.div`
   }
 `;
 
+const VoteResultList = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+`;
+const VoteResult = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  gap: 24px;
+  align-self: stretch;
+`;
+const Content = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const Name = styled.div`
+  font-size: 18px;
+  font-weight: 500;
+`;
+const VotesCnt = styled.div`
+  font-size: 18px;
+  font-weight: 500;
+`;
+
+const Bar = styled.div`
+  width: 100%;
+  height: 8px;
+  background-color: #edf0f3;
+  border-radius: 100px;
+  overflow: hidden;
+`;
+
+const Fill = styled.div<{ votesCnt: number; totalVotesCnt: number }>`
+  width: ${(props) => Math.ceil((props.votesCnt / props.totalVotesCnt) * 100)}%;
+  height: 8px;
+  background-color: #b0b7be;
+`;
+
+interface VoteItemProps {
+  isSelected: boolean;
+}
+
 export interface IVote {
   user_id: string;
   user_name: string;
-  vote_item: string[];
+  vote_list: IVoteList[];
   vote_name: string;
-  vote_state: string;
+  total_votes_cnt: number;
+  available_votes_cnt: number;
+  already_voters: string[];
+  is_complete: boolean;
   create_at: Date;
   id: string;
 }
 
 export default function Home() {
-  const navigate = useNavigate();
-  const [isShowAlert, setShowAlert] = useState(false);
-
   const [votes, setVotes] = useState<IVote[]>([]);
+
+  const [isShowAlert, setShowAlert] = useState(false);
+  const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
+    null
+  );
+
+  const user = auth.currentUser;
+  console.log("user(currentUser):", user);
+
+  const navigate = useNavigate();
+
   const fetchVotes = async () => {
     const votesQuery = query(
       collection(db, "vote"),
@@ -114,22 +185,73 @@ export default function Home() {
       const {
         user_id,
         user_name,
-        vote_item,
+        vote_list,
         vote_name,
-        vote_state,
+        total_votes_cnt,
+        available_votes_cnt,
+        already_voters,
+        is_complete,
         create_at,
       } = doc.data();
       return {
         user_id,
         user_name,
-        vote_item,
+        vote_list,
         vote_name,
-        vote_state,
+        total_votes_cnt,
+        available_votes_cnt,
+        already_voters,
+        is_complete,
         create_at,
         id: doc.id,
       };
     });
     setVotes(votes);
+  };
+
+  const onRegister = async () => {
+    if (selectedItemIndex !== null) {
+      const selectedList = votes[0]?.vote_list[selectedItemIndex];
+      let VotesCnt = selectedList.votes_cnt;
+      let TotalVotesCnt = votes[0]?.total_votes_cnt;
+      let AvailableVotesCnt = votes[0]?.available_votes_cnt;
+
+      VotesCnt += 1;
+      TotalVotesCnt += 1;
+      AvailableVotesCnt -= 1;
+
+      // 'vote' 컬렉션에서 create_at을 기준으로 내림차순으로 정렬하여 첫 번째 문서 가져오기
+      const q = query(
+        collection(db, "vote"),
+        orderBy("create_at", "desc"),
+        limit(1)
+      );
+      const querySnapshot = await getDocs(q);
+
+      // 가져온 문서의 ID 또는 경로를 사용하여 문서 참조
+      if (!querySnapshot.empty) {
+        const latestDoc = querySnapshot.docs[0];
+        const voteDocRef = doc(db, "vote", latestDoc.id);
+
+        // 문서 업데이트
+        await updateDoc(voteDocRef, {
+          vote_list: votes[0].vote_list.map((item, index) =>
+            index === selectedItemIndex
+              ? { ...item, votes_cnt: VotesCnt }
+              : item
+          ),
+          total_votes_cnt: TotalVotesCnt,
+          available_votes_cnt: AvailableVotesCnt,
+          already_voters: user?.uid,
+        });
+        alert("투표 성공했어!");
+        setSelectedItemIndex(null);
+        navigate(0);
+
+        return;
+      }
+    }
+    alert("선택된 index가 없습니다!");
   };
 
   useEffect(() => {
@@ -141,7 +263,7 @@ export default function Home() {
   };
 
   const clickSurvey = () => {
-    navigate("/vote");
+    navigate("/vote-register");
   };
 
   const confirmLogOut = () => {
@@ -153,7 +275,6 @@ export default function Home() {
     <>
       <GNB>
         <GNBWrapper>
-          {/* <ButtonText onClick={clickLogOut}>로그아웃</ButtonText> */}
           <img
             src="/images/icon/common/icon-logout.svg"
             width={24}
@@ -163,24 +284,64 @@ export default function Home() {
           />
         </GNBWrapper>
       </GNB>
-      <Wrapper>
-        {votes[0]?.vote_state === "In Progress" ? (
-          <>
-            <CurrentVote>
-              {/* <Title>{votes[0]?.vote_name}</Title> */}
-              <CurrentTitle>
-                오늘의 불개미를 <br />
-                투표해주세요.
-              </CurrentTitle>
-              <Form>
-                {votes[0]?.vote_item.map((item, index) => (
-                  <VoteItem key={`item${index}`}>{item}</VoteItem>
-                ))}
-              </Form>
-            </CurrentVote>
-          </>
-        ) : (
-          <>
+      {votes[0]?.user_id === user?.uid ? (
+        <>
+          {votes[0].is_complete === false &&
+          votes[0]?.already_voters?.includes(user?.uid) ? (
+            <>
+              <Wrapper>
+                <CurrentVote>
+                  <CurrentTitle>
+                    오늘의 불개미 <br />
+                    투표 현황입니다.
+                  </CurrentTitle>
+                  <VoteResultList>
+                    {votes[0]?.vote_list.map((item, index) => (
+                      <VoteResult key={`item${index}`}>
+                        <Content>
+                          <Name>{item.name}</Name>
+                          <VotesCnt>{item.votes_cnt}명</VotesCnt>
+                        </Content>
+                        <Bar>
+                          <Fill
+                            votesCnt={item.votes_cnt}
+                            totalVotesCnt={votes[0].total_votes_cnt}
+                          />
+                        </Bar>
+                      </VoteResult>
+                    ))}
+                  </VoteResultList>
+                </CurrentVote>
+              </Wrapper>
+            </>
+          ) : (
+            <>
+              <Wrapper>
+                <CurrentVote>
+                  <CurrentTitle>
+                    오늘의 불개미를 <br />
+                    투표해주세요.
+                  </CurrentTitle>
+                  <Form>
+                    {votes[0]?.vote_list.map((item, index) => (
+                      <VoteItem
+                        key={`item${index}`}
+                        onClick={() => setSelectedItemIndex(index)}
+                        isSelected={selectedItemIndex === index}
+                      >
+                        {item.name}
+                      </VoteItem>
+                    ))}
+                  </Form>
+                </CurrentVote>
+              </Wrapper>
+              <BottomButton01 label={"투표하기"} onClick={onRegister} />
+            </>
+          )}
+        </>
+      ) : (
+        <>
+          <Wrapper>
             <div
               style={{
                 display: "flex",
@@ -190,7 +351,7 @@ export default function Home() {
             >
               <Title>
                 과연 오늘의 <b>불개미</b>는? <br />
-                두구두구두구
+                두구두구
               </Title>
               <img
                 src="/images/logo/bullgaemi.png"
@@ -199,37 +360,27 @@ export default function Home() {
                 height={240}
               />
             </div>
-            {/* <ButtonPrimary
-              onClick={clickSurvey}
-              label={"투표 만들기"}
-              isWidthFull
-              size={"Large"}
-            /> */}
-          </>
-        )}
+          </Wrapper>
+          <BottomButton01 label={"투표 만들기"} onClick={clickSurvey} />
+        </>
+      )}
 
-        {isShowAlert && (
-          <Alert
-            message={"정말로 로그아웃 할건가요ㅠㅠ"}
-            buttons={[
-              <ButtonSecondary
-                label={"아니오"}
-                onClick={() => setShowAlert(false)}
-                isWidthFull
-              />,
-              <ButtonPrimary
-                label={"로그아웃"}
-                onClick={confirmLogOut}
-                isWidthFull
-              />,
-            ]}
-          />
-        )}
-      </Wrapper>
-      {votes[0]?.vote_state === "In Progress" ? (
-        <BottomButton01 label={"투표하기"} />
-      ) : (
-        <BottomButton01 label={"투표 만들기"} onClick={clickSurvey} />
+      {isShowAlert && (
+        <Alert
+          message={"정말로 로그아웃 할건가요ㅠㅠ"}
+          buttons={[
+            <ButtonSecondary
+              label={"아니오"}
+              onClick={() => setShowAlert(false)}
+              isWidthFull
+            />,
+            <ButtonPrimary
+              label={"로그아웃"}
+              onClick={confirmLogOut}
+              isWidthFull
+            />,
+          ]}
+        />
       )}
     </>
   );
