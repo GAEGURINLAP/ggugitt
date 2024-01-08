@@ -7,8 +7,15 @@ import { useEffect, useState } from "react";
 
 import ButtonPrimary from "../component/ButtonPrimary";
 import ButtonSecondary from "../component/ButtonSecondary";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import BottomButton01 from "../component/BottomButon01";
+import { IVoteList } from "./vote";
 
 const Wrapper = styled.div`
   padding: 0 24px;
@@ -71,14 +78,16 @@ export const Form = styled.form`
   flex-direction: row;
   gap: 8px;
 `;
-export const VoteItem = styled.div`
+export const VoteItem = styled.div<VoteItemProps>`
   display: flex;
   padding: 4px 16px;
   justify-content: center;
   align-items: center;
   font-size: 18px;
   line-height: 32px;
-  background-color: #ededed;
+  color: ${({ isSelected }) => (isSelected ? "var(--white)" : "var(--black)")};
+  background-color: ${({ isSelected }) =>
+    isSelected ? "var(--main)" : "#ededed"};
   border-radius: 100px;
   transition: all 0.2s ease;
   cursor: pointer;
@@ -89,21 +98,34 @@ export const VoteItem = styled.div`
   }
 `;
 
+interface VoteItemProps {
+  isSelected: boolean;
+}
+
 export interface IVote {
   user_id: string;
   user_name: string;
-  vote_item: string[];
+  vote_list: IVoteList[];
   vote_name: string;
-  vote_state: string;
+  total_votes_cnt: number;
+  available_votes_cnt: number;
+  is_complete: boolean;
   create_at: Date;
   id: string;
 }
 
 export default function Home() {
-  const navigate = useNavigate();
-  const [isShowAlert, setShowAlert] = useState(false);
-
   const [votes, setVotes] = useState<IVote[]>([]);
+
+  const [isShowAlert, setShowAlert] = useState(false);
+  const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
+    null
+  );
+
+  const user = auth.currentUser;
+
+  const navigate = useNavigate();
+
   const fetchVotes = async () => {
     const votesQuery = query(
       collection(db, "vote"),
@@ -114,17 +136,21 @@ export default function Home() {
       const {
         user_id,
         user_name,
-        vote_item,
+        vote_list,
         vote_name,
-        vote_state,
+        total_votes_cnt,
+        available_votes_cnt,
+        is_complete,
         create_at,
       } = doc.data();
       return {
         user_id,
         user_name,
-        vote_item,
+        vote_list,
         vote_name,
-        vote_state,
+        total_votes_cnt,
+        available_votes_cnt,
+        is_complete,
         create_at,
         id: doc.id,
       };
@@ -132,9 +158,25 @@ export default function Home() {
     setVotes(votes);
   };
 
+  // ToDo3. 투표 데이터 넘기기
+  // const onVote = async () => {
+  //   try {
+  //     await addDoc(collection(db, "vote"), {
+  //       user_id: user?.uid,
+  //       user_name: user?.displayName || "Anonymous",
+  //     });
+  //   } catch (e) {
+  //     console.log(e);
+  //   } finally {
+  //     setShowAlert(true);
+  //   }
+  // };
+
   useEffect(() => {
     fetchVotes();
   }, []);
+
+  console.log("votes 데이터 어떻게 생겼지?", votes);
 
   const clickLogOut = () => {
     setShowAlert(true);
@@ -149,13 +191,10 @@ export default function Home() {
     navigate(0);
   };
 
-  const user = auth.currentUser;
-
   return (
     <>
       <GNB>
         <GNBWrapper>
-          {/* <ButtonText onClick={clickLogOut}>로그아웃</ButtonText> */}
           <img
             src="/images/icon/common/icon-logout.svg"
             width={24}
@@ -166,18 +205,22 @@ export default function Home() {
         </GNBWrapper>
       </GNB>
       <Wrapper>
-        {votes[0]?.user_id === user?.uid &&
-        votes[0]?.vote_state === "In Progress" ? (
+        {votes[0]?.user_id === user?.uid && votes[0]?.is_complete === false ? (
           <>
             <CurrentVote>
-              {/* <Title>{votes[0]?.vote_name}</Title> */}
               <CurrentTitle>
                 오늘의 불개미를 <br />
                 투표해주세요.
               </CurrentTitle>
               <Form>
-                {votes[0]?.vote_item.map((item, index) => (
-                  <VoteItem key={`item${index}`}>{item}</VoteItem>
+                {votes[0]?.vote_list.map((item, index) => (
+                  <VoteItem
+                    key={`item${index}`}
+                    onClick={() => setSelectedItemIndex(index)}
+                    isSelected={selectedItemIndex === index}
+                  >
+                    {item.name}
+                  </VoteItem>
                 ))}
               </Form>
             </CurrentVote>
@@ -202,12 +245,6 @@ export default function Home() {
                 height={240}
               />
             </div>
-            {/* <ButtonPrimary
-              onClick={clickSurvey}
-              label={"투표 만들기"}
-              isWidthFull
-              size={"Large"}
-            /> */}
           </>
         )}
 
@@ -229,8 +266,7 @@ export default function Home() {
           />
         )}
       </Wrapper>
-      {votes[0]?.user_id === user?.uid &&
-      votes[0]?.vote_state === "In Progress" ? (
+      {votes[0]?.user_id === user?.uid && votes[0]?.is_complete === false ? (
         <BottomButton01 label={"투표하기"} />
       ) : (
         <BottomButton01 label={"투표 만들기"} onClick={clickSurvey} />
