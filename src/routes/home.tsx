@@ -207,8 +207,6 @@ export default function Home() {
     fetchVotes();
   }, []);
 
-  console.log("votes 데이터 어떻게 생겼지?", votes);
-
   const clickLogOut = () => {
     setShowAlert(true);
   };

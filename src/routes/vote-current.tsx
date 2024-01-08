@@ -1,10 +1,16 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { auth, db } from "../firebase";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
+
 import Alert from "../component/Alert";
 import ButtonSecondary from "../component/ButtonSecondary";
 import ButtonPrimary from "../component/ButtonPrimary";
-import { auth } from "../firebase";
-import { useNavigate } from "react-router-dom";
+
+import { IVote } from "./home";
 
 const Wrapper = styled.div`
   padding: 0 24px;
@@ -83,13 +89,14 @@ const Bar = styled.div`
   overflow: hidden;
 `;
 
-const Fill = styled.div`
-  width: 20%;
+const Fill = styled.div<{ votesCnt: number; totalVotesCnt: number }>`
+  width: ${(props) => Math.ceil((props.votesCnt / props.totalVotesCnt) * 100)}%;
   height: 8px;
   background-color: #b0b7be;
 `;
 
 export default function VoteCurrent() {
+  const [votes, setVotes] = useState<IVote[]>([]);
   const [isShowAlert, setShowAlert] = useState(false);
 
   const navigate = useNavigate();
@@ -102,6 +109,42 @@ export default function VoteCurrent() {
     auth.signOut();
     navigate(0);
   };
+
+  const fetchVotes = async () => {
+    const votesQuery = query(
+      collection(db, "vote"),
+      orderBy("create_at", "desc")
+    );
+    const snapshot = await getDocs(votesQuery);
+    const votes = snapshot.docs.map((doc) => {
+      const {
+        user_id,
+        user_name,
+        vote_list,
+        vote_name,
+        total_votes_cnt,
+        available_votes_cnt,
+        is_complete,
+        create_at,
+      } = doc.data();
+      return {
+        user_id,
+        user_name,
+        vote_list,
+        vote_name,
+        total_votes_cnt,
+        available_votes_cnt,
+        is_complete,
+        create_at,
+        id: doc.id,
+      };
+    });
+    setVotes(votes);
+  };
+
+  useEffect(() => {
+    fetchVotes();
+  }, []);
 
   const array = ["0", "1", "2", "3", "4"];
 
@@ -125,14 +168,17 @@ export default function VoteCurrent() {
             투표 현황입니다.
           </CurrentTitle>
           <VoteResultList>
-            {array.map((item, index) => (
-              <VoteResult key={item[index]}>
+            {votes[0]?.vote_list.map((item, index) => (
+              <VoteResult key={`item${index}`}>
                 <Content>
-                  <Name>박박탱</Name>
-                  <VotesCnt>7명</VotesCnt>
+                  <Name>{item.name}</Name>
+                  <VotesCnt>{item.votes_cnt}명</VotesCnt>
                 </Content>
                 <Bar>
-                  <Fill />
+                  <Fill
+                    votesCnt={item.votes_cnt}
+                    totalVotesCnt={votes[0].total_votes_cnt}
+                  />
                 </Bar>
               </VoteResult>
             ))}
