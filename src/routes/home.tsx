@@ -284,173 +284,103 @@ export default function Home() {
           />
         </GNBWrapper>
       </GNB>
-      <Wrapper>
-        {/* {votes[0]?.user_id === user?.uid && votes[0]?.is_complete === false ? (
-          <>
-            <CurrentVote>
-              <CurrentTitle>
-                오늘의 불개미를 <br />
-                투표해주세요.
-              </CurrentTitle>
-              <Form>
-                {votes[0]?.vote_list.map((item, index) => (
-                  <VoteItem
-                    key={`item${index}`}
-                    onClick={() => setSelectedItemIndex(index)}
-                    isSelected={selectedItemIndex === index}
-                  >
-                    {item.name}
-                  </VoteItem>
-                ))}
-              </Form>
-            </CurrentVote>
-          </>
-        ) : (
-          <>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <Title>
-                과연 오늘의 <b>불개미</b>는? <br />
-                두구두구두구
-              </Title>
-              <img
-                src="/images/logo/bullgaemi.png"
-                alt="불개미"
-                width={176}
-                height={240}
-              />
-            </div>
-          </>
-        )} */}
-
-        {votes[0]?.user_id === user?.uid ? (
-          <>
-            {votes[0].is_complete === false &&
-            votes[0]?.already_voters?.includes(user?.uid) ? (
-              <CurrentVote>
-                <CurrentTitle>
-                  오늘의 불개미 <br />
-                  투표 현황입니다.
-                </CurrentTitle>
-                <VoteResultList>
-                  {votes[0]?.vote_list.map((item, index) => (
-                    <VoteResult key={`item${index}`}>
-                      <Content>
-                        <Name>{item.name}</Name>
-                        <VotesCnt>{item.votes_cnt}명</VotesCnt>
-                      </Content>
-                      <Bar>
-                        <Fill
-                          votesCnt={item.votes_cnt}
-                          totalVotesCnt={votes[0].total_votes_cnt}
-                        />
-                      </Bar>
-                    </VoteResult>
-                  ))}
-                </VoteResultList>
-              </CurrentVote>
-            ) : (
-              <CurrentVote>
-                <CurrentTitle>
-                  오늘의 불개미를 <br />
-                  투표해주세요.
-                </CurrentTitle>
-                <Form>
-                  {votes[0]?.vote_list.map((item, index) => (
-                    <VoteItem
-                      key={`item${index}`}
-                      onClick={() => setSelectedItemIndex(index)}
-                      isSelected={selectedItemIndex === index}
-                    >
-                      {item.name}
-                    </VoteItem>
-                  ))}
-                </Form>
-              </CurrentVote>
-            )}
-          </>
-        ) : (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Title>
-              과연 오늘의 <b>불개미</b>는? <br />
-              두구두구두구
-            </Title>
-            <img
-              src="/images/logo/bullgaemi.png"
-              alt="불개미"
-              width={176}
-              height={240}
-            />
-          </div>
-        )}
-
-        {/* {votes[0].is_complete === false ? 
-        (
-          {votes[0].user_id === user?.uid && (
-          <Vote />
+      {votes[0]?.user_id === user?.uid ? (
+        <>
+          {votes[0].is_complete === false &&
+          votes[0]?.already_voters?.includes(user?.uid) ? (
+            <>
+              <Wrapper>
+                <CurrentVote>
+                  <CurrentTitle>
+                    오늘의 불개미 <br />
+                    투표 현황입니다.
+                  </CurrentTitle>
+                  <VoteResultList>
+                    {votes[0]?.vote_list.map((item, index) => (
+                      <VoteResult key={`item${index}`}>
+                        <Content>
+                          <Name>{item.name}</Name>
+                          <VotesCnt>{item.votes_cnt}명</VotesCnt>
+                        </Content>
+                        <Bar>
+                          <Fill
+                            votesCnt={item.votes_cnt}
+                            totalVotesCnt={votes[0].total_votes_cnt}
+                          />
+                        </Bar>
+                      </VoteResult>
+                    ))}
+                  </VoteResultList>
+                </CurrentVote>
+              </Wrapper>
+            </>
+          ) : (
+            <>
+              <Wrapper>
+                <CurrentVote>
+                  <CurrentTitle>
+                    오늘의 불개미를 <br />
+                    투표해주세요.
+                  </CurrentTitle>
+                  <Form>
+                    {votes[0]?.vote_list.map((item, index) => (
+                      <VoteItem
+                        key={`item${index}`}
+                        onClick={() => setSelectedItemIndex(index)}
+                        isSelected={selectedItemIndex === index}
+                      >
+                        {item.name}
+                      </VoteItem>
+                    ))}
+                  </Form>
+                </CurrentVote>
+              </Wrapper>
+              <BottomButton01 label={"투표하기"} onClick={onRegister} />
+            </>
           )}
-          {votes[0].already_voters.includes(user?.uid) && (
-          <ViewVotingStatus />
-          )}
-          {votes[0].is_complete === true && votes[0].already_voters.includes(user?.uid) && (
-            <ViewVotingStatus />
-          )}
-        ) 
-        : (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <Title>
-                과연 오늘의 <b>불개미</b>는? <br />
-                두구두구두구
-              </Title>
-              <img
-                src="/images/logo/bullgaemi.png"
-                alt="불개미"
-                width={176}
-                height={240}
-              />
-            </div>
-          )
-        } */}
-
-        {isShowAlert && (
-          <Alert
-            message={"정말로 로그아웃 할건가요ㅠㅠ"}
-            buttons={[
-              <ButtonSecondary
-                label={"아니오"}
-                onClick={() => setShowAlert(false)}
-                isWidthFull
-              />,
-              <ButtonPrimary
-                label={"로그아웃"}
-                onClick={confirmLogOut}
-                isWidthFull
-              />,
-            ]}
-          />
-        )}
-      </Wrapper>
-      {votes[0]?.user_id === user?.uid && votes[0]?.is_complete === false ? (
-        <BottomButton01 label={"투표하기"} onClick={onRegister} />
+        </>
       ) : (
-        <BottomButton01 label={"투표 만들기"} onClick={clickSurvey} />
+        <>
+          <Wrapper>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Title>
+                과연 오늘의 <b>불개미</b>는? <br />
+                두구두구두구
+              </Title>
+              <img
+                src="/images/logo/bullgaemi.png"
+                alt="불개미"
+                width={176}
+                height={240}
+              />
+            </div>
+          </Wrapper>
+          <BottomButton01 label={"투표 만들기"} onClick={clickSurvey} />
+        </>
+      )}
+
+      {isShowAlert && (
+        <Alert
+          message={"정말로 로그아웃 할건가요ㅠㅠ"}
+          buttons={[
+            <ButtonSecondary
+              label={"아니오"}
+              onClick={() => setShowAlert(false)}
+              isWidthFull
+            />,
+            <ButtonPrimary
+              label={"로그아웃"}
+              onClick={confirmLogOut}
+              isWidthFull
+            />,
+          ]}
+        />
       )}
     </>
   );
