@@ -10,9 +10,13 @@ import ButtonSecondary from "../component/ButtonSecondary";
 import {
   addDoc,
   collection,
+  doc,
   getDocs,
+  getFirestore,
+  limit,
   orderBy,
   query,
+  updateDoc,
 } from "firebase/firestore";
 import BottomButton01 from "../component/BottomButon01";
 import { IVoteList } from "./vote";
@@ -158,19 +162,51 @@ export default function Home() {
     setVotes(votes);
   };
 
-  // ToDo3. 투표 데이터 넘기기
-  // const onVote = async () => {
-  //   try {
-  //     await addDoc(collection(db, "vote"), {
-  //       user_id: user?.uid,
-  //       user_name: user?.displayName || "Anonymous",
-  //     });
-  //   } catch (e) {
-  //     console.log(e);
-  //   } finally {
-  //     setShowAlert(true);
-  //   }
-  // };
+  const onRegister = async () => {
+    if (selectedItemIndex !== null) {
+      const selectedList = votes[0]?.vote_list[selectedItemIndex];
+      let VotesCnt = selectedList.votes_cnt;
+      let TotalVotesCnt = votes[0]?.total_votes_cnt;
+      let AvailableVotesCnt = votes[0]?.available_votes_cnt;
+
+      VotesCnt += 1;
+      TotalVotesCnt += 1;
+      AvailableVotesCnt -= 1;
+
+      // 'vote' 컬렉션에서 create_at을 기준으로 내림차순으로 정렬하여 첫 번째 문서 가져오기
+      const q = query(
+        collection(db, "vote"),
+        orderBy("create_at", "desc"),
+        limit(1)
+      );
+      const querySnapshot = await getDocs(q);
+
+      // 가져온 문서의 ID 또는 경로를 사용하여 문서 참조
+      if (!querySnapshot.empty) {
+        const latestDoc = querySnapshot.docs[0];
+        const voteDocRef = doc(db, "vote", latestDoc.id);
+
+        // 문서 업데이트
+        await updateDoc(voteDocRef, {
+          vote_list: votes[0].vote_list.map((item, index) =>
+            index === selectedItemIndex
+              ? { ...item, votes_cnt: VotesCnt }
+              : item
+          ),
+          total_votes_cnt: TotalVotesCnt,
+          available_votes_cnt: AvailableVotesCnt,
+        });
+
+        alert("투표 성공했어!");
+        setSelectedItemIndex(null);
+        navigate("/vote");
+        return;
+      } else {
+        alert("No documents found in the 'vote' collection!");
+      }
+    }
+    alert("선택된 index가 없습니다!");
+  };
 
   useEffect(() => {
     fetchVotes();
@@ -267,7 +303,7 @@ export default function Home() {
         )}
       </Wrapper>
       {votes[0]?.user_id === user?.uid && votes[0]?.is_complete === false ? (
-        <BottomButton01 label={"투표하기"} />
+        <BottomButton01 label={"투표하기"} onClick={onRegister} />
       ) : (
         <BottomButton01 label={"투표 만들기"} onClick={clickSurvey} />
       )}
