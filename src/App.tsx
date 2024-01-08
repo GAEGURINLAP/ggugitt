@@ -22,7 +22,6 @@ import Splash from "./component/Splash";
 import VoteRegister from "./routes/vote-register";
 import Vote from "./routes/vote";
 import NotFound from "./routes/not-found";
-import ErrorBoundary from "./component/ErrorBoundary";
 
 const router = createBrowserRouter([
   {
