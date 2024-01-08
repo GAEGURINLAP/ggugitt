@@ -76,6 +76,7 @@ export default function CreateAccount() {
   return (
     <>
       <Wrapper>
+        <img src="/images/logo/404.png" alt="개구린" width={180} height={180} />
         <Title>
           <b>불개미</b> 회원가입
         </Title>

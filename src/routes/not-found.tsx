@@ -25,12 +25,7 @@ export default function NotFound() {
 
   return (
     <Wrapper>
-      <img
-        src="/images/logo/bullgaemi.png"
-        alt="불개미"
-        width={176}
-        height={240}
-      />
+      <img src="/images/logo/404.png" alt="개구린" width={200} height={200} />
       <Title>요청하신 페이지를 찾지 못했습니다.</Title>
       <ButtonPrimary
         label="메인으로 가기"

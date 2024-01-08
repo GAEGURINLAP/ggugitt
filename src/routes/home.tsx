@@ -45,7 +45,7 @@ const GNBWrapper = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 40px;
+  font-size: 32px;
   margin-bottom: 64px;
   text-align: center;
   font-weight: 300;
@@ -350,7 +350,8 @@ export default function Home() {
               }}
             >
               <Title>
-                과연 오늘의 <b>불개미</b> <br />
+                과연 오늘의 <b>불개미</b>는? <br />
+                두구두구
               </Title>
               <img
                 src="/images/logo/bullgaemi.png"
