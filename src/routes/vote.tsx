@@ -131,6 +131,7 @@ export default function Vote() {
         vote_name: `${formattedDate}의 불개미 MVP는?`,
         total_votes_cnt: 0,
         available_votes_cnt: 11,
+        already_voters: null,
         is_complete: false,
         create_at: Date.now(),
       });

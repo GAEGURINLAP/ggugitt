@@ -100,6 +100,51 @@ export const VoteItem = styled.div<VoteItemProps>`
   }
 `;
 
+const VoteResultList = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+`;
+const VoteResult = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  gap: 24px;
+  align-self: stretch;
+`;
+const Content = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const Name = styled.div`
+  font-size: 18px;
+  font-weight: 500;
+`;
+const VotesCnt = styled.div`
+  font-size: 18px;
+  font-weight: 500;
+`;
+
+const Bar = styled.div`
+  width: 100%;
+  height: 8px;
+  background-color: #edf0f3;
+  border-radius: 100px;
+  overflow: hidden;
+`;
+
+const Fill = styled.div<{ votesCnt: number; totalVotesCnt: number }>`
+  width: ${(props) => Math.ceil((props.votesCnt / props.totalVotesCnt) * 100)}%;
+  height: 8px;
+  background-color: #b0b7be;
+`;
+
 interface VoteItemProps {
   isSelected: boolean;
 }
@@ -111,6 +156,7 @@ export interface IVote {
   vote_name: string;
   total_votes_cnt: number;
   available_votes_cnt: number;
+  already_voters: string[];
   is_complete: boolean;
   create_at: Date;
   id: string;
@@ -125,6 +171,7 @@ export default function Home() {
   );
 
   const user = auth.currentUser;
+  console.log("user(currentUser):", user);
 
   const navigate = useNavigate();
 
@@ -142,6 +189,7 @@ export default function Home() {
         vote_name,
         total_votes_cnt,
         available_votes_cnt,
+        already_voters,
         is_complete,
         create_at,
       } = doc.data();
@@ -152,6 +200,7 @@ export default function Home() {
         vote_name,
         total_votes_cnt,
         available_votes_cnt,
+        already_voters,
         is_complete,
         create_at,
         id: doc.id,
@@ -193,10 +242,12 @@ export default function Home() {
           ),
           total_votes_cnt: TotalVotesCnt,
           available_votes_cnt: AvailableVotesCnt,
+          already_voters: user?.uid,
         });
         alert("투표 성공했어!");
         setSelectedItemIndex(null);
-        navigate("/vote");
+        navigate(0);
+
         return;
       }
     }
@@ -234,7 +285,7 @@ export default function Home() {
         </GNBWrapper>
       </GNB>
       <Wrapper>
-        {votes[0]?.user_id === user?.uid && votes[0]?.is_complete === false ? (
+        {/* {votes[0]?.user_id === user?.uid && votes[0]?.is_complete === false ? (
           <>
             <CurrentVote>
               <CurrentTitle>
@@ -275,7 +326,108 @@ export default function Home() {
               />
             </div>
           </>
+        )} */}
+
+        {votes[0]?.user_id === user?.uid ? (
+          <>
+            {votes[0].is_complete === false &&
+            votes[0]?.already_voters?.includes(user?.uid) ? (
+              <CurrentVote>
+                <CurrentTitle>
+                  오늘의 불개미 <br />
+                  투표 현황입니다.
+                </CurrentTitle>
+                <VoteResultList>
+                  {votes[0]?.vote_list.map((item, index) => (
+                    <VoteResult key={`item${index}`}>
+                      <Content>
+                        <Name>{item.name}</Name>
+                        <VotesCnt>{item.votes_cnt}명</VotesCnt>
+                      </Content>
+                      <Bar>
+                        <Fill
+                          votesCnt={item.votes_cnt}
+                          totalVotesCnt={votes[0].total_votes_cnt}
+                        />
+                      </Bar>
+                    </VoteResult>
+                  ))}
+                </VoteResultList>
+              </CurrentVote>
+            ) : (
+              <CurrentVote>
+                <CurrentTitle>
+                  오늘의 불개미를 <br />
+                  투표해주세요.
+                </CurrentTitle>
+                <Form>
+                  {votes[0]?.vote_list.map((item, index) => (
+                    <VoteItem
+                      key={`item${index}`}
+                      onClick={() => setSelectedItemIndex(index)}
+                      isSelected={selectedItemIndex === index}
+                    >
+                      {item.name}
+                    </VoteItem>
+                  ))}
+                </Form>
+              </CurrentVote>
+            )}
+          </>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Title>
+              과연 오늘의 <b>불개미</b>는? <br />
+              두구두구두구
+            </Title>
+            <img
+              src="/images/logo/bullgaemi.png"
+              alt="불개미"
+              width={176}
+              height={240}
+            />
+          </div>
         )}
+
+        {/* {votes[0].is_complete === false ? 
+        (
+          {votes[0].user_id === user?.uid && (
+          <Vote />
+          )}
+          {votes[0].already_voters.includes(user?.uid) && (
+          <ViewVotingStatus />
+          )}
+          {votes[0].is_complete === true && votes[0].already_voters.includes(user?.uid) && (
+            <ViewVotingStatus />
+          )}
+        ) 
+        : (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Title>
+                과연 오늘의 <b>불개미</b>는? <br />
+                두구두구두구
+              </Title>
+              <img
+                src="/images/logo/bullgaemi.png"
+                alt="불개미"
+                width={176}
+                height={240}
+              />
+            </div>
+          )
+        } */}
 
         {isShowAlert && (
           <Alert
