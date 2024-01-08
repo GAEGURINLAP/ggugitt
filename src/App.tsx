@@ -19,6 +19,7 @@ import global from "./style/global";
 import ResetPaswrd from "./routes/reset-password";
 import Vote from "./routes/vote";
 import Splash from "./component/Splash";
+import VoteCurrent from "./routes/vote-current";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,7 @@ const router = createBrowserRouter([
   { path: "/create-account", element: <CreateAccount /> },
   { path: "/reset-password", element: <ResetPaswrd /> },
   { path: "/vote", element: <Vote /> },
+  { path: "/vote-current", element: <VoteCurrent /> },
 ]);
 
 function App() {

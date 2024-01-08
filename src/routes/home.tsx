@@ -8,11 +8,9 @@ import { useEffect, useState } from "react";
 import ButtonPrimary from "../component/ButtonPrimary";
 import ButtonSecondary from "../component/ButtonSecondary";
 import {
-  addDoc,
   collection,
   doc,
   getDocs,
-  getFirestore,
   limit,
   orderBy,
   query,
@@ -196,13 +194,10 @@ export default function Home() {
           total_votes_cnt: TotalVotesCnt,
           available_votes_cnt: AvailableVotesCnt,
         });
-
         alert("투표 성공했어!");
         setSelectedItemIndex(null);
         navigate("/vote");
         return;
-      } else {
-        alert("No documents found in the 'vote' collection!");
       }
     }
     alert("선택된 index가 없습니다!");
