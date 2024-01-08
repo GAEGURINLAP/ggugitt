@@ -17,7 +17,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import BottomButton01 from "../component/BottomButon01";
-import { IVoteList } from "./vote";
+import { IVoteList } from "./vote-register";
 
 const Wrapper = styled.div`
   padding: 0 24px;
@@ -263,7 +263,7 @@ export default function Home() {
   };
 
   const clickSurvey = () => {
-    navigate("/vote");
+    navigate("/vote-register");
   };
 
   const confirmLogOut = () => {
@@ -350,8 +350,7 @@ export default function Home() {
               }}
             >
               <Title>
-                과연 오늘의 <b>불개미</b>는? <br />
-                두구두구두구
+                과연 오늘의 <b>불개미</b> <br />
               </Title>
               <img
                 src="/images/logo/bullgaemi.png"

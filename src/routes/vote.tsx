@@ -1,254 +1,402 @@
 import styled from "@emotion/styled";
 
-import { addDoc, collection } from "firebase/firestore";
 import { auth, db } from "../firebase";
-
-import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-import LoadingScreen from "../component/LoadingScreen";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Alert from "../component/Alert";
-import BottomButton02 from "../component/BottomButon02";
+import { useEffect, useState } from "react";
+
 import ButtonPrimary from "../component/ButtonPrimary";
+import ButtonSecondary from "../component/ButtonSecondary";
+import {
+  collection,
+  doc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  updateDoc,
+} from "firebase/firestore";
+import BottomButton01 from "../component/BottomButon01";
+import { IVoteList } from "./vote-register";
 
-// import { ReactComponents as IconX } from "/images/icon/common/icon-x-circle.svg";
-
-export const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 48px;
-  padding: 96px 24px 0;
+const Wrapper = styled.div`
+  padding: 0 24px;
+  padding-top: 120px;
+  height: 100%;
+  padding-bottom: 80px;
 `;
 
-export const Title = styled.h1`
+export const GNB = styled.div`
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  height: 80px;
+  width: 100%;
+  max-width: 500px;
+  padding: 0 24px;
+  background-color: var(--white);
+`;
+
+const GNBWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+`;
+
+const Title = styled.h1`
+  font-size: 40px;
+  margin-bottom: 64px;
+  text-align: center;
+  font-weight: 300;
+  line-height: 150%;
+  b {
+    font-weight: 700;
+    color: red;
+  }
+`;
+
+export const CurrentTitle = styled.h1`
   font-size: 32px;
   font-weight: 600;
   line-height: 140%;
 `;
 
-export const FormContainer = styled.div`
+export const CurrentVote = styled.div`
+  margin-top: 48px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 24px;
+`;
+
+export const VoteTitle = styled.h2`
+  text-align: center;
+  font-size: 24px;
 `;
 
 export const Form = styled.form`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  gap: 12px;
-  border: none;
-  height: fit-content;
-  border-bottom: 1px solid #d0d1d2;
-  transition: border-bottom-color 0.3s ease; /* 트랜지션 효과 추가 */
-
-  & :active,
-  :focus-within {
-    border-bottom-color: var(--main); /* 포커스를 받으면 색상 변경 */
-  }
-`;
-
-export const FormWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  padding-right: 8px;
-  width: 100%;
-`;
-
-export const Input = styled.input`
-  width: 100%;
-  height: 48px;
-`;
-
-export const Error = styled.span`
-  font-size: 14px;
-  color: tomato;
-`;
-
-export const VoteWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   gap: 8px;
 `;
-export const VoteItem = styled.div`
+export const VoteItem = styled.div<VoteItemProps>`
   display: flex;
-  padding: 4px 12px;
+  padding: 4px 16px;
   justify-content: center;
   align-items: center;
   font-size: 18px;
   line-height: 32px;
-  background-color: #ededed;
+  color: ${({ isSelected }) => (isSelected ? "var(--white)" : "var(--black)")};
+  background-color: ${({ isSelected }) =>
+    isSelected ? "var(--main)" : "#ededed"};
   border-radius: 100px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-use-select: none;
-  user-select: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  &:hover,
+  :active {
+    color: var(--white);
+    background-color: var(--main);
+  }
 `;
 
-export const VoteContent = styled.div`
+const VoteResultList = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+`;
+const VoteResult = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  gap: 24px;
+  align-self: stretch;
+`;
+const Content = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  justify-content: space-between;
 `;
 
-// interface FormInputs {
-//   vote_item: string;
-// }
+const Name = styled.div`
+  font-size: 18px;
+  font-weight: 500;
+`;
+const VotesCnt = styled.div`
+  font-size: 18px;
+  font-weight: 500;
+`;
 
-export interface IVoteList {
-  name: string;
-  votes_cnt: number;
+const Bar = styled.div`
+  width: 100%;
+  height: 8px;
+  background-color: #edf0f3;
+  border-radius: 100px;
+  overflow: hidden;
+`;
+
+const Fill = styled.div<{ votesCnt: number; totalVotesCnt: number }>`
+  width: ${(props) => Math.ceil((props.votesCnt / props.totalVotesCnt) * 100)}%;
+  height: 8px;
+  background-color: #b0b7be;
+`;
+
+interface VoteItemProps {
+  isSelected: boolean;
+}
+
+export interface IVote {
+  user_id: string;
+  user_name: string;
+  vote_list: IVoteList[];
+  vote_name: string;
+  total_votes_cnt: number;
+  available_votes_cnt: number;
+  already_voters: string[];
+  is_complete: boolean;
+  create_at: Date;
+  id: string;
 }
 
 export default function Vote() {
-  const [voteList, setVoteList] = useState<IVoteList[]>([]);
+  const [votes, setVotes] = useState<IVote[]>([]);
 
-  console.log("초기 voteList는?", voteList);
-
-  const [isLoading, setLoading] = useState(false);
   const [isShowAlert, setShowAlert] = useState(false);
+  const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
+    null
+  );
+
+  const { id } = useParams();
+
+  const user = auth.currentUser;
 
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // Todo 인풋 삭제 버튼 먹히도록 만들기
-  // const [isInputFocused, setIsInputFocused] = useState(false);
+  const baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
-  const currentDate = new Date();
-  const formattedDate = `${currentDate.getFullYear()}년 ${
-    currentDate.getMonth() + 1
-  }월 ${currentDate.getDate()}일`;
+  const fetchVotes = async () => {
+    const votesQuery = query(
+      collection(db, "vote"),
+      orderBy("create_at", "desc")
+    );
+    const snapshot = await getDocs(votesQuery);
+    const votes = snapshot.docs.map((doc) => {
+      const {
+        user_id,
+        user_name,
+        vote_list,
+        vote_name,
+        total_votes_cnt,
+        available_votes_cnt,
+        already_voters,
+        is_complete,
+        create_at,
+      } = doc.data();
+      return {
+        user_id,
+        user_name,
+        vote_list,
+        vote_name,
+        total_votes_cnt,
+        available_votes_cnt,
+        already_voters,
+        is_complete,
+        create_at,
+        id: doc.id,
+      };
+    });
+
+    setVotes(votes);
+  };
 
   const onRegister = async () => {
-    const user = auth.currentUser;
+    if (selectedItemIndex !== null) {
+      const selectedList = votes[0]?.vote_list[selectedItemIndex];
+      let VotesCnt = selectedList.votes_cnt;
+      let TotalVotesCnt = votes[0]?.total_votes_cnt;
+      let AvailableVotesCnt = votes[0]?.available_votes_cnt;
+
+      VotesCnt += 1;
+      TotalVotesCnt += 1;
+      AvailableVotesCnt -= 1;
+
+      // 'vote' 컬렉션에서 create_at을 기준으로 내림차순으로 정렬하여 첫 번째 문서 가져오기
+      const q = query(
+        collection(db, "vote"),
+        orderBy("create_at", "desc"),
+        limit(1)
+      );
+      const querySnapshot = await getDocs(q);
+
+      // 가져온 문서의 ID 또는 경로를 사용하여 문서 참조
+      if (!querySnapshot.empty) {
+        const latestDoc = querySnapshot.docs[0];
+        const voteDocRef = doc(db, "vote", latestDoc.id);
+
+        // 문서 업데이트
+        await updateDoc(voteDocRef, {
+          vote_list: votes[0].vote_list.map((item, index) =>
+            index === selectedItemIndex
+              ? { ...item, votes_cnt: VotesCnt }
+              : item
+          ),
+          total_votes_cnt: TotalVotesCnt,
+          available_votes_cnt: AvailableVotesCnt,
+          already_voters: user?.uid,
+        });
+        alert("투표 성공했어!");
+        setSelectedItemIndex(null);
+        navigate(0);
+
+        return;
+      }
+    }
+    alert("선택된 index가 없습니다!");
+  };
+
+  useEffect(() => {
+    fetchVotes();
+  }, []);
+
+  const clickLogOut = () => {
+    setShowAlert(true);
+  };
+
+  const clickSurvey = () => {
+    navigate("/vote-register");
+  };
+
+  const confirmLogOut = () => {
+    auth.signOut();
+    navigate(0);
+  };
+
+  const handleCopyClipBoard = async (text: string) => {
     try {
-      setLoading(true);
-      await addDoc(collection(db, "vote"), {
-        user_id: user?.uid,
-        user_name: user?.displayName || "Anonymous",
-        vote_list: voteList,
-        vote_name: `${formattedDate}의 불개미 MVP는?`,
-        total_votes_cnt: 0,
-        available_votes_cnt: 11,
-        already_voters: null,
-        is_complete: false,
-        create_at: Date.now(),
-      });
-    } catch (e) {
-      console.log(e);
-      setLoading(false);
-    } finally {
-      setShowAlert(true);
-      setLoading(false);
+      await navigator.clipboard.writeText(text);
+      alert("클립보드에 링크가 복사되었어요.");
+    } catch (err) {
+      console.log(err);
     }
   };
 
-  const addItem = async (data: IVoteList) => {
-    const { name } = data;
-    const newVoteItems = [...voteList, { name, votes_cnt: 0 }];
-    setVoteList(newVoteItems);
-  };
-
-  const deleteItem = (itemToDelete: IVoteList) => {
-    const updatedVoteItems = voteList.filter((item) => item !== itemToDelete);
-    setVoteList(updatedVoteItems);
-  };
-
-  const clickAddItem = () => {
-    handleSubmit(addItem)();
-  };
-
-  const clickDeleteItem = (item: IVoteList) => {
-    deleteItem(item);
-  };
-
-  const clickAlertConfirm = () => {
-    setShowAlert(false);
-    navigate("/");
-  };
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<IVoteList>({});
-
   return (
     <>
-      {isLoading && <LoadingScreen />}
-      <Wrapper>
-        <Title>
-          투표를 진행할 <br /> 팀원을 등록해주세요
-        </Title>
-        <FormContainer>
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            <Form
-              onSubmit={handleSubmit((data) => {
-                addItem(data);
-                reset();
-              })}
+      <GNB>
+        <GNBWrapper>
+          <img
+            src="/images/icon/common/icon-logout.svg"
+            width={24}
+            height={24}
+            style={{ cursor: "pointer" }}
+            onClick={clickLogOut}
+          />
+        </GNBWrapper>
+      </GNB>
+      {votes[0]?.user_id === user?.uid ? (
+        <>
+          {votes[0].is_complete === false &&
+          votes[0]?.already_voters?.includes(user?.uid) ? (
+            <>
+              <Wrapper>
+                <CurrentVote>
+                  <CurrentTitle>
+                    오늘의 불개미 {id} <br />
+                    투표 현황입니다.
+                  </CurrentTitle>
+                  <VoteResultList>
+                    {votes[0]?.vote_list.map((item, index) => (
+                      <VoteResult key={`item${index}`}>
+                        <Content>
+                          <Name>{item.name}</Name>
+                          <VotesCnt>{item.votes_cnt}명</VotesCnt>
+                        </Content>
+                        <Bar>
+                          <Fill
+                            votesCnt={item.votes_cnt}
+                            totalVotesCnt={votes[0].total_votes_cnt}
+                          />
+                        </Bar>
+                      </VoteResult>
+                    ))}
+                  </VoteResultList>
+                </CurrentVote>
+              </Wrapper>
+              <BottomButton01
+                label={"링크 공유하기"}
+                onClick={() =>
+                  handleCopyClipBoard(`${baseURL}${location.pathname}`)
+                }
+              />
+            </>
+          ) : (
+            <>
+              <Wrapper>
+                <CurrentVote>
+                  <CurrentTitle>
+                    오늘의 불개미를 {id} <br />
+                    투표해주세요.
+                  </CurrentTitle>
+                  <Form>
+                    {votes[0]?.vote_list.map((item, index) => (
+                      <VoteItem
+                        key={`item${index}`}
+                        onClick={() => setSelectedItemIndex(index)}
+                        isSelected={selectedItemIndex === index}
+                      >
+                        {item.name}
+                      </VoteItem>
+                    ))}
+                  </Form>
+                </CurrentVote>
+              </Wrapper>
+              <BottomButton01 label={"투표하기"} onClick={onRegister} />
+            </>
+          )}
+        </>
+      ) : (
+        <>
+          <Wrapper>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
             >
-              <FormWrapper>
-                <Input
-                  {...register("name", {
-                    required: true,
-                    pattern: {
-                      value: /^[^a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]*$/,
-                      message: "특수문자,공백,숫자,영문은 입력이 불가능합니다.",
-                    },
-                    minLength: {
-                      value: 2,
-                      message: "이름은 2자 이상이어야 합니다.",
-                    },
-                    maxLength: {
-                      value: 10,
-                      message: "이름은 10자를 초과할 수 없습니다.",
-                    },
-                  })}
-                  placeholder="투표 팀원 이름을 입력해주세요"
+              <Title>
+                과연 오늘의 <b>불개미</b>는? <br />
+                두구두구두구
+              </Title>
+              <img
+                src="/images/logo/bullgaemi.png"
+                alt="불개미"
+                width={176}
+                height={240}
+              />
+            </div>
+          </Wrapper>
+          <BottomButton01 label={"투표 만들기"} onClick={clickSurvey} />
+        </>
+      )}
 
-                  // Todo 인풋 삭제 버튼 먹히도록 만들기
-                  // onFocus={() => setIsInputFocused(true)}
-                  // onBlur={() => setIsInputFocused(false)}
-                />
-                {/* {isInputFocused && (
-                  <img
-                    src="/images/icon/common/icon-x-circle.svg"
-                    width={20}
-                    style={{ cursor: "pointer" }}
-                  />
-                )} */}
-              </FormWrapper>
-            </Form>
-            {errors.name && <Error>{errors.name.message}</Error>}
-          </div>
-          <VoteWrapper>
-            {voteList.map((item, index) => (
-              <VoteItem key={`item${index}`}>
-                <VoteContent>
-                  {item.name}
-                  <img
-                    src="/images/icon/common/icon-x-circle.svg"
-                    width={20}
-                    style={{ cursor: "pointer" }}
-                    onClick={() => clickDeleteItem(item)}
-                  />
-                </VoteContent>
-              </VoteItem>
-            ))}
-          </VoteWrapper>
-        </FormContainer>
-      </Wrapper>
-      <BottomButton02 onClick01={clickAddItem} onClick02={onRegister} />
       {isShowAlert && (
         <Alert
-          message={"투표 등록에 성공하였습니다!"}
+          message={"정말로 로그아웃 할건가요ㅠㅠ"}
           buttons={[
+            <ButtonSecondary
+              label={"아니오"}
+              onClick={() => setShowAlert(false)}
+              isWidthFull
+            />,
             <ButtonPrimary
-              label={"확인"}
-              onClick={clickAlertConfirm}
+              label={"로그아웃"}
+              onClick={confirmLogOut}
               isWidthFull
             />,
           ]}

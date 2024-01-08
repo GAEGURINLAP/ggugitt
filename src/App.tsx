@@ -17,9 +17,12 @@ import ProtectedRoute from "./component/ProtectedRoute";
 import { Container, Wrapper } from "./style/layout";
 import global from "./style/global";
 import ResetPaswrd from "./routes/reset-password";
-import Vote from "./routes/vote";
 import Splash from "./component/Splash";
-import VoteCurrent from "./routes/vote-current";
+
+import VoteRegister from "./routes/vote-register";
+import Vote from "./routes/vote";
+import NotFound from "./routes/not-found";
+import ErrorBoundary from "./component/ErrorBoundary";
 
 const router = createBrowserRouter([
   {
@@ -46,8 +49,13 @@ const router = createBrowserRouter([
   },
   { path: "/create-account", element: <CreateAccount /> },
   { path: "/reset-password", element: <ResetPaswrd /> },
+  { path: "/vote-register", element: <VoteRegister /> },
   { path: "/vote", element: <Vote /> },
-  { path: "/vote-current", element: <VoteCurrent /> },
+  { path: "/vote/:id", element: <Vote /> },
+  {
+    path: "*",
+    element: <NotFound />,
+  },
 ]);
 
 function App() {
