@@ -12,8 +12,6 @@ import Alert from "../component/Alert";
 import BottomButton02 from "../component/BottomButon02";
 import ButtonPrimary from "../component/ButtonPrimary";
 
-// import { ReactComponents as IconX } from "/images/icon/common/icon-x-circle.svg";
-
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;

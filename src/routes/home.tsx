@@ -1,12 +1,9 @@
 import styled from "@emotion/styled";
 
-import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
-import Alert from "../component/Alert";
 import { useEffect, useState } from "react";
 
-import ButtonPrimary from "../component/ButtonPrimary";
-import ButtonSecondary from "../component/ButtonSecondary";
+import { auth, db } from "../firebase";
 import {
   collection,
   doc,
@@ -16,7 +13,10 @@ import {
   query,
   updateDoc,
 } from "firebase/firestore";
+
+import Header from "../component/Header";
 import BottomButton01 from "../component/BottomButon01";
+
 import { IVoteList } from "./vote-register";
 
 const Wrapper = styled.div`
@@ -24,24 +24,6 @@ const Wrapper = styled.div`
   padding-top: 120px;
   height: 100%;
   padding-bottom: 80px;
-`;
-
-export const GNB = styled.div`
-  position: fixed;
-  display: flex;
-  flex-direction: row;
-  height: 80px;
-  width: 100%;
-  max-width: 500px;
-  padding: 0 24px;
-  background-color: var(--white);
-`;
-
-const GNBWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: end;
-  align-items: center;
 `;
 
 const Title = styled.h1`
@@ -165,7 +147,6 @@ export interface IVote {
 export default function Home() {
   const [votes, setVotes] = useState<IVote[]>([]);
 
-  const [isShowAlert, setShowAlert] = useState(false);
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
     null
   );
@@ -258,32 +239,13 @@ export default function Home() {
     fetchVotes();
   }, []);
 
-  const clickLogOut = () => {
-    setShowAlert(true);
-  };
-
   const clickSurvey = () => {
     navigate("/vote-register");
   };
 
-  const confirmLogOut = () => {
-    auth.signOut();
-    navigate(0);
-  };
-
   return (
     <>
-      <GNB>
-        <GNBWrapper>
-          <img
-            src="/images/icon/common/icon-logout.svg"
-            width={24}
-            height={24}
-            style={{ cursor: "pointer" }}
-            onClick={clickLogOut}
-          />
-        </GNBWrapper>
-      </GNB>
+      <Header />
       {votes[0]?.user_id === user?.uid ? (
         <>
           {votes[0].is_complete === false &&
@@ -363,24 +325,6 @@ export default function Home() {
           </Wrapper>
           <BottomButton01 label={"투표 만들기"} onClick={clickSurvey} />
         </>
-      )}
-
-      {isShowAlert && (
-        <Alert
-          message={"정말로 로그아웃 할건가요ㅠㅠ"}
-          buttons={[
-            <ButtonSecondary
-              label={"아니오"}
-              onClick={() => setShowAlert(false)}
-              isWidthFull
-            />,
-            <ButtonPrimary
-              label={"로그아웃"}
-              onClick={confirmLogOut}
-              isWidthFull
-            />,
-          ]}
-        />
       )}
     </>
   );
