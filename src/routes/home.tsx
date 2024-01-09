@@ -161,6 +161,7 @@ export default function Home() {
       collection(db, "vote"),
       orderBy("create_at", "desc")
     );
+    console.log("votesQuery??", votesQuery);
     const snapshot = await getDocs(votesQuery);
     const votes = snapshot.docs.map((doc) => {
       const {
@@ -188,6 +189,7 @@ export default function Home() {
       };
     });
     setVotes(votes);
+    console.log("votes??", votes);
   };
 
   const onRegister = async () => {

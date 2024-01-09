@@ -6,12 +6,12 @@ import { useEffect, useState } from "react";
 import { auth, db } from "../firebase";
 import {
   collection,
-  doc,
   getDocs,
   limit,
   orderBy,
   query,
   updateDoc,
+  where,
 } from "firebase/firestore";
 
 import BottomButton01 from "../component/BottomButon01";
@@ -34,7 +34,7 @@ export const CurrentTitle = styled.h1`
 `;
 
 export const CurrentVote = styled.div`
-  margin-top: 48px;
+  /* margin-top: 48px; */
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -78,6 +78,7 @@ interface VoteItemProps {
 export interface IVote {
   user_id: string;
   user_name: string;
+  vote_id: number;
   vote_list: IVoteList[];
   vote_name: string;
   total_votes_cnt: number;
@@ -89,7 +90,8 @@ export interface IVote {
 }
 
 export default function Vote() {
-  const [votes, setVotes] = useState<IVote[]>([]);
+  const [vote, setVote] = useState<IVote>();
+
   const [isShowAlert, setShowAlert] = useState(false);
 
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
@@ -98,23 +100,21 @@ export default function Vote() {
 
   const { id } = useParams();
 
+  const navigate = useNavigate();
+
   const user = auth.currentUser;
 
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
-
   const fetchVotes = async () => {
-    const votesQuery = query(
-      collection(db, "vote"),
-      orderBy("create_at", "desc")
-    );
-    const snapshot = await getDocs(votesQuery);
+    const q = query(collection(db, "vote"));
+    console.log("q??", q);
+
+    const snapshot = await getDocs(q);
+
     const votes = snapshot.docs.map((doc) => {
       const {
         user_id,
         user_name,
+        vote_id,
         vote_list,
         vote_name,
         total_votes_cnt,
@@ -126,6 +126,7 @@ export default function Vote() {
       return {
         user_id,
         user_name,
+        vote_id,
         vote_list,
         vote_name,
         total_votes_cnt,
@@ -136,9 +137,12 @@ export default function Vote() {
         id: doc.id,
       };
     });
+    const newVote = votes.find((vote) => vote.vote_id == id);
 
-    setVotes(votes);
+    setVote(newVote);
   };
+
+  console.log("vote??", vote);
 
   const clickVote = () => {
     setShowAlert(true);
@@ -155,18 +159,16 @@ export default function Vote() {
       TotalVotesCnt += 1;
       AvailableVotesCnt -= 1;
 
-      // 'vote' 컬렉션에서 create_at을 기준으로 내림차순으로 정렬하여 첫 번째 문서 가져오기
+      // 특정 vote_id에 해당하는 투표 가져오기
       const q = query(
         collection(db, "vote"),
-        orderBy("create_at", "desc"),
+        where("vote_id", "==", id), // vote_id가 현재 URL에서 받아온 id와 일치하는지 확인
         limit(1)
       );
       const querySnapshot = await getDocs(q);
 
-      // 가져온 문서의 ID 또는 경로를 사용하여 문서 참조
       if (!querySnapshot.empty) {
-        const latestDoc = querySnapshot.docs[0];
-        const voteDocRef = doc(db, "vote", latestDoc.id);
+        const voteDocRef = querySnapshot.docs[0].ref;
 
         // 문서 업데이트
         await updateDoc(voteDocRef, {
@@ -191,7 +193,7 @@ export default function Vote() {
 
   useEffect(() => {
     fetchVotes();
-  }, []);
+  }, [id]);
 
   return (
     <>
@@ -202,7 +204,7 @@ export default function Vote() {
             투표해주세요.
           </CurrentTitle>
           <Form>
-            {votes[0]?.vote_list.map((item, index) => (
+            {vote?.vote_list.map((item, index) => (
               <VoteItem
                 key={`item${index}`}
                 onClick={() => setSelectedItemIndex(index)}
