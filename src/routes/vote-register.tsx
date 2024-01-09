@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 import { auth, db } from "../firebase";
 
 import { useForm } from "react-hook-form";
@@ -11,8 +11,6 @@ import LoadingScreen from "../component/LoadingScreen";
 import Alert from "../component/Alert";
 import BottomButton02 from "../component/BottomButon02";
 import ButtonPrimary from "../component/ButtonPrimary";
-
-// import { ReactComponents as IconX } from "/images/icon/common/icon-x-circle.svg";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -122,17 +120,22 @@ export default function VoteRegister() {
 
   const onRegister = async () => {
     const user = auth.currentUser;
+
+    const lastVoteDoc = (await getDocs(collection(db, "vote"))).docs.pop();
+    const voteID = (lastVoteDoc?.data().vote_id || 0) + 1;
+
     try {
       setLoading(true);
       await addDoc(collection(db, "vote"), {
-        user_id: user?.uid,
-        user_name: user?.displayName || "Anonymous",
+        vote_id: voteID,
         vote_list: voteList,
         vote_name: `${formattedDate}의 불개미 MVP는?`,
         total_votes_cnt: 0,
         available_votes_cnt: 11,
         already_voters: null,
         is_complete: false,
+        user_id: user?.uid,
+        user_name: user?.displayName || "Anonymous",
         create_at: Date.now(),
       });
     } catch (e) {

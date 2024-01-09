@@ -11,8 +11,8 @@ const Wrapper = styled.button<ButtonProps>`
   justify-content: center;
   color: var(--white);
   background-color: var(--main);
-  &:hover,
-  :active {
+  transition: all 0.2s ease;
+  &:hover {
     background-color: var(--main-hover);
   }
   cursor: pointer;

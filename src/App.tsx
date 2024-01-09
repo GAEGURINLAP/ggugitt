@@ -76,7 +76,7 @@ function App() {
 
   return (
     <>
-      <Splash progress={progress} />
+      {/* <Splash progress={progress} /> */}
       <Container>
         <Wrapper>
           <Global styles={global} />
