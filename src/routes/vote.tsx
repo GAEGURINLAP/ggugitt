@@ -16,6 +16,9 @@ import {
 
 import BottomButton01 from "../component/BottomButon01";
 import { IVoteList } from "./vote-register";
+import Alert from "../component/Alert";
+import ButtonSecondary from "../component/ButtonSecondary";
+import ButtonPrimary from "../component/ButtonPrimary";
 
 const Wrapper = styled.div`
   padding: 0 24px;
@@ -87,6 +90,7 @@ export interface IVote {
 
 export default function Vote() {
   const [votes, setVotes] = useState<IVote[]>([]);
+  const [isShowAlert, setShowAlert] = useState(false);
 
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
     null
@@ -134,6 +138,10 @@ export default function Vote() {
     });
 
     setVotes(votes);
+  };
+
+  const clickVote = () => {
+    setShowAlert(true);
   };
 
   const onRegister = async () => {
@@ -206,7 +214,24 @@ export default function Vote() {
           </Form>
         </CurrentVote>
       </Wrapper>
-      <BottomButton01 label={"투표하기"} onClick={onRegister} />
+      <BottomButton01 label={"투표하기"} onClick={clickVote} />
+      {isShowAlert && (
+        <Alert
+          message={"선택한 팀원으로 투표 하시겠습니까?"}
+          buttons={[
+            <ButtonSecondary
+              label={"취소"}
+              onClick={() => setShowAlert(false)}
+              isWidthFull
+            />,
+            <ButtonPrimary
+              label={"투표하기"}
+              onClick={onRegister}
+              isWidthFull
+            />,
+          ]}
+        />
+      )}
     </>
   );
 }
