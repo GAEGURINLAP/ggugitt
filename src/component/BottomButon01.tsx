@@ -6,6 +6,7 @@ const Container = styled.div`
   bottom: 0;
   width: 100%;
   max-width: 500px;
+  background-color: var(--white);
 `;
 
 const Wrapper = styled.div`
