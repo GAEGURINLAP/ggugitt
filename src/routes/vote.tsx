@@ -15,8 +15,6 @@ import {
 } from "firebase/firestore";
 
 import BottomButton01 from "../component/BottomButon01";
-import Header from "../component/Header";
-
 import { IVoteList } from "./vote-register";
 
 const Wrapper = styled.div`
@@ -24,18 +22,6 @@ const Wrapper = styled.div`
   padding-top: 120px;
   height: 100%;
   padding-bottom: 80px;
-`;
-
-const Title = styled.h1`
-  font-size: 40px;
-  margin-bottom: 64px;
-  text-align: center;
-  font-weight: 300;
-  line-height: 150%;
-  b {
-    font-weight: 700;
-    color: red;
-  }
 `;
 
 export const CurrentTitle = styled.h1`
@@ -80,51 +66,6 @@ export const VoteItem = styled.div<VoteItemProps>`
     color: var(--white);
     background-color: var(--main);
   }
-`;
-
-const VoteResultList = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 24px;
-`;
-const VoteResult = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-  gap: 24px;
-  align-self: stretch;
-`;
-const Content = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
-const Name = styled.div`
-  font-size: 18px;
-  font-weight: 500;
-`;
-const VotesCnt = styled.div`
-  font-size: 18px;
-  font-weight: 500;
-`;
-
-const Bar = styled.div`
-  width: 100%;
-  height: 8px;
-  background-color: #edf0f3;
-  border-radius: 100px;
-  overflow: hidden;
-`;
-
-const Fill = styled.div<{ votesCnt: number; totalVotesCnt: number }>`
-  width: ${(props) => Math.ceil((props.votesCnt / props.totalVotesCnt) * 100)}%;
-  height: 8px;
-  background-color: #b0b7be;
 `;
 
 interface VoteItemProps {
@@ -244,107 +185,28 @@ export default function Vote() {
     fetchVotes();
   }, []);
 
-  const clickSurvey = () => {
-    navigate("/vote-register");
-  };
-
-  const handleCopyClipBoard = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      alert("클립보드에 링크가 복사되었어요.");
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
     <>
-      {votes[0]?.user_id === user?.uid ? (
-        <>
-          {votes[0].is_complete === false &&
-          votes[0]?.already_voters?.includes(user?.uid) ? (
-            <>
-              <Wrapper>
-                <CurrentVote>
-                  <CurrentTitle>
-                    오늘의 불개미 {id} <br />
-                    투표 현황입니다.
-                  </CurrentTitle>
-                  <VoteResultList>
-                    {votes[0]?.vote_list.map((item, index) => (
-                      <VoteResult key={`item${index}`}>
-                        <Content>
-                          <Name>{item.name}</Name>
-                          <VotesCnt>{item.votes_cnt}명</VotesCnt>
-                        </Content>
-                        <Bar>
-                          <Fill
-                            votesCnt={item.votes_cnt}
-                            totalVotesCnt={votes[0].total_votes_cnt}
-                          />
-                        </Bar>
-                      </VoteResult>
-                    ))}
-                  </VoteResultList>
-                </CurrentVote>
-              </Wrapper>
-              <BottomButton01
-                label={"링크 공유하기"}
-                onClick={() =>
-                  handleCopyClipBoard(`${baseURL}${location.pathname}`)
-                }
-              />
-            </>
-          ) : (
-            <>
-              <Wrapper>
-                <CurrentVote>
-                  <CurrentTitle>
-                    오늘의 불개미를 {id} <br />
-                    투표해주세요.
-                  </CurrentTitle>
-                  <Form>
-                    {votes[0]?.vote_list.map((item, index) => (
-                      <VoteItem
-                        key={`item${index}`}
-                        onClick={() => setSelectedItemIndex(index)}
-                        isSelected={selectedItemIndex === index}
-                      >
-                        {item.name}
-                      </VoteItem>
-                    ))}
-                  </Form>
-                </CurrentVote>
-              </Wrapper>
-              <BottomButton01 label={"투표하기"} onClick={onRegister} />
-            </>
-          )}
-        </>
-      ) : (
-        <>
-          <Wrapper>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <Title>
-                과연 오늘의 <b>불개미</b>는? <br />
-                두구두구두구
-              </Title>
-              <img
-                src="/images/logo/bullgaemi.png"
-                alt="불개미"
-                width={176}
-                height={240}
-              />
-            </div>
-          </Wrapper>
-          <BottomButton01 label={"투표 만들기"} onClick={clickSurvey} />
-        </>
-      )}
+      <Wrapper>
+        <CurrentVote>
+          <CurrentTitle>
+            오늘의 불개미를 {id} <br />
+            투표해주세요.
+          </CurrentTitle>
+          <Form>
+            {votes[0]?.vote_list.map((item, index) => (
+              <VoteItem
+                key={`item${index}`}
+                onClick={() => setSelectedItemIndex(index)}
+                isSelected={selectedItemIndex === index}
+              >
+                {item.name}
+              </VoteItem>
+            ))}
+          </Form>
+        </CurrentVote>
+      </Wrapper>
+      <BottomButton01 label={"투표하기"} onClick={onRegister} />
     </>
   );
 }

@@ -16,4 +16,13 @@ export const Wrapper = styled.div`
   display: flex;
   justify-content: end;
   align-items: center;
+  gap: 8px;
+`;
+
+export const Name = styled.div`
+  color: #525252;
+  font-weight: 400;
+  b {
+    font-weight: 600;
+  }
 `;

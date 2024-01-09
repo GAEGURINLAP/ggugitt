@@ -6,7 +6,7 @@ import ButtonSecondary from "./ButtonSecondary";
 import ButtonPrimary from "./ButtonPrimary";
 
 import { auth } from "../firebase";
-import { Container, Wrapper } from "../style/header";
+import { Container, Name, Wrapper } from "../style/header";
 
 export default function Header() {
   const [isShowAlert, setShowAlert] = useState(false);
@@ -22,10 +22,15 @@ export default function Header() {
     navigate(0);
   };
 
+  const userName = auth.currentUser?.displayName;
+
   return (
     <>
       <Container>
         <Wrapper>
+          <Name>
+            <b>{userName}</b>님
+          </Name>
           <img
             src="/images/icon/common/icon-logout.svg"
             width={24}
