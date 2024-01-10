@@ -90,6 +90,7 @@ export interface IVote {
 
 export default function Vote() {
   const [vote, setVote] = useState<IVote>();
+  // const [successMessege, isSuccessMessege] = useState('');
 
   const [isShowAlert, setShowAlert] = useState(false);
 
@@ -137,7 +138,10 @@ export default function Vote() {
       };
     });
     const newVote = votes.find((vote) => vote.vote_id == id);
-    // Todo. vote_id가 없는 :id에 접근했을 경우 404 나타나도록
+
+    if (!newVote) {
+      navigate("/not-found");
+    }
 
     setVote(newVote);
   };
