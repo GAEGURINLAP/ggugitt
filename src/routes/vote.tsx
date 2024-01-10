@@ -18,6 +18,7 @@ import { IVoteList } from "./vote-register";
 import Alert from "../component/Alert";
 import ButtonSecondary from "../component/ButtonSecondary";
 import ButtonPrimary from "../component/ButtonPrimary";
+import { keyframes } from "@emotion/react";
 
 const Wrapper = styled.div`
   padding: 0 24px;
@@ -30,6 +31,9 @@ export const CurrentTitle = styled.h1`
   font-size: 32px;
   font-weight: 600;
   line-height: 140%;
+  b {
+    color: red;
+  }
 `;
 
 export const CurrentVote = styled.div`
@@ -68,6 +72,48 @@ export const VoteItem = styled.div<VoteItemProps>`
     color: var(--white);
     background-color: var(--main);
   }
+`;
+
+export const Success = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+`;
+
+const fadeInText = keyframes`
+  from {
+    top: 15px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+`;
+
+const fadeInCheck = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+`;
+
+export const SuccessIcon = styled.div`
+  animation: ${fadeInCheck} 0.6s ease;
+`;
+
+export const SuccessText = styled.h2`
+  font-size: 24px;
+  font-weight: 500;
+  position: relative; // bottom 속성을 사용하려면 position을 설정해야 합니다.
+  animation: ${fadeInText} 0.6s ease;
 `;
 
 interface VoteItemProps {
@@ -153,13 +199,14 @@ export default function Vote() {
     setShowAlertVote(true);
   };
 
-  const clickVoteConfirm = () => {
-    setShowAlertConfirm(true);
-  };
+  // const clickVoteConfirm = () => {
+  //   setShowAlertConfirm(true);
+  // };
 
   const onRegister = async () => {
     if (selectedItemIndex !== null) {
       const selectedList = vote?.vote_list[selectedItemIndex];
+
       let VotesCnt = selectedList?.votes_cnt || 0;
       let TotalVotesCnt = vote?.total_votes_cnt || 0;
       let AvailableVotesCnt = vote?.available_votes_cnt || 0;
@@ -168,18 +215,12 @@ export default function Vote() {
       TotalVotesCnt += 1;
       AvailableVotesCnt -= 1;
 
-      // 특정 vote_id에 해당하는 투표 가져오기
-      const q = query(
-        collection(db, "vote"),
-        where("vote_id", "==", id), // vote_id가 현재 URL에서 받아온 id와 일치하는지 확인
-        limit(1)
-      );
+      const q = query(collection(db, "vote"));
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
         const voteDocRef = querySnapshot.docs[0].ref;
 
-        // 문서 업데이트
         await updateDoc(voteDocRef, {
           vote_list: vote?.vote_list.map((item, index) =>
             index === selectedItemIndex
@@ -191,8 +232,9 @@ export default function Vote() {
           already_voters: user?.uid,
         });
         setSelectedItemIndex(null);
-        navigate(0);
-
+        // navigate(0);
+        setShowAlertConfirm(true);
+        setShowAlertVote(false);
         return;
       }
     }
@@ -205,29 +247,86 @@ export default function Vote() {
 
   return (
     <>
-      <Wrapper>
-        <CurrentVote>
-          <CurrentTitle>
-            오늘의 불개미를 {id} <br />
-            투표해주세요.
-          </CurrentTitle>
-          <Form>
-            {vote?.vote_list.map((item, index) => (
-              <VoteItem
-                key={`item${index}`}
-                onClick={() => setSelectedItemIndex(index)}
-                isSelected={selectedItemIndex === index}
-              >
-                {item.name}
-              </VoteItem>
-            ))}
-          </Form>
-        </CurrentVote>
-      </Wrapper>
-      {selectedItemIndex === null ? (
-        <BottomButton01 label={"투표하기"} isDisabled />
+      {/* {isShowAlertConfirm ? (
+        <>
+          <Wrapper>
+            <CurrentVote>
+              <CurrentTitle>
+                오늘의 불개미를 {id} <br />
+                투표해주세요.
+              </CurrentTitle>
+              <Form>
+                {vote?.vote_list.map((item, index) => (
+                  <VoteItem
+                    key={`item${index}`}
+                    onClick={() => setSelectedItemIndex(index)}
+                    isSelected={selectedItemIndex === index}
+                  >
+                    {item.name}
+                  </VoteItem>
+                ))}
+              </Form>
+            </CurrentVote>
+          </Wrapper>
+          {selectedItemIndex === null ? (
+            <BottomButton01 label={"투표하기"} isDisabled />
+          ) : (
+            <BottomButton01 label={"투표하기"} onClick={clickVote} />
+          )}
+        </>
       ) : (
-        <BottomButton01 label={"투표하기"} onClick={clickVote} />
+        <Success>
+          <SuccessIcon>
+            <img
+              src="/images/icon/common/icon-check-circle-64.svg"
+              alt="체크 아이콘"
+              width={64}
+              height={64}
+            />
+          </SuccessIcon>
+          <SuccessText> 투표가 완료되었습니다!</SuccessText>
+        </Success>
+      )} */}
+
+      {isShowAlertConfirm ? (
+        <Success>
+          <SuccessIcon>
+            <img
+              src="/images/icon/common/icon-check-circle-64.svg"
+              alt="체크 아이콘"
+              width={64}
+              height={64}
+            />
+          </SuccessIcon>
+          <SuccessText> 투표가 완료되었습니다!</SuccessText>
+        </Success>
+      ) : (
+        <>
+          <Wrapper>
+            <CurrentVote>
+              <CurrentTitle>
+                <b>{id}</b>번째 불개미를 <br />
+                투표해주세요.
+              </CurrentTitle>
+              <Form>
+                {vote?.vote_list.map((item, index) => (
+                  <VoteItem
+                    key={`item${index}`}
+                    onClick={() => setSelectedItemIndex(index)}
+                    isSelected={selectedItemIndex === index}
+                  >
+                    {item.name}
+                  </VoteItem>
+                ))}
+              </Form>
+            </CurrentVote>
+          </Wrapper>
+          {selectedItemIndex === null ? (
+            <BottomButton01 label={"투표하기"} isDisabled />
+          ) : (
+            <BottomButton01 label={"투표하기"} onClick={clickVote} />
+          )}
+        </>
       )}
 
       {isShowAlertVote && (
@@ -241,20 +340,20 @@ export default function Vote() {
             />,
             <ButtonPrimary
               label={"투표하기"}
-              onClick={clickVoteConfirm}
+              onClick={onRegister}
               isWidthFull
             />,
           ]}
         />
       )}
-      {isShowAlertConfirm && (
+      {/* {isShowAlertConfirm && (
         <Alert
           message={"투표가 완료되었습니다!"}
           buttons={[
             <ButtonPrimary label={"확인"} onClick={onRegister} isWidthFull />,
           ]}
         />
-      )}
+      )} */}
     </>
   );
 }

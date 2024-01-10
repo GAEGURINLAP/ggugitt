@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 // import SplashIcon from "../../public/images/logo/splash.svg";
 
-export const SPLASH_TIME = 1000; // ms
+export const SPLASH_TIME = 500; // ms
 
 export const Container = styled.div<{ show: boolean }>`
   position: absolute;
@@ -97,7 +97,7 @@ export default function Splash({ progress }: Props) {
   useEffect(() => {
     setTimeout(() => {
       setShow(false);
-    }, SPLASH_TIME + 500);
+    }, SPLASH_TIME + 200);
   }, []);
   return (
     <Container show={show}>
