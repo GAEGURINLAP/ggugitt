@@ -92,7 +92,8 @@ export default function Vote() {
   const [vote, setVote] = useState<IVote>();
   // const [successMessege, isSuccessMessege] = useState('');
 
-  const [isShowAlert, setShowAlert] = useState(false);
+  const [isShowAlertVote, setShowAlertVote] = useState(false);
+  const [isShowAlertConfirm, setShowAlertConfirm] = useState(false);
 
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
     null
@@ -149,7 +150,11 @@ export default function Vote() {
   console.log("vote??", vote);
 
   const clickVote = () => {
-    setShowAlert(true);
+    setShowAlertVote(true);
+  };
+
+  const clickVoteConfirm = () => {
+    setShowAlertConfirm(true);
   };
 
   const onRegister = async () => {
@@ -185,7 +190,6 @@ export default function Vote() {
           available_votes_cnt: AvailableVotesCnt,
           already_voters: user?.uid,
         });
-        alert("투표 성공했어!");
         setSelectedItemIndex(null);
         navigate(0);
 
@@ -220,21 +224,34 @@ export default function Vote() {
           </Form>
         </CurrentVote>
       </Wrapper>
-      <BottomButton01 label={"투표하기"} onClick={clickVote} />
-      {isShowAlert && (
+      {selectedItemIndex === null ? (
+        <BottomButton01 label={"투표하기"} isDisabled />
+      ) : (
+        <BottomButton01 label={"투표하기"} onClick={clickVote} />
+      )}
+
+      {isShowAlertVote && (
         <Alert
           message={"선택한 팀원으로 투표 하시겠습니까?"}
           buttons={[
             <ButtonSecondary
               label={"취소"}
-              onClick={() => setShowAlert(false)}
+              onClick={() => setShowAlertVote(false)}
               isWidthFull
             />,
             <ButtonPrimary
               label={"투표하기"}
-              onClick={onRegister}
+              onClick={clickVoteConfirm}
               isWidthFull
             />,
+          ]}
+        />
+      )}
+      {isShowAlertConfirm && (
+        <Alert
+          message={"투표가 완료되었습니다!"}
+          buttons={[
+            <ButtonPrimary label={"확인"} onClick={onRegister} isWidthFull />,
           ]}
         />
       )}

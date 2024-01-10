@@ -20,13 +20,19 @@ const Wrapper = styled.div`
 interface BottomButtonProps {
   label: string;
   onClick?: () => void;
+  isDisabled?: boolean;
 }
 
-const BottomButton = ({ onClick, label }: BottomButtonProps) => {
+const BottomButton = ({ onClick, label, isDisabled }: BottomButtonProps) => {
   return (
     <Container>
       <Wrapper>
-        <ButtonPrimary label={label} onClick={onClick} isWidthFull />
+        <ButtonPrimary
+          label={label}
+          onClick={onClick}
+          isWidthFull
+          isDisabled={isDisabled}
+        />
       </Wrapper>
     </Container>
   );

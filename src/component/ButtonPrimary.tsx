@@ -9,18 +9,20 @@ const Wrapper = styled.button<ButtonProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--white);
-  background-color: var(--main);
+  color: ${(props) => (props.isDisabled ? "#a2a2a2" : "var(--white);")};
+  background-color: ${(props) =>
+    props.isDisabled ? "#e6e6e6" : "var(--main);"};
   transition: all 0.2s ease;
   &:hover {
-    background-color: var(--main-hover);
+    background-color: ${(props) => !props.isDisabled && "var(--main-hover)"};
+    cursor: ${(props) => (props.isDisabled ? "default" : "pointer")};
   }
-  cursor: pointer;
 `;
 
 interface ButtonProps {
   isWidthFull?: boolean;
   isRadiusFull?: boolean;
+  isDisabled?: boolean;
   size?: string;
   label: string;
   onClick?: () => void;
@@ -32,6 +34,7 @@ const ButtonPrimary = ({
   size,
   isWidthFull,
   isRadiusFull,
+  isDisabled,
 }: ButtonProps) => {
   return (
     <Wrapper
@@ -39,6 +42,7 @@ const ButtonPrimary = ({
       onClick={onClick}
       isWidthFull={isWidthFull}
       isRadiusFull={isRadiusFull}
+      isDisabled={isDisabled}
       label={label}
       size={size}
     >
