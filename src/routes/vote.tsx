@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import { auth, db } from "../firebase";
@@ -8,7 +8,6 @@ import {
   collection,
   getDocs,
   limit,
-  orderBy,
   query,
   updateDoc,
   where,
@@ -138,6 +137,7 @@ export default function Vote() {
       };
     });
     const newVote = votes.find((vote) => vote.vote_id == id);
+    // Todo. vote_id가 없는 :id에 접근했을 경우 404 나타나도록
 
     setVote(newVote);
   };
@@ -150,10 +150,10 @@ export default function Vote() {
 
   const onRegister = async () => {
     if (selectedItemIndex !== null) {
-      const selectedList = votes[0]?.vote_list[selectedItemIndex];
-      let VotesCnt = selectedList.votes_cnt;
-      let TotalVotesCnt = votes[0]?.total_votes_cnt;
-      let AvailableVotesCnt = votes[0]?.available_votes_cnt;
+      const selectedList = vote?.vote_list[selectedItemIndex];
+      let VotesCnt = selectedList?.votes_cnt || 0;
+      let TotalVotesCnt = vote?.total_votes_cnt || 0;
+      let AvailableVotesCnt = vote?.available_votes_cnt || 0;
 
       VotesCnt += 1;
       TotalVotesCnt += 1;
@@ -172,7 +172,7 @@ export default function Vote() {
 
         // 문서 업데이트
         await updateDoc(voteDocRef, {
-          vote_list: votes[0].vote_list.map((item, index) =>
+          vote_list: vote?.vote_list.map((item, index) =>
             index === selectedItemIndex
               ? { ...item, votes_cnt: VotesCnt }
               : item
