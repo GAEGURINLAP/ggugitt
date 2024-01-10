@@ -17,6 +17,10 @@ const Wrapper = styled.button<ButtonProps>`
     background-color: ${(props) => !props.isDisabled && "var(--main-hover)"};
     cursor: ${(props) => (props.isDisabled ? "default" : "pointer")};
   }
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-use-select: none;
+  user-select: none;
 `;
 
 interface ButtonProps {

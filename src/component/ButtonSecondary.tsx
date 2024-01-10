@@ -18,6 +18,10 @@ const Wrapper = styled.button<ButtonProps>`
     border: none;
   }
   cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-use-select: none;
+  user-select: none;
 `;
 
 interface ButtonProps {

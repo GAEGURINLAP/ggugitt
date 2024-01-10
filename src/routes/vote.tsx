@@ -48,6 +48,15 @@ export const Form = styled.form`
   gap: 8px;
 `;
 export const VoteItem = styled.div<VoteItemProps>`
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-use-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
   display: flex;
   padding: 4px 16px;
   justify-content: center;
