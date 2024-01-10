@@ -4,14 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import { auth, db } from "../firebase";
-import {
-  collection,
-  getDocs,
-  limit,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, query, updateDoc } from "firebase/firestore";
 
 import BottomButton01 from "../component/BottomButon01";
 import { IVoteList } from "./vote-register";
