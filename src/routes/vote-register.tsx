@@ -12,6 +12,7 @@ import Success from "../component/Success";
 import Alert from "../component/Alert";
 import ButtonSecondary from "../component/ButtonSecondary";
 import ButtonPrimary from "../component/ButtonPrimary";
+import { useLocation } from "react-router-dom";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -105,6 +106,11 @@ export default function VoteRegister() {
   const [isLoading, setLoading] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const [isShowAlert, setIsShowAlert] = useState(false);
+  const [voteId, setVoteId] = useState();
+
+  const location = useLocation();
+
+  const baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
   // Todo 인풋 삭제 버튼 먹히도록 만들기
   // const [isInputFocused, setIsInputFocused] = useState(false);
@@ -135,6 +141,7 @@ export default function VoteRegister() {
         user_name: user?.displayName || "Anonymous",
         create_at: Date.now(),
       });
+      setVoteId(voteID);
     } catch (e) {
       console.log(e);
       setLoading(false);
@@ -153,6 +160,15 @@ export default function VoteRegister() {
   const deleteItem = (itemToDelete: IVoteList) => {
     const updatedVoteItems = voteList.filter((item) => item !== itemToDelete);
     setVoteList(updatedVoteItems);
+  };
+
+  const handleCopyClipBoard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("클립보드에 링크가 복사되었어요.");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const clickAddItem = () => {
@@ -180,8 +196,9 @@ export default function VoteRegister() {
       {isComplete ? (
         <Success
           message={"투표 등록이 완료 되었습니다!"}
-          label="링크 공유하기"
+          label="투표 링크 공유하기"
           isShowButton
+          onClick={() => handleCopyClipBoard(`${baseURL}/vote/${voteId}`)}
         />
       ) : (
         <>

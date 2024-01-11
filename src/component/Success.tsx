@@ -5,12 +5,14 @@ interface SuccessProps {
   message: string;
   label?: string;
   isShowButton?: boolean;
+  onClick: () => void;
 }
 
 export default function Success({
   message,
   label,
   isShowButton,
+  onClick,
 }: SuccessProps) {
   return (
     <Wrapper>
@@ -24,7 +26,7 @@ export default function Success({
       </Icon>
       <Text>{message}</Text>
       <ButtonWrapper>
-        {isShowButton && <ButtonPrimary label={label} />}
+        {isShowButton && <ButtonPrimary label={label} onClick={onClick} />}
       </ButtonWrapper>
     </Wrapper>
   );
