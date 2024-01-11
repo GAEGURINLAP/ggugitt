@@ -22,17 +22,31 @@ const Wrapper = styled.div`
 interface BottomButtonProps {
   onClick01?: () => void;
   onClick02?: () => void;
+  isDisabled?: boolean;
+  label01: string;
+  label02: string;
 }
 
-const BottomButton = ({ onClick01, onClick02 }: BottomButtonProps) => {
+const BottomButton02 = ({
+  onClick01,
+  onClick02,
+  isDisabled,
+  label01,
+  label02,
+}: BottomButtonProps) => {
   return (
     <Container>
       <Wrapper>
-        <ButtonSecondary label={"추가하기"} onClick={onClick01} isWidthFull />
-        <ButtonPrimary label={"등록하기"} onClick={onClick02} isWidthFull />
+        <ButtonSecondary label={label01} onClick={onClick01} isWidthFull />
+        <ButtonPrimary
+          label={label02}
+          onClick={onClick02}
+          isWidthFull
+          isDisabled={isDisabled}
+        />
       </Wrapper>
     </Container>
   );
 };
 
-export default BottomButton;
+export default BottomButton02;

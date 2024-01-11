@@ -91,10 +91,6 @@ export const VoteContent = styled.div`
   gap: 10px;
 `;
 
-// interface FormInputs {
-//   vote_item: string;
-// }
-
 export interface IVoteList {
   name: string;
   votes_cnt: number;
@@ -244,7 +240,22 @@ export default function VoteRegister() {
           </VoteWrapper>
         </FormContainer>
       </Wrapper>
-      <BottomButton02 onClick01={clickAddItem} onClick02={onRegister} />
+      {voteList.length === 0 ? (
+        <BottomButton02
+          onClick01={clickAddItem}
+          isDisabled
+          label01={"추가하기"}
+          label02={"등록하기"}
+        />
+      ) : (
+        <BottomButton02
+          onClick01={clickAddItem}
+          onClick02={onRegister}
+          label01={"추가하기"}
+          label02={"등록하기"}
+        />
+      )}
+
       {isShowAlert && (
         <Alert
           message={"투표 등록에 성공하였습니다!"}
