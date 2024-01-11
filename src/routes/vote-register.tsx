@@ -5,11 +5,12 @@ import { auth, db } from "../firebase";
 
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import LoadingScreen from "../component/LoadingScreen";
-import Alert from "../component/Alert";
 import BottomButton02 from "../component/BottomButon02";
+import Success from "../component/Success";
+import Alert from "../component/Alert";
+import ButtonSecondary from "../component/ButtonSecondary";
 import ButtonPrimary from "../component/ButtonPrimary";
 
 export const Wrapper = styled.div`
@@ -39,11 +40,11 @@ export const Form = styled.form`
   border: none;
   height: fit-content;
   border-bottom: 1px solid #d0d1d2;
-  transition: border-bottom-color 0.3s ease; /* 트랜지션 효과 추가 */
+  transition: border-bottom-color 0.3s ease;
 
   & :active,
   :focus-within {
-    border-bottom-color: var(--main); /* 포커스를 받으면 색상 변경 */
+    border-bottom-color: var(--main);
   }
 `;
 
@@ -102,9 +103,8 @@ export default function VoteRegister() {
   console.log("초기 voteList는?", voteList);
 
   const [isLoading, setLoading] = useState(false);
-  const [isShowAlert, setShowAlert] = useState(false);
-
-  const navigate = useNavigate();
+  const [isComplete, setIsComplete] = useState(false);
+  const [isShowAlert, setIsShowAlert] = useState(false);
 
   // Todo 인풋 삭제 버튼 먹히도록 만들기
   // const [isInputFocused, setIsInputFocused] = useState(false);
@@ -122,6 +122,7 @@ export default function VoteRegister() {
 
     try {
       setLoading(true);
+      setIsShowAlert(false);
       await addDoc(collection(db, "vote"), {
         vote_id: voteID,
         vote_list: voteList,
@@ -138,7 +139,7 @@ export default function VoteRegister() {
       console.log(e);
       setLoading(false);
     } finally {
-      setShowAlert(true);
+      setIsComplete(true);
       setLoading(false);
     }
   };
@@ -158,13 +159,12 @@ export default function VoteRegister() {
     handleSubmit(addItem)();
   };
 
-  const clickDeleteItem = (item: IVoteList) => {
-    deleteItem(item);
+  const clickRegister = () => {
+    setIsShowAlert(true);
   };
 
-  const clickAlertConfirm = () => {
-    setShowAlert(false);
-    navigate("/");
+  const clickDeleteItem = (item: IVoteList) => {
+    deleteItem(item);
   };
 
   const {
@@ -177,92 +177,109 @@ export default function VoteRegister() {
   return (
     <>
       {isLoading && <LoadingScreen />}
-      <Wrapper>
-        <Title>
-          투표를 진행할 <br /> 팀원을 등록해주세요
-        </Title>
-        <FormContainer>
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            <Form
-              onSubmit={handleSubmit((data) => {
-                addItem(data);
-                reset();
-              })}
-            >
-              <FormWrapper>
-                <Input
-                  {...register("name", {
-                    required: true,
-                    pattern: {
-                      value: /^[^a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]*$/,
-                      message: "특수문자,공백,숫자,영문은 입력이 불가능합니다.",
-                    },
-                    minLength: {
-                      value: 2,
-                      message: "이름은 2자 이상이어야 합니다.",
-                    },
-                    maxLength: {
-                      value: 10,
-                      message: "이름은 10자를 초과할 수 없습니다.",
-                    },
+      {isComplete ? (
+        <Success
+          message={"투표 등록이 완료 되었습니다!"}
+          label="링크 공유하기"
+          isShowButton
+        />
+      ) : (
+        <>
+          <Wrapper>
+            <Title>
+              투표를 진행할 <br /> 후보를 등록해주세요
+            </Title>
+            <FormContainer>
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+              >
+                <Form
+                  onSubmit={handleSubmit((data) => {
+                    addItem(data);
+                    reset();
                   })}
-                  placeholder="투표 팀원 이름을 입력해주세요"
+                >
+                  <FormWrapper>
+                    <Input
+                      {...register("name", {
+                        required: true,
+                        pattern: {
+                          value: /^[^a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]*$/,
+                          message:
+                            "특수문자,공백,숫자,영문은 입력이 불가능합니다.",
+                        },
+                        minLength: {
+                          value: 2,
+                          message: "이름은 2자 이상이어야 합니다.",
+                        },
+                        maxLength: {
+                          value: 10,
+                          message: "이름은 10자를 초과할 수 없습니다.",
+                        },
+                      })}
+                      placeholder="후보 이름을 입력해주세요"
 
-                  // Todo 인풋 삭제 버튼 먹히도록 만들기
-                  // onFocus={() => setIsInputFocused(true)}
-                  // onBlur={() => setIsInputFocused(false)}
-                />
-                {/* {isInputFocused && (
+                      // Todo 인풋 삭제 버튼 먹히도록 만들기
+                      // onFocus={() => setIsInputFocused(true)}
+                      // onBlur={() => setIsInputFocused(false)}
+                    />
+                    {/* {isInputFocused && (
                   <img
                     src="/images/icon/common/icon-x-circle.svg"
                     width={20}
                     style={{ cursor: "pointer" }}
                   />
                 )} */}
-              </FormWrapper>
-            </Form>
-            {errors.name && <Error>{errors.name.message}</Error>}
-          </div>
-          <VoteWrapper>
-            {voteList.map((item, index) => (
-              <VoteItem key={`item${index}`}>
-                <VoteContent>
-                  {item.name}
-                  <img
-                    src="/images/icon/common/icon-x-circle.svg"
-                    width={20}
-                    style={{ cursor: "pointer" }}
-                    onClick={() => clickDeleteItem(item)}
-                  />
-                </VoteContent>
-              </VoteItem>
-            ))}
-          </VoteWrapper>
-        </FormContainer>
-      </Wrapper>
-      {voteList.length === 0 ? (
-        <BottomButton02
-          onClick01={clickAddItem}
-          isDisabled
-          label01={"추가하기"}
-          label02={"등록하기"}
-        />
-      ) : (
-        <BottomButton02
-          onClick01={clickAddItem}
-          onClick02={onRegister}
-          label01={"추가하기"}
-          label02={"등록하기"}
-        />
+                  </FormWrapper>
+                </Form>
+                {errors.name && <Error>{errors.name.message}</Error>}
+              </div>
+              <VoteWrapper>
+                {voteList.map((item, index) => (
+                  <VoteItem key={`item${index}`}>
+                    <VoteContent>
+                      {item.name}
+                      <img
+                        src="/images/icon/common/icon-x-circle.svg"
+                        width={20}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => clickDeleteItem(item)}
+                      />
+                    </VoteContent>
+                  </VoteItem>
+                ))}
+              </VoteWrapper>
+            </FormContainer>
+          </Wrapper>
+          {voteList.length === 0 ? (
+            <BottomButton02
+              onClick01={clickAddItem}
+              isDisabled
+              label01={"추가하기"}
+              label02={"등록하기"}
+            />
+          ) : (
+            <BottomButton02
+              onClick01={clickAddItem}
+              onClick02={clickRegister}
+              label01={"추가하기"}
+              label02={"등록하기"}
+            />
+          )}
+        </>
       )}
-
       {isShowAlert && (
         <Alert
-          message={"투표 등록에 성공하였습니다!"}
+          message={"입력한 후보가 맞습니까?"}
           buttons={[
+            <ButtonSecondary
+              label={"취소"}
+              onClick={() => setIsShowAlert(false)}
+              isWidthFull
+            />,
             <ButtonPrimary
-              label={"확인"}
-              onClick={clickAlertConfirm}
+              label={"등록하기"}
+              onClick={onRegister}
               isWidthFull
             />,
           ]}

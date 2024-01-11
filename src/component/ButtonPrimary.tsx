@@ -28,7 +28,7 @@ interface ButtonProps {
   isRadiusFull?: boolean;
   isDisabled?: boolean;
   size?: string;
-  label: string;
+  label?: string;
   onClick?: () => void;
 }
 

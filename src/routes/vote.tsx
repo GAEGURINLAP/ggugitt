@@ -11,7 +11,7 @@ import { IVoteList } from "./vote-register";
 import Alert from "../component/Alert";
 import ButtonSecondary from "../component/ButtonSecondary";
 import ButtonPrimary from "../component/ButtonPrimary";
-import { keyframes } from "@emotion/react";
+import Success from "../component/Success";
 
 const Wrapper = styled.div`
   padding: 0 24px;
@@ -74,48 +74,6 @@ export const VoteItem = styled.div<VoteItemProps>`
     color: var(--white);
     background-color: var(--main);
   }
-`;
-
-export const Success = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  width: 100%;
-  height: 100vh;
-  justify-content: center;
-  align-items: center;
-`;
-
-const fadeInText = keyframes`
-  from {
-    top: 15px;
-    opacity: 0;
-  }
-  to {
-    top: 0;
-    opacity: 1;
-  }
-`;
-
-const fadeInCheck = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    top: 0;
-    opacity: 1;
-  }
-`;
-
-export const SuccessIcon = styled.div`
-  animation: ${fadeInCheck} 0.6s ease;
-`;
-
-export const SuccessText = styled.h2`
-  font-size: 24px;
-  font-weight: 500;
-  position: relative; // bottom 속성을 사용하려면 position을 설정해야 합니다.
-  animation: ${fadeInText} 0.6s ease;
 `;
 
 interface VoteItemProps {
@@ -291,17 +249,18 @@ export default function Vote() {
       )} */}
 
       {isShowAlertConfirm ? (
-        <Success>
-          <SuccessIcon>
-            <img
-              src="/images/icon/common/icon-check-circle-64.svg"
-              alt="체크 아이콘"
-              width={64}
-              height={64}
-            />
-          </SuccessIcon>
-          <SuccessText> 투표가 완료되었습니다!</SuccessText>
-        </Success>
+        // <Success>
+        //   <SuccessIcon>
+        //     <img
+        //       src="/images/icon/common/icon-check-circle-64.svg"
+        //       alt="체크 아이콘"
+        //       width={64}
+        //       height={64}
+        //     />
+        //   </SuccessIcon>
+        //   <SuccessText> 투표가 완료되었습니다!</SuccessText>
+        // </Success>
+        <Success message={"투표가 완료되었습니다!"} />
       ) : (
         <>
           <Wrapper>
