@@ -229,7 +229,7 @@ export default function Home() {
       return {
         user_id,
         user_name,
-        vote_id: vote_id,
+        vote_id,
         vote_list,
         voter_list,
         vote_name,
