@@ -40,10 +40,19 @@ const ButtonPrimary = ({
   isRadiusFull,
   isDisabled,
 }: ButtonProps) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === "Enter") {
+      // 엔터 키가 눌렸을 때 실행할 동작
+      if (onClick && !isDisabled) {
+        onClick();
+      }
+    }
+  };
   return (
     <Wrapper
       type="submit"
       onClick={onClick}
+      onKeyDown={handleKeyDown}
       isWidthFull={isWidthFull}
       isRadiusFull={isRadiusFull}
       isDisabled={isDisabled}

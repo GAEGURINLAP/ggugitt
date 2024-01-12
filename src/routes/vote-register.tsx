@@ -104,8 +104,11 @@ export default function VoteRegister() {
   console.log("초기 voteList는?", voteList);
 
   const [isLoading, setLoading] = useState(false);
-  const [isComplete, setIsComplete] = useState(false);
   const [isShowAlert, setIsShowAlert] = useState(false);
+  const [isShowAlreadyAlert, setIsShowAlreadyAlert] = useState(false);
+
+  const [isComplete, setIsComplete] = useState(false);
+
   const [voteId, setVoteId] = useState();
   const [isToast, setIsToast] = useState(false);
 
@@ -152,8 +155,15 @@ export default function VoteRegister() {
 
   const addItem = async (data: IVoteList) => {
     const { name } = data;
-    const newVoteItems = [...voteList, { name, votes_cnt: 0 }];
-    setVoteList(newVoteItems);
+    const newVoteItem = { name, votes_cnt: 0 };
+
+    if (voteList.some(({ name }) => name === newVoteItem.name)) {
+      setIsShowAlreadyAlert(true);
+      return;
+    } else {
+      const newVoteItems = [...voteList, newVoteItem];
+      setVoteList(newVoteItems);
+    }
   };
 
   const deleteItem = (itemToDelete: IVoteList) => {
@@ -176,7 +186,7 @@ export default function VoteRegister() {
     if (isToast) {
       timeout = setTimeout(() => {
         setIsToast(false);
-      }, 1200); // 2초 후에 자동으로 감추기 (원하는 시간으로 조절 가능)
+      }, 1200);
     }
 
     return () => {
@@ -310,6 +320,18 @@ export default function VoteRegister() {
             <ButtonPrimary
               label={"등록하기"}
               onClick={onRegister}
+              isWidthFull
+            />,
+          ]}
+        />
+      )}
+      {isShowAlreadyAlert && (
+        <Alert
+          message={"이미 추가한 후보입니다!"}
+          buttons={[
+            <ButtonPrimary
+              label={"확인"}
+              onClick={() => setIsShowAlreadyAlert(false)}
               isWidthFull
             />,
           ]}
