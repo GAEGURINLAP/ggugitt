@@ -241,9 +241,7 @@ export default function CandidateRegister() {
               투표를 진행할 <br /> 후보를 등록해주세요
             </Title>
             <FormContainer>
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: "8px" }}
-              >
+              <div style={{ display: "flex", flexDirection: "column" }}>
                 <Form
                   onSubmit={handleSubmit((data) => {
                     addItem(data);

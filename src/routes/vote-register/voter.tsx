@@ -148,7 +148,6 @@ export default function VoterRegister() {
 
   return (
     <>
-      {isLoading && <LoadingScreen />}
       <>
         <Wrapper>
           <Title>
