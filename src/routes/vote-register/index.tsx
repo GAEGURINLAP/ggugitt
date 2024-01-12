@@ -25,29 +25,33 @@ export default function IndexRegister() {
     const snapshot = await getDocs(votesQuery);
     const votes = snapshot.docs.map((doc) => {
       const {
-        user_id,
-        user_name,
         vote_id,
         vote_list,
         voter_list,
         vote_name,
+        vote_winner,
         total_votes_cnt,
         available_votes_cnt,
         already_voters,
         is_complete,
+        close_time,
+        user_id,
+        user_name,
         create_at,
       } = doc.data();
       return {
-        user_id,
-        user_name,
         vote_id,
         vote_list,
         voter_list,
         vote_name,
+        vote_winner,
         total_votes_cnt,
         available_votes_cnt,
         already_voters,
         is_complete,
+        close_time,
+        user_id,
+        user_name,
         create_at,
         id: doc.id,
       };
