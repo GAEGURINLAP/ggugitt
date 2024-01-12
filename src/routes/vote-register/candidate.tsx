@@ -1,6 +1,15 @@
 import styled from "@emotion/styled";
 
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  updateDoc,
+} from "firebase/firestore";
 import { auth, db } from "../../firebase";
 
 import { useForm } from "react-hook-form";
@@ -124,34 +133,65 @@ export default function CandidateRegister() {
   // Todo 인풋 삭제 버튼 먹히도록 만들기
   // const [isInputFocused, setIsInputFocused] = useState(false);
 
-  const currentDate = new Date();
-  const formattedDate = `${currentDate.getFullYear()}년 ${
-    currentDate.getMonth() + 1
-  }월 ${currentDate.getDate()}일`;
-
   const onRegister = async () => {
     const user = auth.currentUser;
 
-    const lastVoteDoc = (await getDocs(collection(db, "vote"))).docs.pop();
-    const voteID = (lastVoteDoc?.data().vote_id || 0) + 1;
+    const currentDate = new Date();
+    const formattedDate = `${currentDate.getFullYear()}년 ${
+      currentDate.getMonth() + 1
+    }월 ${currentDate.getDate()}일`;
+    const currentTime = Date.now();
+    // const closeTime = currentTime + 5 * 60 * 60 * 1000; // 5시간을 밀리초로 변환
+    const closeTime = currentTime + 2 * 60 * 1000; // 2분을 밀리초로 변환
+
+    const votesQuery = query(
+      collection(db, "vote"),
+      orderBy("create_at", "desc"),
+      limit(1)
+    );
+    const snapshot = await getDocs(votesQuery);
+
+    // const lastVoteDoc = (await getDocs(collection(db, "vote"))).docs.pop();
+    const voteID = (snapshot.docs.pop()?.data().vote_id || 0) + 1;
+    console.log("voteID 제대로 들어왔냐!", voteID);
 
     try {
       setIsLoading(true);
       setIsShowAlert(false);
+
+      const highestVote = voteList.reduce(
+        (prev, current) =>
+          current.votes_cnt > prev.votes_cnt ? current : prev,
+        { name: "", votes_cnt: 0 }
+      );
+
       await addDoc(collection(db, "vote"), {
         vote_id: voteID,
         vote_list: voteList,
         voter_list: voterList,
-        vote_name: `${formattedDate}의 불개미 MVP는?`,
+        vote_name: `${formattedDate}`,
+        vote_winner: highestVote.name,
         total_votes_cnt: 0,
         available_votes_cnt: 11,
         already_voters: null,
         is_complete: false,
+        close_time: closeTime,
         user_id: user?.uid,
         user_name: user?.displayName || "Anonymous",
-        create_at: Date.now(),
+        create_at: currentTime,
       });
+
       setVoteId(voteID);
+      console.log("voteID undifined는 아니지?", voteID);
+
+      const timeUntilClose = closeTime - currentTime;
+
+      const voteDocRef = doc(collection(db, "vote"), voteID);
+
+      setTimeout(() => {
+        // 타임아웃이 끝나면 해당 문서의 is_complete를 true로 설정합니다.
+        updateDoc(voteDocRef, { is_complete: true });
+      }, timeUntilClose);
     } catch (e) {
       console.log(e);
       setIsLoading(false);

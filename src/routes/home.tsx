@@ -20,6 +20,9 @@ import BottomButton01 from "../component/BottomButon01";
 import { IVoteList } from "./vote-register/candidate";
 
 import Toast from "../component/Toast";
+import ButtonPrimary from "../component/ButtonPrimary";
+import Alert from "../component/Alert";
+import ButtonSecondary from "../component/ButtonSecondary";
 
 const Wrapper = styled.div`
   padding: 0 24px;
@@ -44,6 +47,9 @@ export const CurrentTitle = styled.h1`
   font-size: 32px;
   font-weight: 600;
   line-height: 140%;
+  b {
+    color: var(--main);
+  }
 `;
 
 export const CurrentVote = styled.div`
@@ -111,13 +117,15 @@ const Content = styled.div`
   justify-content: space-between;
 `;
 
-const Name = styled.div`
+const Name = styled.div<{ isVoteWinner: boolean }>`
   font-size: 18px;
   font-weight: 500;
+  color: ${(props) => props.isVoteWinner && "var(--main)"};
 `;
-const VotesCnt = styled.div`
+const VotesCnt = styled.div<{ isVoteWinner: boolean }>`
   font-size: 18px;
   font-weight: 500;
+  color: ${(props) => props.isVoteWinner && "var(--main)"};
 `;
 
 const Bar = styled.div`
@@ -128,10 +136,15 @@ const Bar = styled.div`
   overflow: hidden;
 `;
 
-const Fill = styled.div<{ votesCnt: number; totalVotesCnt: number }>`
+const Fill = styled.div<{
+  votesCnt: number;
+  totalVotesCnt: number;
+  isVoteWinner: boolean;
+}>`
   width: ${(props) => Math.ceil((props.votesCnt / props.totalVotesCnt) * 100)}%;
   height: 8px;
-  background-color: #b0b7be;
+  background-color: ${(props) =>
+    props.isVoteWinner ? "var(--main)" : "#b0b7be"};
 `;
 
 export const VoterContainer = styled.div`
@@ -174,16 +187,18 @@ interface VoteItemProps {
 }
 
 export interface IVote {
-  user_id: string;
-  user_name: string;
   vote_id: number;
   vote_list: IVoteList[];
   voter_list: string[];
   vote_name: string;
+  vote_winner: string;
   total_votes_cnt: number;
   available_votes_cnt: number;
   already_voters: string[];
   is_complete: boolean;
+  close_time: number;
+  user_id: string;
+  user_name: string;
   create_at: Date;
   id: string;
 }
@@ -191,11 +206,17 @@ export interface IVote {
 export default function Home() {
   const [votes, setVotes] = useState<IVote[]>([]);
   const [voteID, setVoteID] = useState();
+  const [voteList, setVoteList] = useState<IVoteList[]>([]);
   const [voterList, setVoterList] = useState<string[]>([]);
+  // const [closeTime, setCloseTime] = useState<number>();
+  const [voteName, setVoteName] = useState<string>("");
+  const [voteWinner, setVoteWinner] = useState<string>("");
 
-  const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
-    null
-  );
+  const [isShowAlertComplete, setIsShowAlertComplete] = useState(false);
+
+  // const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
+  //   null
+  // );
 
   const user = auth.currentUser;
   console.log("user(currentUser):", user);
@@ -208,94 +229,112 @@ export default function Home() {
   const fetchVotes = async () => {
     const votesQuery = query(
       collection(db, "vote"),
-      orderBy("create_at", "desc")
+      orderBy("create_at", "desc"),
+      limit(1)
     );
     console.log("votesQuery??", votesQuery);
     const snapshot = await getDocs(votesQuery);
     const votes = snapshot.docs.map((doc) => {
       const {
-        user_id,
-        user_name,
         vote_id,
         vote_list,
         voter_list,
         vote_name,
+        vote_winner,
         total_votes_cnt,
         available_votes_cnt,
         already_voters,
         is_complete,
+        close_time,
+        user_id,
+        user_name,
         create_at,
       } = doc.data();
       return {
-        user_id,
-        user_name,
         vote_id,
         vote_list,
         voter_list,
         vote_name,
+        vote_winner,
         total_votes_cnt,
         available_votes_cnt,
         already_voters,
         is_complete,
+        close_time,
+        user_id,
+        user_name,
         create_at,
         id: doc.id,
       };
     });
     setVotes(votes);
 
+    // const closeTime = snapshot.docs.pop()?.data().close_time;
+    // setCloseTime(closeTime);
+
     const voteID = snapshot.docs.pop()?.data().vote_id;
     setVoteID(voteID);
+    console.log("voteID에 뭐가 담긴겨?", voteID);
 
     const voterList = snapshot.docs.pop()?.data().voter_list;
     setVoterList(voterList);
 
+    const voteName = snapshot.docs.pop()?.data().vote_name;
+    setVoteName(voteName);
+
+    const voteList = snapshot.docs.pop()?.data().vote_list;
+    setVoteList(voteList);
+
+    const voteWinner = snapshot.docs.pop()?.data().vote_winner;
+    setVoteWinner(voteWinner);
+
     console.log("votes??", votes);
   };
 
-  const onRegister = async () => {
-    if (selectedItemIndex !== null) {
-      const selectedList = votes[0]?.vote_list[selectedItemIndex];
-      let VotesCnt = selectedList.votes_cnt;
-      let TotalVotesCnt = votes[0]?.total_votes_cnt;
-      let AvailableVotesCnt = votes[0]?.available_votes_cnt;
+  // const onRegister = async () => {
+  //   if (selectedItemIndex !== null) {
+  //     const selectedList = votes[0]?.vote_list[selectedItemIndex];
+  //     let VotesCnt = selectedList.votes_cnt;
+  //     let TotalVotesCnt = votes[0]?.total_votes_cnt;
+  //     let AvailableVotesCnt = votes[0]?.available_votes_cnt;
 
-      VotesCnt += 1;
-      TotalVotesCnt += 1;
-      AvailableVotesCnt -= 1;
+  //     VotesCnt += 1;
+  //     TotalVotesCnt += 1;
+  //     AvailableVotesCnt -= 1;
 
-      // 'vote' 컬렉션에서 create_at을 기준으로 내림차순으로 정렬하여 첫 번째 문서 가져오기
-      const q = query(
-        collection(db, "vote"),
-        orderBy("create_at", "desc"),
-        limit(1)
-      );
-      const querySnapshot = await getDocs(q);
+  //     // 'vote' 컬렉션에서 create_at을 기준으로 내림차순으로 정렬하여 첫 번째 문서 가져오기
+  //     const q = query(
+  //       collection(db, "vote"),
+  //       orderBy("create_at", "desc"),
+  //       limit(1)
+  //     );
+  //     const querySnapshot = await getDocs(q);
 
-      // 가져온 문서의 ID 또는 경로를 사용하여 문서 참조
-      if (!querySnapshot.empty) {
-        const latestDoc = querySnapshot.docs[0];
-        const voteDocRef = doc(db, "vote", latestDoc.id);
+  //     // 가져온 문서의 ID 또는 경로를 사용하여 문서 참조
+  //     if (!querySnapshot.empty) {
+  //       const latestDoc = querySnapshot.docs[0];
+  //       const voteDocRef = doc(db, "vote", latestDoc.id);
 
-        // 문서 업데이트
-        await updateDoc(voteDocRef, {
-          vote_list: votes[0].vote_list.map((item, index) =>
-            index === selectedItemIndex
-              ? { ...item, votes_cnt: VotesCnt }
-              : item
-          ),
-          total_votes_cnt: TotalVotesCnt,
-          available_votes_cnt: AvailableVotesCnt,
-          already_voters: user?.uid,
-        });
-        alert("투표 성공했어!");
-        setSelectedItemIndex(null);
-        navigate(0);
+  //       // 문서 업데이트
+  //       await updateDoc(voteDocRef, {
+  //         vote_list: votes[0].vote_list.map((item, index) =>
+  //           index === selectedItemIndex
+  //             ? { ...item, votes_cnt: VotesCnt }
+  //             : item
+  //         ),
+  //         total_votes_cnt: TotalVotesCnt,
+  //         available_votes_cnt: AvailableVotesCnt,
+  //         already_voters: user?.uid,
+  //       });
+  //       alert("투표 성공했어!");
+  //       setSelectedItemIndex(null);
+  //       navigate(0);
 
-        return;
-      }
-    }
-    alert("선택된 index가 없습니다!");
-  };
+  //       return;
+  //     }
+  //   }
+  //   alert("선택된 index가 없습니다!");
+  // };
 
   useEffect(() => {
     fetchVotes();
@@ -303,6 +342,38 @@ export default function Home() {
 
   const clickSurvey = () => {
     navigate("/vote-register");
+  };
+
+  const clickVoteComplete = () => {
+    setIsShowAlertComplete(true);
+  };
+
+  const onVoteComplete = async () => {
+    const q = query(
+      collection(db, "vote"),
+      orderBy("create_at", "desc"),
+      limit(1)
+    );
+    const querySnapshot = await getDocs(q);
+
+    // 가져온 문서의 ID 또는 경로를 사용하여 문서 참조
+    if (!querySnapshot.empty) {
+      const latestDoc = querySnapshot.docs[0];
+      const voteDocRef = doc(db, "vote", latestDoc.id);
+
+      const highestVote = voteList.reduce(
+        (prev, current) =>
+          current.votes_cnt > prev.votes_cnt ? current : prev,
+        { name: "", votes_cnt: -1 }
+      );
+
+      // 문서 업데이트
+      await updateDoc(voteDocRef, {
+        is_complete: true,
+        vote_winner: highestVote.name,
+      });
+      navigate(0);
+    }
   };
 
   const handleCopyClipBoard = async (text: string) => {
@@ -333,27 +404,34 @@ export default function Home() {
       <Header />
       {votes[0]?.user_id === user?.uid ? (
         <>
-          {votes[0].is_complete === false &&
-          votes[0]?.already_voters?.includes(user?.uid) ? (
+          {votes[0].is_complete === false ? (
             <>
               <Wrapper>
                 <CurrentVote>
                   <CurrentTitle>
                     오늘의 불개미 <br />
                     투표 현황입니다.
-                    <br />
                   </CurrentTitle>
                   <VoteResultList>
                     {votes[0]?.vote_list.map((item, index) => (
                       <VoteResult key={`item${index}`}>
                         <Content>
-                          <Name>{item.name}</Name>
-                          <VotesCnt>{item.votes_cnt}명</VotesCnt>
+                          <Name
+                            isVoteWinner={item.name === votes[0]?.vote_winner}
+                          >
+                            {item.name}
+                          </Name>
+                          <VotesCnt
+                            isVoteWinner={item.name === votes[0]?.vote_winner}
+                          >
+                            {item.votes_cnt}명
+                          </VotesCnt>
                         </Content>
                         <Bar>
                           <Fill
                             votesCnt={item.votes_cnt}
                             totalVotesCnt={votes[0].total_votes_cnt}
+                            isVoteWinner={item.name === votes[0]?.vote_winner}
                           />
                         </Bar>
                       </VoteResult>
@@ -363,11 +441,15 @@ export default function Home() {
                   <VoterContainer>
                     <Label>투표할 사람들</Label>
                     <MemberList>
-                      {voterList.map((member) => (
-                        <Member>{member}</Member>
+                      {voterList.map((member, index) => (
+                        <Member key={`member${index}`}>{member}</Member>
                       ))}
                     </MemberList>
                   </VoterContainer>
+                  <ButtonPrimary
+                    label={"투표 종료하기"}
+                    onClick={clickVoteComplete}
+                  />
                 </CurrentVote>
               </Wrapper>
               <BottomButton01
@@ -380,23 +462,42 @@ export default function Home() {
               <Wrapper>
                 <CurrentVote>
                   <CurrentTitle>
-                    오늘의 불개미를 <br />
-                    투표해주세요.
+                    {voteName} <br />
+                    투표 결과입니다.
+                    <br />
+                    우승자는 <b>{voteWinner}</b>입니다!!
                   </CurrentTitle>
-                  <Form>
+                  <VoteResultList>
                     {votes[0]?.vote_list.map((item, index) => (
-                      <VoteItem
-                        key={`item${index}`}
-                        onClick={() => setSelectedItemIndex(index)}
-                        isSelected={selectedItemIndex === index}
-                      >
-                        {item.name}
-                      </VoteItem>
+                      <VoteResult key={`item${index}`}>
+                        <Content>
+                          <Name
+                            isVoteWinner={item.name === votes[0]?.vote_winner}
+                          >
+                            {item.name}
+                          </Name>
+                          <VotesCnt
+                            isVoteWinner={item.name === votes[0]?.vote_winner}
+                          >
+                            {item.votes_cnt}명
+                          </VotesCnt>
+                        </Content>
+                        <Bar>
+                          <Fill
+                            votesCnt={item.votes_cnt}
+                            totalVotesCnt={votes[0].total_votes_cnt}
+                            isVoteWinner={item.name === votes[0]?.vote_winner}
+                          />
+                        </Bar>
+                      </VoteResult>
                     ))}
-                  </Form>
+                  </VoteResultList>
                 </CurrentVote>
               </Wrapper>
-              <BottomButton01 label={"투표하기"} onClick={onRegister} />
+              <BottomButton01
+                label={"새로운 투표 만들기"}
+                onClick={clickSurvey}
+              />
             </>
           )}
         </>
@@ -426,6 +527,23 @@ export default function Home() {
         </>
       )}
       {isToast && <Toast message={"클립보드에 복사되었습니다."} />}
+      {isShowAlertComplete && (
+        <Alert
+          message={"정말 투표를 종료하실건가요?"}
+          buttons={[
+            <ButtonSecondary
+              label={"취소"}
+              onClick={() => setIsShowAlertComplete(false)}
+              isWidthFull
+            />,
+            <ButtonPrimary
+              label={"종료하기"}
+              onClick={onVoteComplete}
+              isWidthFull
+            />,
+          ]}
+        />
+      )}
     </>
   );
 }

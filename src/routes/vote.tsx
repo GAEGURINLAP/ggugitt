@@ -4,7 +4,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import { auth, db } from "../firebase";
-import { collection, getDocs, query, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  updateDoc,
+} from "firebase/firestore";
 
 import BottomButton01 from "../component/BottomButon01";
 import { IVoteList } from "./vote-register/candidate";
@@ -137,7 +144,11 @@ export default function Vote() {
   const user = auth.currentUser;
 
   const fetchVotes = async () => {
-    const q = query(collection(db, "vote"));
+    const q = query(
+      collection(db, "vote"),
+      orderBy("create_at", "desc"),
+      limit(1)
+    );
     console.log("q??", q);
 
     const snapshot = await getDocs(q);
@@ -251,7 +262,11 @@ export default function Vote() {
       TotalVotesCnt += 1;
       AvailableVotesCnt -= 1;
 
-      const q = query(collection(db, "vote"));
+      const q = query(
+        collection(db, "vote"),
+        orderBy("create_at", "desc"),
+        limit(1)
+      );
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
@@ -384,6 +399,18 @@ export default function Vote() {
             <ButtonPrimary
               label={"투표하기"}
               onClick={onRegister}
+              isWidthFull
+            />,
+          ]}
+        />
+      )}
+      {vote?.is_complete && (
+        <Alert
+          message={"종료된 투표입니다!"}
+          buttons={[
+            <ButtonPrimary
+              label={"확인"}
+              onClick={() => navigate("/")}
               isWidthFull
             />,
           ]}
