@@ -102,6 +102,7 @@ export default function Login() {
           <ButtonPrimary
             label={isLoading ? "Loading..." : "로그인"}
             isRadiusFull
+            isWidthFull
           />
         </Form>
         <Switcher>

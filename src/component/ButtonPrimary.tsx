@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 const Wrapper = styled.button<ButtonProps>`
-  width: ${(props) => props.isWidthFull && "100%"};
+  width: ${(props) => (props.isWidthFull ? "100%" : "fit-content")};
   min-width: 120px;
   height: ${(props) => (props.size === "Large" ? "64px" : "48px")};
   padding: 0 24px;

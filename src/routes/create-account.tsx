@@ -126,6 +126,7 @@ export default function CreateAccount() {
           <ButtonPrimary
             label={isLoading ? "Loading..." : "회원가입"}
             isRadiusFull
+            isWidthFull
           />
         </Form>
         <Switcher>

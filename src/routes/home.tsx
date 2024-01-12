@@ -19,10 +19,13 @@ import BottomButton01 from "../component/BottomButon01";
 
 import { IVoteList } from "./vote-register/candidate";
 
+import ButtonPrimary from "../component/ButtonPrimary";
+import Toast from "../component/Toast";
+
 const Wrapper = styled.div`
   padding: 0 24px;
   padding-top: 120px;
-  height: 100%;
+  height: 100vh;
   padding-bottom: 80px;
 `;
 
@@ -45,10 +48,15 @@ export const CurrentTitle = styled.h1`
 `;
 
 export const CurrentVote = styled.div`
-  margin-top: 48px;
+  /* margin-top: 48px; */
   display: flex;
   flex-direction: column;
   gap: 24px;
+`;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 export const VoteTitle = styled.h2`
@@ -134,6 +142,7 @@ interface VoteItemProps {
 export interface IVote {
   user_id: string;
   user_name: string;
+  vote_id: number;
   vote_list: IVoteList[];
   vote_name: string;
   total_votes_cnt: number;
@@ -146,6 +155,7 @@ export interface IVote {
 
 export default function Home() {
   const [votes, setVotes] = useState<IVote[]>([]);
+  const [voteID, setVoteID] = useState();
 
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
     null
@@ -155,6 +165,9 @@ export default function Home() {
   console.log("user(currentUser):", user);
 
   const navigate = useNavigate();
+
+  const [isToast, setIsToast] = useState(false);
+  const baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
   const fetchVotes = async () => {
     const votesQuery = query(
@@ -167,6 +180,7 @@ export default function Home() {
       const {
         user_id,
         user_name,
+        vote_id,
         vote_list,
         vote_name,
         total_votes_cnt,
@@ -178,6 +192,7 @@ export default function Home() {
       return {
         user_id,
         user_name,
+        vote_id: vote_id,
         vote_list,
         vote_name,
         total_votes_cnt,
@@ -189,6 +204,8 @@ export default function Home() {
       };
     });
     setVotes(votes);
+    const voteID = snapshot.docs.pop()?.data().vote_id;
+    setVoteID(voteID);
     console.log("votes??", votes);
   };
 
@@ -245,6 +262,29 @@ export default function Home() {
     navigate("/vote-register");
   };
 
+  const handleCopyClipBoard = async (text: string) => {
+    try {
+      setIsToast(true);
+      await navigator.clipboard.writeText(text);
+    } catch (err) {
+      console.log(err);
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (isToast) {
+      timeout = setTimeout(() => {
+        setIsToast(false);
+      }, 1200);
+    }
+
+    return () => {
+      clearTimeout(timeout); // 컴포넌트가 unmount되거나 상태가 업데이트되면 타이머를 클리어
+    };
+  }, [isToast]);
+
   return (
     <>
       <Header />
@@ -258,6 +298,7 @@ export default function Home() {
                   <CurrentTitle>
                     오늘의 불개미 <br />
                     투표 현황입니다.
+                    <br />
                   </CurrentTitle>
                   <VoteResultList>
                     {votes[0]?.vote_list.map((item, index) => (
@@ -275,8 +316,20 @@ export default function Home() {
                       </VoteResult>
                     ))}
                   </VoteResultList>
+                  {/* <ButtonWrapper>
+                    <ButtonPrimary
+                      label={"투표 링크 공유하기"}
+                      onClick={() =>
+                        handleCopyClipBoard(`${baseURL}/vote/${voteID}`)
+                      }
+                    />
+                  </ButtonWrapper> */}
                 </CurrentVote>
               </Wrapper>
+              <BottomButton01
+                label={"투표 링크 공유하기"}
+                onClick={() => handleCopyClipBoard(`${baseURL}/vote/${voteID}`)}
+              />
             </>
           ) : (
             <>
@@ -328,6 +381,7 @@ export default function Home() {
           <BottomButton01 label={"투표 만들기"} onClick={clickSurvey} />
         </>
       )}
+      {isToast && <Toast message={"클립보드에 복사되었습니다."} />}
     </>
   );
 }

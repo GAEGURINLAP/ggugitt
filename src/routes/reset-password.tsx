@@ -72,6 +72,7 @@ export default function ForgotPassword() {
           <ButtonPrimary
             label={isLoading ? "Loading..." : "비밀번호 재설정"}
             isRadiusFull
+            isWidthFull
           />
         </Form>
       </Wrapper>

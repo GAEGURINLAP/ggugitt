@@ -7,7 +7,7 @@ const fadeInToast = keyframes`
     opacity: 0;
   }
   to {
-    bottom: 120px;
+    bottom: 144px;
     opacity: 1;
   }
 `;
@@ -27,14 +27,17 @@ export const Container = styled.div`
 
 export const Wrapper = styled.div`
   position: relative;
-  bottom: 120px;
+  bottom: 144px;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 24px;
   border-radius: 8px;
   width: fit-content;
+  /* background-color: #f7f7f7; */
   background-color: var(--main);
+  /* color: var(--white); */
+  box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.08);
   animation: ${fadeInToast} 0.4s ease forwards,
     ${fadeOutToast} 0.4s ease 0.8s forwards;
   z-index: 9999;
