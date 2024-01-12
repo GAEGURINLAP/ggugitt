@@ -19,9 +19,11 @@ import global from "./style/global";
 import ResetPaswrd from "./routes/reset-password";
 import Splash from "./component/Splash";
 
-import VoteRegister from "./routes/vote-register";
-import Vote from "./routes/vote";
 import NotFound from "./routes/not-found";
+import Vote from "./routes/vote";
+import VoterRegister from "./routes/vote-register/voter";
+import CandidateRegister from "./routes/vote-register/candidate";
+import IndexRegister from "./routes/vote-register";
 
 const router = createBrowserRouter([
   {
@@ -48,8 +50,25 @@ const router = createBrowserRouter([
   },
   { path: "/create-account", element: <CreateAccount /> },
   { path: "/reset-password", element: <ResetPaswrd /> },
-  { path: "/vote-register", element: <VoteRegister /> },
-  { path: "/vote", element: <Vote /> },
+  {
+    path: "/vote-register",
+    element: (
+      <ProtectedRoute>
+        <IndexRegister />
+      </ProtectedRoute>
+    ),
+    children: [
+      {
+        path: "",
+        element: <VoterRegister />,
+      },
+      {
+        path: "/vote-register/candidate",
+        element: <CandidateRegister />,
+      },
+    ],
+  },
+  // { path: "/vote", element: <Vote /> },
   { path: "/vote/:id", element: <Vote /> },
   {
     path: "*",

@@ -7,7 +7,7 @@ import { auth, db } from "../firebase";
 import { collection, getDocs, query, updateDoc } from "firebase/firestore";
 
 import BottomButton01 from "../component/BottomButon01";
-import { IVoteList } from "./vote-register";
+import { IVoteList } from "./vote-register/candidate";
 import Alert from "../component/Alert";
 import ButtonSecondary from "../component/ButtonSecondary";
 import ButtonPrimary from "../component/ButtonPrimary";

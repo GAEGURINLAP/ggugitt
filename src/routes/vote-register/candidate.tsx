@@ -1,18 +1,19 @@
 import styled from "@emotion/styled";
 
 import { addDoc, collection, getDocs } from "firebase/firestore";
-import { auth, db } from "../firebase";
+import { auth, db } from "../../firebase";
 
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 
-import LoadingScreen from "../component/LoadingScreen";
-import BottomButton02 from "../component/BottomButon02";
-import Success from "../component/Success";
-import Alert from "../component/Alert";
-import ButtonSecondary from "../component/ButtonSecondary";
-import ButtonPrimary from "../component/ButtonPrimary";
-import Toast from "../component/Toast";
+import LoadingScreen from "../../component/LoadingScreen";
+import BottomButton02 from "../../component/BottomButon02";
+import Success from "../../component/Success";
+import Alert from "../../component/Alert";
+import ButtonSecondary from "../../component/ButtonSecondary";
+import ButtonPrimary from "../../component/ButtonPrimary";
+import Toast from "../../component/Toast";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -98,12 +99,16 @@ export interface IVoteList {
   votes_cnt: number;
 }
 
-export default function VoteRegister() {
+export default function CandidateRegister() {
   const [voteList, setVoteList] = useState<IVoteList[]>([]);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { voterList } = location.state || {};
 
   console.log("초기 voteList는?", voteList);
 
-  const [isLoading, setLoading] = useState(false);
   const [isShowAlert, setIsShowAlert] = useState(false);
   const [isShowAlreadyAlert, setIsShowAlreadyAlert] = useState(false);
 
@@ -134,6 +139,7 @@ export default function VoteRegister() {
       await addDoc(collection(db, "vote"), {
         vote_id: voteID,
         vote_list: voteList,
+        voter_list: voterList,
         vote_name: `${formattedDate}의 불개미 MVP는?`,
         total_votes_cnt: 0,
         available_votes_cnt: 11,
@@ -206,6 +212,10 @@ export default function VoteRegister() {
     deleteItem(item);
   };
 
+  const clickNavigateVoter = () => {
+    navigate("/vote-register");
+  };
+
   const {
     register,
     handleSubmit,
@@ -215,7 +225,6 @@ export default function VoteRegister() {
 
   return (
     <>
-      {isLoading && <LoadingScreen />}
       {isComplete ? (
         <Success
           message={"투표 등록이 완료 되었습니다!"}
@@ -304,6 +313,18 @@ export default function VoteRegister() {
               onClick02={clickRegister}
               label01={"추가하기"}
               label02={"등록하기"}
+            />
+          )}
+          {voteList.length === 0 && (
+            <Alert
+              message={"팀원을 먼저 등록해주세요!"}
+              buttons={[
+                <ButtonPrimary
+                  label={"등록하러 가기"}
+                  onClick={clickNavigateVoter}
+                  isWidthFull
+                />,
+              ]}
             />
           )}
         </>

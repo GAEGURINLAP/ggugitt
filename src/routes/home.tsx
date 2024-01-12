@@ -17,7 +17,7 @@ import {
 import Header from "../component/Header";
 import BottomButton01 from "../component/BottomButon01";
 
-import { IVoteList } from "./vote-register";
+import { IVoteList } from "./vote-register/candidate";
 
 const Wrapper = styled.div`
   padding: 0 24px;
