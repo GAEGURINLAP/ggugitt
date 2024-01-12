@@ -134,6 +134,41 @@ const Fill = styled.div<{ votesCnt: number; totalVotesCnt: number }>`
   background-color: #b0b7be;
 `;
 
+export const VoterContainer = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  /* align-items: end; */
+  gap: 8px;
+`;
+
+export const Label = styled.h3`
+  font-size: 14px;
+  color: #525252;
+`;
+
+export const MemberList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 8px;
+`;
+
+export const Member = styled.div`
+  display: flex;
+  padding: 2px 12px;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  line-height: 32px;
+  background-color: #ededed;
+  border-radius: 100px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-use-select: none;
+  user-select: none;
+`;
+
 interface VoteItemProps {
   isSelected: boolean;
 }
@@ -143,6 +178,7 @@ export interface IVote {
   user_name: string;
   vote_id: number;
   vote_list: IVoteList[];
+  voter_list: string[];
   vote_name: string;
   total_votes_cnt: number;
   available_votes_cnt: number;
@@ -155,6 +191,7 @@ export interface IVote {
 export default function Home() {
   const [votes, setVotes] = useState<IVote[]>([]);
   const [voteID, setVoteID] = useState();
+  const [voterList, setVoterList] = useState<string[]>([]);
 
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
     null
@@ -181,6 +218,7 @@ export default function Home() {
         user_name,
         vote_id,
         vote_list,
+        voter_list,
         vote_name,
         total_votes_cnt,
         available_votes_cnt,
@@ -193,6 +231,7 @@ export default function Home() {
         user_name,
         vote_id: vote_id,
         vote_list,
+        voter_list,
         vote_name,
         total_votes_cnt,
         available_votes_cnt,
@@ -204,7 +243,9 @@ export default function Home() {
     });
     setVotes(votes);
     const voteID = snapshot.docs.pop()?.data().vote_id;
+    const voterList = snapshot.docs.pop()?.data().voter_list;
     setVoteID(voteID);
+    setVoterList(voterList);
     console.log("votes??", votes);
   };
 
@@ -315,14 +356,15 @@ export default function Home() {
                       </VoteResult>
                     ))}
                   </VoteResultList>
-                  {/* <ButtonWrapper>
-                    <ButtonPrimary
-                      label={"투표 링크 공유하기"}
-                      onClick={() =>
-                        handleCopyClipBoard(`${baseURL}/vote/${voteID}`)
-                      }
-                    />
-                  </ButtonWrapper> */}
+
+                  <VoterContainer>
+                    <Label>투표할 사람들</Label>
+                    <MemberList>
+                      {voterList.map((member) => (
+                        <Member>{member}</Member>
+                      ))}
+                    </MemberList>
+                  </VoterContainer>
                 </CurrentVote>
               </Wrapper>
               <BottomButton01
