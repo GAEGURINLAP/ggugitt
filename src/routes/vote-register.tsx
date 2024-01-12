@@ -4,7 +4,7 @@ import { addDoc, collection, getDocs } from "firebase/firestore";
 import { auth, db } from "../firebase";
 
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import LoadingScreen from "../component/LoadingScreen";
 import BottomButton02 from "../component/BottomButon02";
@@ -12,7 +12,7 @@ import Success from "../component/Success";
 import Alert from "../component/Alert";
 import ButtonSecondary from "../component/ButtonSecondary";
 import ButtonPrimary from "../component/ButtonPrimary";
-import { useLocation } from "react-router-dom";
+import Toast from "../component/Toast";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -107,8 +107,7 @@ export default function VoteRegister() {
   const [isComplete, setIsComplete] = useState(false);
   const [isShowAlert, setIsShowAlert] = useState(false);
   const [voteId, setVoteId] = useState();
-
-  const location = useLocation();
+  const [isToast, setIsToast] = useState(false);
 
   const baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
@@ -164,12 +163,26 @@ export default function VoteRegister() {
 
   const handleCopyClipBoard = async (text: string) => {
     try {
+      setIsToast(true);
       await navigator.clipboard.writeText(text);
-      alert("클립보드에 링크가 복사되었어요.");
     } catch (err) {
       console.log(err);
+    } finally {
     }
   };
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (isToast) {
+      timeout = setTimeout(() => {
+        setIsToast(false);
+      }, 1200); // 2초 후에 자동으로 감추기 (원하는 시간으로 조절 가능)
+    }
+
+    return () => {
+      clearTimeout(timeout); // 컴포넌트가 unmount되거나 상태가 업데이트되면 타이머를 클리어
+    };
+  }, [isToast]);
 
   const clickAddItem = () => {
     handleSubmit(addItem)();
@@ -302,6 +315,7 @@ export default function VoteRegister() {
           ]}
         />
       )}
+      {isToast && <Toast message={"클립보드에 복사되었습니다."} />}
     </>
   );
 }
