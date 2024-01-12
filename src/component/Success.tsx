@@ -5,7 +5,7 @@ interface SuccessProps {
   message: string;
   label?: string;
   isShowButton?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export default function Success({

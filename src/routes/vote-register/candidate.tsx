@@ -285,7 +285,7 @@ export default function CandidateRegister() {
                 {errors.name && <Error>{errors.name.message}</Error>}
               </div>
               <VoteWrapper>
-                {voteList.map((item, index) => (
+                {voteList?.map((item, index) => (
                   <VoteItem key={`item${index}`}>
                     <VoteContent>
                       {item.name}
@@ -301,27 +301,33 @@ export default function CandidateRegister() {
               </VoteWrapper>
             </FormContainer>
             <VoterContainer>
-              <Label>투표할 사람들</Label>
+              <Label>등록한 팀원</Label>
               <MemberList>
-                {voterList?.map((member: string) => (
-                  <Member>{member}</Member>
+                {voterList?.map((member: string, index: number) => (
+                  <Member key={`member${index}`}>{member}</Member>
                 ))}
               </MemberList>
             </VoterContainer>
           </Wrapper>
           {voteList.length === 0 ? (
             <BottomButton02
-              onClick01={clickAddItem}
-              isDisabled
               label01={"추가하기"}
               label02={"등록하기"}
+              onClick01={handleSubmit((data) => {
+                addItem(data);
+                reset();
+              })}
+              isDisabled
             />
           ) : (
             <BottomButton02
-              onClick01={clickAddItem}
-              onClick02={clickRegister}
               label01={"추가하기"}
               label02={"등록하기"}
+              onClick01={handleSubmit((data) => {
+                addItem(data);
+                reset();
+              })}
+              onClick02={clickRegister}
             />
           )}
           {!voterList && (

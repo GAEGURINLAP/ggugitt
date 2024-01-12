@@ -242,10 +242,13 @@ export default function Home() {
       };
     });
     setVotes(votes);
+
     const voteID = snapshot.docs.pop()?.data().vote_id;
-    const voterList = snapshot.docs.pop()?.data().voter_list;
     setVoteID(voteID);
+
+    const voterList = snapshot.docs.pop()?.data().voter_list;
     setVoterList(voterList);
+
     console.log("votes??", votes);
   };
 

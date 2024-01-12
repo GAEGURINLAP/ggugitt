@@ -1,14 +1,13 @@
 import styled from "@emotion/styled";
 
-import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
-import LoadingScreen from "../../component/LoadingScreen";
 import BottomButton02 from "../../component/BottomButon02";
 import Alert from "../../component/Alert";
 import ButtonSecondary from "../../component/ButtonSecondary";
 import ButtonPrimary from "../../component/ButtonPrimary";
-import { useNavigate } from "react-router-dom";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -217,17 +216,23 @@ export default function VoterRegister() {
         </Wrapper>
         {voterList.length === 0 ? (
           <BottomButton02
-            onClick01={clickAddItem}
-            isDisabled
             label01={"추가하기"}
+            onClick01={handleSubmit((data) => {
+              addItem(data);
+              reset();
+            })}
             label02={"등록하기"}
+            isDisabled
           />
         ) : (
           <BottomButton02
-            onClick01={clickAddItem}
-            onClick02={clickRegister}
             label01={"추가하기"}
             label02={"등록하기"}
+            onClick01={handleSubmit((data) => {
+              addItem(data);
+              reset();
+            })}
+            onClick02={clickRegister}
           />
         )}
       </>
