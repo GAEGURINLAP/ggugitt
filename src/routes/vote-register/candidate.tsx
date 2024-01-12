@@ -101,6 +101,7 @@ export interface IVoteList {
 
 export default function CandidateRegister() {
   const [voteList, setVoteList] = useState<IVoteList[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -134,7 +135,7 @@ export default function CandidateRegister() {
     const voteID = (lastVoteDoc?.data().vote_id || 0) + 1;
 
     try {
-      setLoading(true);
+      setIsLoading(true);
       setIsShowAlert(false);
       await addDoc(collection(db, "vote"), {
         vote_id: voteID,
@@ -152,10 +153,10 @@ export default function CandidateRegister() {
       setVoteId(voteID);
     } catch (e) {
       console.log(e);
-      setLoading(false);
+      setIsLoading(false);
     } finally {
       setIsComplete(true);
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -225,6 +226,7 @@ export default function CandidateRegister() {
 
   return (
     <>
+      {isLoading && <LoadingScreen />}
       {isComplete ? (
         <Success
           message={"투표 등록이 완료 되었습니다!"}
@@ -315,7 +317,7 @@ export default function CandidateRegister() {
               label02={"등록하기"}
             />
           )}
-          {voteList.length === 0 && (
+          {voterList.length === 0 && (
             <Alert
               message={"팀원을 먼저 등록해주세요!"}
               buttons={[
