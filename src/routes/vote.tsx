@@ -13,6 +13,17 @@ import ButtonSecondary from "../component/ButtonSecondary";
 import ButtonPrimary from "../component/ButtonPrimary";
 import Success from "../component/Success";
 
+import {
+  Error,
+  Form,
+  FormContainer,
+  FormWrapper,
+  Input,
+} from "./vote-register/voter";
+
+import { useForm } from "react-hook-form";
+import Toast from "../component/Toast";
+
 const Wrapper = styled.div`
   padding: 0 24px;
   padding-top: 120px;
@@ -41,12 +52,13 @@ export const VoteTitle = styled.h2`
   font-size: 24px;
 `;
 
-export const Form = styled.form`
+export const VoteForm = styled.form`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   gap: 8px;
 `;
+
 export const VoteItem = styled.div<VoteItemProps>`
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -85,6 +97,7 @@ export interface IVote {
   user_name: string;
   vote_id: number;
   vote_list: IVoteList[];
+  voter_list: string[];
   vote_name: string;
   total_votes_cnt: number;
   available_votes_cnt: number;
@@ -100,6 +113,19 @@ export default function Vote() {
 
   const [isShowAlertVote, setShowAlertVote] = useState(false);
   const [isShowAlertConfirm, setShowAlertConfirm] = useState(false);
+  const [isShowAlertVoterFail, setIsShowAlertVoterFail] = useState(false);
+
+  const [isToast, setIsToast] = useState(false);
+
+  const baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
+
+  const [voterList, setVoterList] = useState<string[]>([]);
+
+  const [voterName, setVoterName] = useState("");
+
+  const [isVoter, setIsVoter] = useState(false);
+
+  const [voteID, setVoteID] = useState(false);
 
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
     null
@@ -123,6 +149,7 @@ export default function Vote() {
         user_name,
         vote_id,
         vote_list,
+        voter_list,
         vote_name,
         total_votes_cnt,
         available_votes_cnt,
@@ -135,6 +162,7 @@ export default function Vote() {
         user_name,
         vote_id,
         vote_list,
+        voter_list,
         vote_name,
         total_votes_cnt,
         available_votes_cnt,
@@ -146,12 +174,28 @@ export default function Vote() {
     });
     const newVote = votes.find((vote) => vote.vote_id == id);
 
+    const voteID = snapshot.docs.pop()?.data().vote_id;
+    setVoteID(voteID);
+
     if (!newVote) {
       navigate("/not-found");
     }
 
     setVote(newVote);
+
+    const voterList = snapshot.docs.pop()?.data().voter_list;
+    setVoterList(voterList);
   };
+
+  interface IFormInput {
+    name: string;
+  }
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInput>();
 
   console.log("vote??", vote);
 
@@ -159,6 +203,39 @@ export default function Vote() {
     setShowAlertVote(true);
   };
 
+  const clickConfim = async (data: IFormInput) => {
+    const { name } = data;
+
+    if (voterList.some((item) => item === name)) {
+      setIsVoter(true);
+      setVoterName(name);
+    } else {
+      setIsShowAlertVoterFail(true);
+    }
+  };
+
+  const handleCopyClipBoard = async (text: string) => {
+    try {
+      setIsToast(true);
+      await navigator.clipboard.writeText(text);
+    } catch (err) {
+      console.log(err);
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (isToast) {
+      timeout = setTimeout(() => {
+        setIsToast(false);
+      }, 1200);
+    }
+
+    return () => {
+      clearTimeout(timeout); // 컴포넌트가 unmount되거나 상태가 업데이트되면 타이머를 클리어
+    };
+  }, [isToast]);
   // const clickVoteConfirm = () => {
   //   setShowAlertConfirm(true);
   // };
@@ -207,61 +284,14 @@ export default function Vote() {
 
   return (
     <>
-      {/* {isShowAlertConfirm ? (
-        <>
-          <Wrapper>
-            <CurrentVote>
-              <CurrentTitle>
-                오늘의 불개미를 {id} <br />
-                투표해주세요.
-              </CurrentTitle>
-              <Form>
-                {vote?.vote_list.map((item, index) => (
-                  <VoteItem
-                    key={`item${index}`}
-                    onClick={() => setSelectedItemIndex(index)}
-                    isSelected={selectedItemIndex === index}
-                  >
-                    {item.name}
-                  </VoteItem>
-                ))}
-              </Form>
-            </CurrentVote>
-          </Wrapper>
-          {selectedItemIndex === null ? (
-            <BottomButton01 label={"투표하기"} isDisabled />
-          ) : (
-            <BottomButton01 label={"투표하기"} onClick={clickVote} />
-          )}
-        </>
-      ) : (
-        <Success>
-          <SuccessIcon>
-            <img
-              src="/images/icon/common/icon-check-circle-64.svg"
-              alt="체크 아이콘"
-              width={64}
-              height={64}
-            />
-          </SuccessIcon>
-          <SuccessText> 투표가 완료되었습니다!</SuccessText>
-        </Success>
-      )} */}
-
       {isShowAlertConfirm ? (
-        // <Success>
-        //   <SuccessIcon>
-        //     <img
-        //       src="/images/icon/common/icon-check-circle-64.svg"
-        //       alt="체크 아이콘"
-        //       width={64}
-        //       height={64}
-        //     />
-        //   </SuccessIcon>
-        //   <SuccessText> 투표가 완료되었습니다!</SuccessText>
-        // </Success>
-        <Success message={"투표가 완료되었습니다!"} />
-      ) : (
+        <Success
+          message={"투표 완료 되었습니다!"}
+          label="다른 팀원 투표 강요하기"
+          isShowButton
+          onClick={() => handleCopyClipBoard(`${baseURL}/vote/${voteID}`)}
+        />
+      ) : isVoter ? (
         <>
           <Wrapper>
             <CurrentVote>
@@ -269,7 +299,7 @@ export default function Vote() {
                 <b>{id}</b>번째 불개미를 <br />
                 투표해주세요.
               </CurrentTitle>
-              <Form>
+              <VoteForm>
                 {vote?.vote_list.map((item, index) => (
                   <VoteItem
                     key={`item${index}`}
@@ -279,7 +309,7 @@ export default function Vote() {
                     {item.name}
                   </VoteItem>
                 ))}
-              </Form>
+              </VoteForm>
             </CurrentVote>
           </Wrapper>
           {selectedItemIndex === null ? (
@@ -288,8 +318,61 @@ export default function Vote() {
             <BottomButton01 label={"투표하기"} onClick={clickVote} />
           )}
         </>
+      ) : (
+        <>
+          <Wrapper>
+            <CurrentVote>
+              <CurrentTitle>
+                투표자 이름을 <br />
+                입력해주세요.
+              </CurrentTitle>
+              <FormContainer>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <Form onSubmit={handleSubmit(clickConfim)}>
+                    <FormWrapper>
+                      <Input
+                        {...register("name", {
+                          required: true,
+                          pattern: {
+                            value: /^[^a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]*$/,
+                            message:
+                              "특수문자,공백,숫자,영문은 입력이 불가능합니다.",
+                          },
+                          minLength: {
+                            value: 2,
+                            message: "이름은 2자 이상이어야 합니다.",
+                          },
+                          maxLength: {
+                            value: 10,
+                            message: "이름은 10자를 초과할 수 없습니다.",
+                          },
+                        })}
+                        placeholder="팀원 이름을 입력해주세요"
+                      />
+                    </FormWrapper>
+                  </Form>
+                  {errors.name && <Error>{errors.name.message}</Error>}
+                </div>
+              </FormContainer>
+            </CurrentVote>
+          </Wrapper>
+          <BottomButton01 onClick={handleSubmit(clickConfim)} label={"확인"} />
+        </>
       )}
 
+      {isShowAlertVoterFail && (
+        <Alert
+          message={"투표권이 없는 이름입니다! ㅠㅠ"}
+          buttons={[
+            <ButtonPrimary
+              label={"다시 입력"}
+              onClick={() => setIsShowAlertVoterFail(false)}
+              isWidthFull
+            />,
+          ]}
+        />
+      )}
+      {isToast && <Toast message={"클립보드에 복사되었습니다."} />}
       {isShowAlertVote && (
         <Alert
           message={"선택한 팀원으로 투표 하시겠습니까?"}
@@ -307,14 +390,6 @@ export default function Vote() {
           ]}
         />
       )}
-      {/* {isShowAlertConfirm && (
-        <Alert
-          message={"투표가 완료되었습니다!"}
-          buttons={[
-            <ButtonPrimary label={"확인"} onClick={onRegister} isWidthFull />,
-          ]}
-        />
-      )} */}
     </>
   );
 }
