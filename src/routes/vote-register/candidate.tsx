@@ -14,6 +14,7 @@ import ButtonSecondary from "../../component/ButtonSecondary";
 import ButtonPrimary from "../../component/ButtonPrimary";
 import Toast from "../../component/Toast";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Label, Member, MemberList, VoterContainer } from "../home";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -299,6 +300,14 @@ export default function CandidateRegister() {
                 ))}
               </VoteWrapper>
             </FormContainer>
+            <VoterContainer>
+              <Label>투표할 사람들</Label>
+              <MemberList>
+                {voterList?.map((member: string) => (
+                  <Member>{member}</Member>
+                ))}
+              </MemberList>
+            </VoterContainer>
           </Wrapper>
           {voteList.length === 0 ? (
             <BottomButton02
@@ -315,7 +324,7 @@ export default function CandidateRegister() {
               label02={"등록하기"}
             />
           )}
-          {voterList.length === 0 && (
+          {!voterList && (
             <Alert
               message={"팀원을 먼저 등록해주세요!"}
               buttons={[
