@@ -27,6 +27,7 @@ export default function IndexRegister() {
       const {
         user_id,
         user_name,
+        vote_id,
         vote_list,
         vote_name,
         total_votes_cnt,
@@ -38,6 +39,7 @@ export default function IndexRegister() {
       return {
         user_id,
         user_name,
+        vote_id,
         vote_list,
         vote_name,
         total_votes_cnt,

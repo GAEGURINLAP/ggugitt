@@ -19,7 +19,6 @@ import BottomButton01 from "../component/BottomButon01";
 
 import { IVoteList } from "./vote-register/candidate";
 
-import ButtonPrimary from "../component/ButtonPrimary";
 import Toast from "../component/Toast";
 
 const Wrapper = styled.div`

@@ -92,7 +92,6 @@ export const VoteContent = styled.div`
 export default function VoterRegister() {
   const [voterList, setVoterList] = useState<string[]>([]);
 
-  const [isLoading, setIsLoading] = useState(false);
   const [isShowAlert, setIsShowAlert] = useState(false);
   const [isShowAlreadyAlert, setIsShowAlreadyAlert] = useState(false);
 
