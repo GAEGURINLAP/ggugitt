@@ -68,7 +68,6 @@ export const VoteItem = styled.div<VoteItemProps>`
   -khtml-user-drag: none;
   -moz-user-drag: none;
   -o-user-drag: none;
-  user-drag: none;
   display: flex;
   padding: 4px 16px;
   justify-content: center;
@@ -121,7 +120,7 @@ export default function Vote() {
 
   const [voterList, setVoterList] = useState<string[]>([]);
 
-  const [voterName, setVoterName] = useState("");
+  // const [voterName, setVoterName] = useState("");
 
   const [isVoter, setIsVoter] = useState(false);
 
@@ -208,7 +207,7 @@ export default function Vote() {
 
     if (voterList.some((item) => item === name)) {
       setIsVoter(true);
-      setVoterName(name);
+      // setVoterName(name);
     } else {
       setIsShowAlertVoterFail(true);
     }

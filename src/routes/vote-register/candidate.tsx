@@ -202,9 +202,9 @@ export default function CandidateRegister() {
     };
   }, [isToast]);
 
-  const clickAddItem = () => {
-    handleSubmit(addItem)();
-  };
+  // const clickAddItem = () => {
+  //   handleSubmit(addItem)();
+  // };
 
   const clickRegister = () => {
     setIsShowAlert(true);

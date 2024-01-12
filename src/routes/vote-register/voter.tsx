@@ -122,9 +122,9 @@ export default function VoterRegister() {
     setVoterList(updatedVoteItems);
   };
 
-  const clickAddItem = () => {
-    handleSubmit(addItem)();
-  };
+  // const clickAddItem = () => {
+  //   handleSubmit(addItem)();
+  // };
 
   const clickRegister = () => {
     setIsShowAlert(true);
