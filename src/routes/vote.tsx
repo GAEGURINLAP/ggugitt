@@ -31,6 +31,7 @@ import {
 
 import { useForm } from "react-hook-form";
 import Toast from "../component/Toast";
+import LoadingScreen from "../component/LoadingScreen";
 
 const Wrapper = styled.div`
   padding: 0 24px;
@@ -121,6 +122,7 @@ export default function Vote() {
   const [isShowAlertVote, setShowAlertVote] = useState(false);
   const [isShowAlertConfirm, setShowAlertConfirm] = useState(false);
   const [isShowAlertVoterFail, setIsShowAlertVoterFail] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isToast, setIsToast] = useState(false);
 
@@ -281,6 +283,9 @@ export default function Vote() {
 
       console.log("쿼리 스냅샷은 잘들어갔는가?", querySnapshot);
 
+      setShowAlertVote(false);
+      setIsLoading(true);
+
       if (!querySnapshot.empty) {
         try {
           const voteDocRef = querySnapshot.docs[0].ref;
@@ -296,15 +301,17 @@ export default function Vote() {
             already_voters: user?.uid || null,
           });
         } catch (err) {
+          setIsLoading(false);
           alert(err);
         } finally {
+          setIsLoading(false);
           setSelectedItemIndex(null);
           setShowAlertConfirm(true);
-          setShowAlertVote(false);
           return;
         }
       }
     }
+    setIsLoading(false);
     alert("선택된 index가 없습니다!");
   };
 
@@ -314,12 +321,13 @@ export default function Vote() {
 
   return (
     <>
+      {/* <LoadingScreen /> */}
       {isShowAlertConfirm ? (
         <Success
           message={"투표 완료 되었습니다!"}
           label="다른 팀원 투표 강요하기"
           isShowButton
-          onClick={() => handleCopyClipBoard(`${baseURL}/vote/${voteID}`)}
+          onClick={() => handleCopyClipBoard(`${baseURL}/vote/${NewID}`)}
         />
       ) : isVoter ? (
         <>
@@ -347,6 +355,8 @@ export default function Vote() {
           ) : (
             <BottomButton01 label={"투표하기"} onClick={clickVote} />
           )}
+
+          {isLoading && <LoadingScreen />}
         </>
       ) : (
         <>
