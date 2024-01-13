@@ -24,6 +24,7 @@ import Vote from "./routes/vote";
 import VoterRegister from "./routes/vote-register/voter";
 import CandidateRegister from "./routes/vote-register/candidate";
 import IndexRegister from "./routes/vote-register";
+import VoteResult from "./routes/vote-result";
 
 const router = createBrowserRouter([
   {
@@ -70,6 +71,7 @@ const router = createBrowserRouter([
   },
   // { path: "/vote", element: <Vote /> },
   { path: "/vote/:id", element: <Vote /> },
+  { path: "/vote-result/:id", element: <VoteResult /> },
   {
     path: "*",
     element: <NotFound />,

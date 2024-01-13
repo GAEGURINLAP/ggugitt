@@ -24,6 +24,7 @@ import Toast from "../component/Toast";
 import ButtonPrimary from "../component/ButtonPrimary";
 import Alert from "../component/Alert";
 import ButtonSecondary from "../component/ButtonSecondary";
+import BottomButton02 from "../component/BottomButon02";
 
 const Wrapper = styled.div`
   padding: 0 24px;
@@ -506,9 +507,13 @@ export default function Home() {
                   </VoteResultList>
                 </CurrentVote>
               </Wrapper>
-              <BottomButton01
-                label={"새로운 투표 만들기"}
-                onClick={clickSurvey}
+              <BottomButton02
+                label01={"투표 결과 공유하기"}
+                label02={"새로운 투표 만들기"}
+                onClick01={() =>
+                  handleCopyClipBoard(`${baseURL}/vote-result/${voteID}`)
+                }
+                onClick02={clickSurvey}
               />
             </>
           )}
