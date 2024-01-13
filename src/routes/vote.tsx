@@ -7,8 +7,8 @@ import { auth, db } from "../firebase";
 import {
   collection,
   getDocs,
-  limit,
-  orderBy,
+  // limit,
+  // orderBy,
   query,
   updateDoc,
   where,
@@ -126,7 +126,7 @@ export default function Vote() {
 
   const baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
-  const [voterList, setVoterList] = useState<string[]>([]);
+  // const [voterList, setVoterList] = useState<string[]>([]);
 
   // const [voterName, setVoterName] = useState("");
 
@@ -198,8 +198,8 @@ export default function Vote() {
 
     setVote(newVote);
 
-    const voterList = snapshot.docs.pop()?.data().voter_list;
-    setVoterList(voterList);
+    // const voterList = snapshot.docs.pop()?.data().voter_list;
+    // setVoterList(voterList);
   };
 
   interface IFormInput {
