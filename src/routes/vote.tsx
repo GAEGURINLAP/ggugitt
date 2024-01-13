@@ -191,8 +191,8 @@ export default function Vote() {
     });
     const newVote = votes.find((vote) => vote.vote_id == id);
 
-    const voteID = snapshot.docs.pop()?.data().vote_id;
-    setVoteID(voteID);
+    // const voteID = snapshot.docs.pop()?.data().vote_id;
+    // setVoteID(voteID);
 
     // if (!newVote) {
     //   navigate("/not-found");
