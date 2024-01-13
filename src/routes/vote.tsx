@@ -134,7 +134,7 @@ export default function Vote() {
 
   const [isVoter, setIsVoter] = useState(false);
 
-  const [voteID, setVoteID] = useState(false);
+  // const [voteID, setVoteID] = useState(false);
 
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
     null
