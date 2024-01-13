@@ -282,23 +282,27 @@ export default function Vote() {
       console.log("쿼리 스냅샷은 잘들어갔는가?", querySnapshot);
 
       if (!querySnapshot.empty) {
-        const voteDocRef = querySnapshot.docs[0].ref;
-        console.log("그래서 잘 받아온거 맞아?", voteDocRef);
-        await updateDoc(voteDocRef, {
-          vote_list: vote?.vote_list.map((item, index) =>
-            index === selectedItemIndex
-              ? { ...item, votes_cnt: VotesCnt }
-              : item
-          ),
-          total_votes_cnt: TotalVotesCnt,
-          available_votes_cnt: AvailableVotesCnt,
-          already_voters: user?.uid,
-        });
-        setSelectedItemIndex(null);
-        // navigate(0);
-        setShowAlertConfirm(true);
-        setShowAlertVote(false);
-        return;
+        try {
+          const voteDocRef = querySnapshot.docs[0].ref;
+          console.log("그래서 잘 받아온거 맞아?", voteDocRef);
+          await updateDoc(voteDocRef, {
+            vote_list: vote?.vote_list.map((item, index) =>
+              index === selectedItemIndex
+                ? { ...item, votes_cnt: VotesCnt }
+                : item
+            ),
+            total_votes_cnt: TotalVotesCnt,
+            available_votes_cnt: AvailableVotesCnt,
+            already_voters: user?.uid || null,
+          });
+        } catch (err) {
+          alert(err);
+        } finally {
+          setSelectedItemIndex(null);
+          setShowAlertConfirm(true);
+          setShowAlertVote(false);
+          return;
+        }
       }
     }
     alert("선택된 index가 없습니다!");
