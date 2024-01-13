@@ -322,7 +322,7 @@ export default function Vote() {
           <Wrapper>
             <CurrentVote>
               <CurrentTitle>
-                <b>{id}</b>번째 불개미를 <br />
+                <b>{vote?.vote_name}</b>의 불개미를 <br />
                 투표해주세요.
               </CurrentTitle>
               <VoteForm>
