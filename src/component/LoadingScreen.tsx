@@ -11,7 +11,7 @@ export default function LoadingScreen() {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 999;
   `;
 
   return (

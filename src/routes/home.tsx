@@ -12,6 +12,7 @@ import {
   orderBy,
   query,
   updateDoc,
+  where,
 } from "firebase/firestore";
 
 import Header from "../component/Header";
@@ -227,68 +228,76 @@ export default function Home() {
   const baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
   const fetchVotes = async () => {
-    const votesQuery = query(
-      collection(db, "vote"),
-      orderBy("create_at", "desc"),
-      limit(1)
-    );
-    console.log("votesQuery??", votesQuery);
-    const snapshot = await getDocs(votesQuery);
-    const votes = snapshot.docs.map((doc) => {
-      const {
-        vote_id,
-        vote_list,
-        voter_list,
-        vote_name,
-        vote_winner,
-        total_votes_cnt,
-        available_votes_cnt,
-        already_voters,
-        is_complete,
-        close_time,
-        user_id,
-        user_name,
-        create_at,
-      } = doc.data();
-      return {
-        vote_id,
-        vote_list,
-        voter_list,
-        vote_name,
-        vote_winner,
-        total_votes_cnt,
-        available_votes_cnt,
-        already_voters,
-        is_complete,
-        close_time,
-        user_id,
-        user_name,
-        create_at,
-        id: doc.id,
-      };
-    });
-    setVotes(votes);
+    try {
+      const votesQuery = query(
+        collection(db, "vote"),
+        where("user_id", "==", user?.uid),
+        orderBy("create_at", "desc"),
+        limit(1)
+      );
+      // console.log("votesQuery Eh", votesQuery);
+      console.log("votesQuery 똑바로 드감??", votesQuery);
+      const snapshot = await getDocs(votesQuery);
+      console.log("snapshot 똑바로 드감??", snapshot);
+      const voteID = snapshot.docs.pop()?.data().vote_id;
+      setVoteID(voteID);
+      console.log("voteID에 뭐가 담긴겨?", voteID);
 
-    // const closeTime = snapshot.docs.pop()?.data().close_time;
-    // setCloseTime(closeTime);
+      const voterList = snapshot.docs.pop()?.data().voter_list;
+      setVoterList(voterList);
 
-    const voteID = snapshot.docs.pop()?.data().vote_id;
-    setVoteID(voteID);
-    console.log("voteID에 뭐가 담긴겨?", voteID);
+      const voteName = snapshot.docs.pop()?.data().vote_name;
+      setVoteName(voteName);
 
-    const voterList = snapshot.docs.pop()?.data().voter_list;
-    setVoterList(voterList);
+      const voteList = snapshot.docs.pop()?.data().vote_list;
+      setVoteList(voteList);
 
-    const voteName = snapshot.docs.pop()?.data().vote_name;
-    setVoteName(voteName);
+      const voteWinner = snapshot.docs.pop()?.data().vote_winner;
+      setVoteWinner(voteWinner);
+      const votes = snapshot.docs.map((doc) => {
+        const {
+          vote_id,
+          vote_list,
+          voter_list,
+          vote_name,
+          vote_winner,
+          total_votes_cnt,
+          available_votes_cnt,
+          already_voters,
+          is_complete,
+          close_time,
+          user_id,
+          user_name,
+          create_at,
+        } = doc.data();
+        return {
+          vote_id,
+          vote_list,
+          voter_list,
+          vote_name,
+          vote_winner,
+          total_votes_cnt,
+          available_votes_cnt,
+          already_voters,
+          is_complete,
+          close_time,
+          user_id,
+          user_name,
+          create_at,
+          id: doc.id,
+        };
+      });
+      setVotes(votes);
+    } catch (err) {
+      alert(err);
+    } finally {
+      console.log("votes에 뭐가 담긴겨?", votes);
 
-    const voteList = snapshot.docs.pop()?.data().vote_list;
-    setVoteList(voteList);
+      // const closeTime = snapshot.docs.pop()?.data().close_time;
+      // setCloseTime(closeTime);
 
-    const voteWinner = snapshot.docs.pop()?.data().vote_winner;
-    setVoteWinner(voteWinner);
-
-    console.log("votes??", votes);
+      console.log("votes??", votes);
+    }
   };
 
   // const onRegister = async () => {
@@ -340,6 +349,8 @@ export default function Home() {
     fetchVotes();
   }, []);
 
+  console.log("votes에 뭐가 담긴겨?", votes);
+
   const clickSurvey = () => {
     navigate("/vote-register");
   };
@@ -351,6 +362,7 @@ export default function Home() {
   const onVoteComplete = async () => {
     const q = query(
       collection(db, "vote"),
+      where("user_id", "==", user?.uid),
       orderBy("create_at", "desc"),
       limit(1)
     );
@@ -409,7 +421,7 @@ export default function Home() {
               <Wrapper>
                 <CurrentVote>
                   <CurrentTitle>
-                    오늘의 불개미 <br />
+                    <b>{votes[0]?.vote_name}</b> <br />
                     투표 현황입니다.
                   </CurrentTitle>
                   <VoteResultList>

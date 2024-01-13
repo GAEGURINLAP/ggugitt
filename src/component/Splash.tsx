@@ -20,7 +20,7 @@ export const Container = styled.div<{ show: boolean }>`
   justify-content: center;
   align-items: center;
   padding-bottom: 160px;
-  z-index: 100;
+  z-index: 99999999;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-use-select: none;
