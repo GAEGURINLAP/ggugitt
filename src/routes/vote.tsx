@@ -11,6 +11,7 @@ import {
   orderBy,
   query,
   updateDoc,
+  where,
 } from "firebase/firestore";
 
 import BottomButton01 from "../component/BottomButon01";
@@ -143,11 +144,15 @@ export default function Vote() {
 
   const user = auth.currentUser;
 
+  const NewID = Number(id);
+
+  console.log("id 숫자 맞아?", typeof NewID);
+
   const fetchVotes = async () => {
     const q = query(
-      collection(db, "vote"),
-      orderBy("create_at", "desc"),
-      limit(1)
+      collection(db, "vote")
+      // orderBy("create_at", "desc"),
+      // limit(1)
     );
     console.log("q??", q);
 
@@ -187,9 +192,9 @@ export default function Vote() {
     const voteID = snapshot.docs.pop()?.data().vote_id;
     setVoteID(voteID);
 
-    if (!newVote) {
-      navigate("/not-found");
-    }
+    // if (!newVote) {
+    //   navigate("/not-found");
+    // }
 
     setVote(newVote);
 
@@ -216,7 +221,7 @@ export default function Vote() {
   const clickConfim = async (data: IFormInput) => {
     const { name } = data;
 
-    if (voterList.some((item) => item === name)) {
+    if (vote?.voter_list.some((item) => item === name)) {
       setIsVoter(true);
       // setVoterName(name);
     } else {
@@ -253,6 +258,7 @@ export default function Vote() {
   const onRegister = async () => {
     if (selectedItemIndex !== null) {
       const selectedList = vote?.vote_list[selectedItemIndex];
+      console.log("selectedList가 뭐야?", selectedList);
 
       let VotesCnt = selectedList?.votes_cnt || 0;
       let TotalVotesCnt = vote?.total_votes_cnt || 0;
@@ -262,16 +268,22 @@ export default function Vote() {
       TotalVotesCnt += 1;
       AvailableVotesCnt -= 1;
 
+      console.log("id가 id가 맞을까?", id);
+
       const q = query(
         collection(db, "vote"),
-        orderBy("create_at", "desc"),
-        limit(1)
+        where("vote_id", "==", NewID) // useParams로부터 얻은 id를 사용
+        // limit(1)
       );
+      console.log("쿼리는 잘 들어갔는가?", q);
+
       const querySnapshot = await getDocs(q);
+
+      console.log("쿼리 스냅샷은 잘들어갔는가?", querySnapshot);
 
       if (!querySnapshot.empty) {
         const voteDocRef = querySnapshot.docs[0].ref;
-
+        console.log("그래서 잘 받아온거 맞아?", voteDocRef);
         await updateDoc(voteDocRef, {
           vote_list: vote?.vote_list.map((item, index) =>
             index === selectedItemIndex
