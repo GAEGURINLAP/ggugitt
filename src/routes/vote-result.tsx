@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query } from "firebase/firestore";
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
