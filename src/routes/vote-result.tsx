@@ -4,6 +4,7 @@ import { db } from "../firebase";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IVote } from "./home";
+import { Helmet } from "react-helmet-async";
 // import { IVoteList } from "./vote-register/candidate";
 
 const Wrapper = styled.div`
@@ -103,6 +104,12 @@ export default function VoteResult() {
   console.log("vote에 뭐들음?", vote);
   return (
     <>
+      <Helmet>
+        <title>오늘의 불개미는 과연 누구일까요?!</title>
+        <meta name="description" content="두구두구두구 기대되죠?" />
+        <meta property="og:image" content="/images/logo/bullgaemi.png" />
+        <meta property="og:url" content="https://bullgaemi-survey.web.app/" />
+      </Helmet>
       {vote?.is_complete ? (
         <Wrapper>
           <Title>

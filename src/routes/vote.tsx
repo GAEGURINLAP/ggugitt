@@ -7,8 +7,6 @@ import { auth, db } from "../firebase";
 import {
   collection,
   getDocs,
-  // limit,
-  // orderBy,
   query,
   updateDoc,
   where,

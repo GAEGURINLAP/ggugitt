@@ -1,5 +1,6 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 import { auth } from "./firebase";
 
@@ -69,9 +70,15 @@ const router = createBrowserRouter([
       },
     ],
   },
-  // { path: "/vote", element: <Vote /> },
   { path: "/vote/:id", element: <Vote /> },
-  { path: "/vote-result/:id", element: <VoteResult /> },
+  {
+    path: "/vote-result/:id",
+    element: (
+      <HelmetProvider>
+        <VoteResult />
+      </HelmetProvider>
+    ),
+  },
   {
     path: "*",
     element: <NotFound />,
@@ -97,6 +104,9 @@ function App() {
 
   return (
     <>
+      <Helmet>
+        <title>불개미 불개미!</title>
+      </Helmet>
       <Splash progress={progress} />
       <Container>
         <Wrapper>
