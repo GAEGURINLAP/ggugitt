@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 
 import { auth } from "./firebase";
 
@@ -73,11 +73,7 @@ const router = createBrowserRouter([
   { path: "/vote/:id", element: <Vote /> },
   {
     path: "/vote-result/:id",
-    element: (
-      <HelmetProvider>
-        <VoteResult />
-      </HelmetProvider>
-    ),
+    element: <VoteResult />,
   },
   {
     path: "*",
