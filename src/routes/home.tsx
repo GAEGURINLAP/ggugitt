@@ -221,7 +221,6 @@ export default function Home() {
   // );
 
   const user = auth.currentUser;
-  console.log("user(currentUser):", user);
 
   const navigate = useNavigate();
 
@@ -236,13 +235,9 @@ export default function Home() {
         orderBy("create_at", "desc"),
         limit(1)
       );
-      // console.log("votesQuery Eh", votesQuery);
-      console.log("votesQuery 똑바로 드감??", votesQuery);
       const snapshot = await getDocs(votesQuery);
-      console.log("snapshot 똑바로 드감??", snapshot);
       const voteID = snapshot.docs.pop()?.data().vote_id;
       setVoteID(voteID);
-      console.log("voteID에 뭐가 담긴겨?", voteID);
 
       const voterList = snapshot.docs.pop()?.data().voter_list;
       setVoterList(voterList);
@@ -292,12 +287,8 @@ export default function Home() {
     } catch (err) {
       alert(err);
     } finally {
-      console.log("votes에 뭐가 담긴겨?", votes);
-
       // const closeTime = snapshot.docs.pop()?.data().close_time;
       // setCloseTime(closeTime);
-
-      console.log("votes??", votes);
     }
   };
 
@@ -349,8 +340,6 @@ export default function Home() {
   useEffect(() => {
     fetchVotes();
   }, []);
-
-  console.log("votes에 뭐가 담긴겨?", votes);
 
   const clickSurvey = () => {
     navigate("/vote-register");

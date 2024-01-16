@@ -1,9 +1,9 @@
-import styled from '@emotion/styled';
-import { collection, getDocs, query } from 'firebase/firestore';
-import { db } from '../firebase';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { IVote } from './home';
+import styled from "@emotion/styled";
+import { collection, getDocs, query } from "firebase/firestore";
+import { db } from "../firebase";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { IVote } from "./home";
 // import { Helmet } from 'react-helmet-async';
 // import { IVoteList } from "./vote-register/candidate";
 
@@ -51,16 +51,11 @@ export default function VoteResult() {
   // const NewID = Number(id);
 
   const fetchVotes = async () => {
-    const q = query(
-      collection(db, 'vote')
-      // orderBy("create_at", "desc"),
-      // limit(1)
-    );
-    console.log('q??', q);
+    const q = query(collection(db, "vote"));
 
     const snapshot = await getDocs(q);
 
-    const votes = snapshot.docs.map(doc => {
+    const votes = snapshot.docs.map((doc) => {
       const {
         vote_id,
         vote_list,
@@ -93,7 +88,7 @@ export default function VoteResult() {
         id: doc.id,
       };
     });
-    const newVote = votes.find(vote => vote.vote_id == id);
+    const newVote = votes.find((vote) => vote.vote_id == id);
     setVote(newVote);
   };
 
@@ -101,7 +96,6 @@ export default function VoteResult() {
     fetchVotes();
   }, [id]);
 
-  console.log('vote에 뭐들음?', vote);
   return (
     <>
       {/* <Helmet>

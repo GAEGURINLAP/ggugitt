@@ -21,7 +21,6 @@ export default function IndexRegister() {
       collection(db, "vote"),
       orderBy("create_at", "desc")
     );
-    console.log("votesQuery??", votesQuery);
     const snapshot = await getDocs(votesQuery);
     const votes = snapshot.docs.map((doc) => {
       const {

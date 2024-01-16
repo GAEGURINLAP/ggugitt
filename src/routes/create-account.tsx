@@ -52,13 +52,11 @@ export default function CreateAccount() {
         email,
         password
       );
-      console.log(credentials.user);
       await updateProfile(credentials.user, {
         displayName: name,
       });
       navigate("/");
     } catch (e) {
-      // setError
       if (e instanceof FirebaseError) {
         console.log(e.code, e.message);
         setShowAlert(true);

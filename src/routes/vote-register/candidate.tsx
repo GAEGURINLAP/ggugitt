@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 import {
   addDoc,
@@ -9,21 +9,21 @@ import {
   orderBy,
   query,
   updateDoc,
-} from 'firebase/firestore';
-import { auth, db } from '../../firebase';
+} from "firebase/firestore";
+import { auth, db } from "../../firebase";
 
-import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 
-import LoadingScreen from '../../component/LoadingScreen';
-import BottomButton02 from '../../component/BottomButon02';
-import Success from '../../component/Success';
-import Alert from '../../component/Alert';
-import ButtonSecondary from '../../component/ButtonSecondary';
-import ButtonPrimary from '../../component/ButtonPrimary';
-import Toast from '../../component/Toast';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Label, Member, MemberList, VoterContainer } from '../home';
+import LoadingScreen from "../../component/LoadingScreen";
+import BottomButton02 from "../../component/BottomButon02";
+import Success from "../../component/Success";
+import Alert from "../../component/Alert";
+import ButtonSecondary from "../../component/ButtonSecondary";
+import ButtonPrimary from "../../component/ButtonPrimary";
+import Toast from "../../component/Toast";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Label, Member, MemberList, VoterContainer } from "../home";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -118,8 +118,6 @@ export default function CandidateRegister() {
 
   const { voterList } = location.state || {};
 
-  console.log('초기 voteList는?', voteList);
-
   const [isShowAlert, setIsShowAlert] = useState(false);
   const [isShowAlreadyAlert, setIsShowAlreadyAlert] = useState(false);
 
@@ -144,23 +142,27 @@ export default function CandidateRegister() {
     // const closeTime = currentTime + 5 * 60 * 60 * 1000; // 5시간을 밀리초로 변환
     const closeTime = currentTime + 2 * 60 * 1000; // 2분을 밀리초로 변환
 
-    const votesQuery = query(collection(db, 'vote'), orderBy('create_at', 'desc'), limit(1));
+    const votesQuery = query(
+      collection(db, "vote"),
+      orderBy("create_at", "desc"),
+      limit(1)
+    );
     const snapshot = await getDocs(votesQuery);
 
     // const lastVoteDoc = (await getDocs(collection(db, "vote"))).docs.pop();
     const voteID = (snapshot.docs.pop()?.data().vote_id || 0) + 1;
-    console.log('voteID 제대로 들어왔냐!', voteID);
 
     try {
       setIsLoading(true);
       setIsShowAlert(false);
 
       const highestVote = voteList.reduce(
-        (prev, current) => (current.votes_cnt > prev.votes_cnt ? current : prev),
-        { name: '', votes_cnt: 0 }
+        (prev, current) =>
+          current.votes_cnt > prev.votes_cnt ? current : prev,
+        { name: "", votes_cnt: 0 }
       );
 
-      await addDoc(collection(db, 'vote'), {
+      await addDoc(collection(db, "vote"), {
         vote_id: voteID,
         vote_list: voteList,
         voter_list: voterList,
@@ -172,19 +174,17 @@ export default function CandidateRegister() {
         is_complete: false,
         close_time: closeTime,
         user_id: user?.uid,
-        user_name: user?.displayName || 'Anonymous',
+        user_name: user?.displayName || "Anonymous",
         create_at: currentTime,
       });
 
       setVoteId(voteID);
-      console.log('voteID undifined는 아니지?', voteID);
 
       const timeUntilClose = closeTime - currentTime;
 
-      const voteDocRef = doc(collection(db, 'vote'), voteID);
+      const voteDocRef = doc(collection(db, "vote"), voteID);
 
       setTimeout(() => {
-        // 타임아웃이 끝나면 해당 문서의 is_complete를 true로 설정합니다.
         updateDoc(voteDocRef, { is_complete: true });
       }, timeUntilClose);
     } catch (e) {
@@ -210,7 +210,7 @@ export default function CandidateRegister() {
   };
 
   const deleteItem = (itemToDelete: IVoteList) => {
-    const updatedVoteItems = voteList.filter(item => item !== itemToDelete);
+    const updatedVoteItems = voteList.filter((item) => item !== itemToDelete);
     setVoteList(updatedVoteItems);
   };
 
@@ -250,7 +250,7 @@ export default function CandidateRegister() {
   };
 
   const clickNavigateVoter = () => {
-    navigate('/vote-register');
+    navigate("/vote-register");
   };
 
   const {
@@ -265,7 +265,7 @@ export default function CandidateRegister() {
       {isLoading && <LoadingScreen />}
       {isComplete ? (
         <Success
-          message={'투표 등록이 완료 되었습니다!'}
+          message={"투표 등록이 완료 되었습니다!"}
           label="투표 링크 공유하기"
           isShowButton
           onClick={() => handleCopyClipBoard(`${baseURL}/vote/${voteId}`)}
@@ -277,16 +277,16 @@ export default function CandidateRegister() {
               투표를 진행할 <br /> 후보를 등록해주세요
             </Title>
             <FormContainer>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: "flex", flexDirection: "column" }}>
                 <Form
-                  onSubmit={handleSubmit(data => {
+                  onSubmit={handleSubmit((data) => {
                     addItem(data);
                     reset();
                   })}
                 >
                   <FormWrapper>
                     <Input
-                      {...register('name', {
+                      {...register("name", {
                         required: true,
                         // pattern: {
                         //   // value: /^[^a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]*$/, // 특수문자, 공백, 숫자, 영문 불가
@@ -295,11 +295,11 @@ export default function CandidateRegister() {
                         // },
                         minLength: {
                           value: 2,
-                          message: '이름은 2자 이상이어야 합니다.',
+                          message: "이름은 2자 이상이어야 합니다.",
                         },
                         maxLength: {
                           value: 10,
-                          message: '이름은 10자를 초과할 수 없습니다.',
+                          message: "이름은 10자를 초과할 수 없습니다.",
                         },
                       })}
                       placeholder="후보 이름을 입력해주세요"
@@ -327,7 +327,7 @@ export default function CandidateRegister() {
                       <img
                         src="/images/icon/common/icon-x-circle.svg"
                         width={20}
-                        style={{ cursor: 'pointer' }}
+                        style={{ cursor: "pointer" }}
                         onClick={() => clickDeleteItem(item)}
                       />
                     </VoteContent>
@@ -346,9 +346,9 @@ export default function CandidateRegister() {
           </Wrapper>
           {voteList.length === 0 ? (
             <BottomButton02
-              label01={'추가하기'}
-              label02={'등록하기'}
-              onClick01={handleSubmit(data => {
+              label01={"추가하기"}
+              label02={"등록하기"}
+              onClick01={handleSubmit((data) => {
                 addItem(data);
                 reset();
               })}
@@ -356,9 +356,9 @@ export default function CandidateRegister() {
             />
           ) : (
             <BottomButton02
-              label01={'추가하기'}
-              label02={'등록하기'}
-              onClick01={handleSubmit(data => {
+              label01={"추가하기"}
+              label02={"등록하기"}
+              onClick01={handleSubmit((data) => {
                 addItem(data);
                 reset();
               })}
@@ -367,9 +367,13 @@ export default function CandidateRegister() {
           )}
           {!voterList && (
             <Alert
-              message={'팀원을 먼저 등록해주세요!'}
+              message={"팀원을 먼저 등록해주세요!"}
               buttons={[
-                <ButtonPrimary label={'등록하러 가기'} onClick={clickNavigateVoter} isWidthFull />,
+                <ButtonPrimary
+                  label={"등록하러 가기"}
+                  onClick={clickNavigateVoter}
+                  isWidthFull
+                />,
               ]}
             />
           )}
@@ -377,26 +381,34 @@ export default function CandidateRegister() {
       )}
       {isShowAlert && (
         <Alert
-          message={'입력한 후보가 맞습니까?'}
+          message={"입력한 후보가 맞습니까?"}
           buttons={[
-            <ButtonSecondary label={'취소'} onClick={() => setIsShowAlert(false)} isWidthFull />,
-            <ButtonPrimary label={'등록하기'} onClick={onRegister} isWidthFull />,
+            <ButtonSecondary
+              label={"취소"}
+              onClick={() => setIsShowAlert(false)}
+              isWidthFull
+            />,
+            <ButtonPrimary
+              label={"등록하기"}
+              onClick={onRegister}
+              isWidthFull
+            />,
           ]}
         />
       )}
       {isShowAlreadyAlert && (
         <Alert
-          message={'이미 추가한 후보입니다!'}
+          message={"이미 추가한 후보입니다!"}
           buttons={[
             <ButtonPrimary
-              label={'확인'}
+              label={"확인"}
               onClick={() => setIsShowAlreadyAlert(false)}
               isWidthFull
             />,
           ]}
         />
       )}
-      {isToast && <Toast message={'클립보드에 복사되었습니다.'} />}
+      {isToast && <Toast message={"클립보드에 복사되었습니다."} />}
     </>
   );
 }
