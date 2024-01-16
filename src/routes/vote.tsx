@@ -311,7 +311,7 @@ export default function Vote() {
           <Wrapper>
             <CurrentVote>
               <CurrentTitle>
-                원하시는 <b>병우네 집들이</b> 날짜를 <br />
+                {vote?.vote_name} <br />
                 투표해주세요.
               </CurrentTitle>
               <VoteForm>
