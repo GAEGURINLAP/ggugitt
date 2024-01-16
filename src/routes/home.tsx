@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { auth, db } from "../firebase";
 import {
   collection,
+  deleteDoc,
   doc,
   getDocs,
   limit,
@@ -25,6 +26,8 @@ import ButtonPrimary from "../component/ButtonPrimary";
 import Alert from "../component/Alert";
 import ButtonSecondary from "../component/ButtonSecondary";
 import BottomButton02 from "../component/BottomButon02";
+import ButtonError from "../component/ButtonError";
+import LoadingScreen from "../component/LoadingScreen";
 
 const Wrapper = styled.div`
   padding: 0 24px;
@@ -153,7 +156,6 @@ export const VoterContainer = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
-  /* align-items: end; */
   gap: 8px;
 `;
 
@@ -210,15 +212,15 @@ export default function Home() {
   const [voteID, setVoteID] = useState();
   const [voteList, setVoteList] = useState<IVoteList[]>([]);
   const [voterList, setVoterList] = useState<string[]>([]);
-  // const [closeTime, setCloseTime] = useState<number>();
+
   const [voteName, setVoteName] = useState<string>("");
   const [voteWinner, setVoteWinner] = useState<string>("");
 
+  const [isLoading, setIsLoading] = useState(false);
   const [isShowAlertComplete, setIsShowAlertComplete] = useState(false);
-
-  // const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
-  //   null
-  // );
+  const [isShowAlertDeleteConfirm, setIsShowAlertDeleteConfirm] =
+    useState(false);
+  const [isShowAlertDelete, setIsShowAlertDelete] = useState(false);
 
   const user = auth.currentUser;
 
@@ -287,55 +289,8 @@ export default function Home() {
     } catch (err) {
       alert(err);
     } finally {
-      // const closeTime = snapshot.docs.pop()?.data().close_time;
-      // setCloseTime(closeTime);
     }
   };
-
-  // const onRegister = async () => {
-  //   if (selectedItemIndex !== null) {
-  //     const selectedList = votes[0]?.vote_list[selectedItemIndex];
-  //     let VotesCnt = selectedList.votes_cnt;
-  //     let TotalVotesCnt = votes[0]?.total_votes_cnt;
-  //     let AvailableVotesCnt = votes[0]?.available_votes_cnt;
-
-  //     VotesCnt += 1;
-  //     TotalVotesCnt += 1;
-  //     AvailableVotesCnt -= 1;
-
-  //     // 'vote' 컬렉션에서 create_at을 기준으로 내림차순으로 정렬하여 첫 번째 문서 가져오기
-  //     const q = query(
-  //       collection(db, "vote"),
-  //       orderBy("create_at", "desc"),
-  //       limit(1)
-  //     );
-  //     const querySnapshot = await getDocs(q);
-
-  //     // 가져온 문서의 ID 또는 경로를 사용하여 문서 참조
-  //     if (!querySnapshot.empty) {
-  //       const latestDoc = querySnapshot.docs[0];
-  //       const voteDocRef = doc(db, "vote", latestDoc.id);
-
-  //       // 문서 업데이트
-  //       await updateDoc(voteDocRef, {
-  //         vote_list: votes[0].vote_list.map((item, index) =>
-  //           index === selectedItemIndex
-  //             ? { ...item, votes_cnt: VotesCnt }
-  //             : item
-  //         ),
-  //         total_votes_cnt: TotalVotesCnt,
-  //         available_votes_cnt: AvailableVotesCnt,
-  //         already_voters: user?.uid,
-  //       });
-  //       alert("투표 성공했어!");
-  //       setSelectedItemIndex(null);
-  //       navigate(0);
-
-  //       return;
-  //     }
-  //   }
-  //   alert("선택된 index가 없습니다!");
-  // };
 
   useEffect(() => {
     fetchVotes();
@@ -345,11 +300,13 @@ export default function Home() {
     navigate("/vote-register");
   };
 
-  const clickVoteComplete = () => {
-    setIsShowAlertComplete(true);
+  const clickDelete = () => {
+    setIsShowAlertDeleteConfirm(true);
   };
 
-  const onVoteComplete = async () => {
+  const onDelete = async () => {
+    setIsLoading(true);
+
     const q = query(
       collection(db, "vote"),
       where("user_id", "==", user?.uid),
@@ -358,7 +315,44 @@ export default function Home() {
     );
     const querySnapshot = await getDocs(q);
 
-    // 가져온 문서의 ID 또는 경로를 사용하여 문서 참조
+    try {
+      setIsShowAlertDeleteConfirm(false);
+      if (!querySnapshot.empty) {
+        const latestDoc = querySnapshot.docs[0];
+        const voteDocRef = doc(db, "vote", latestDoc.id);
+
+        // 문서 삭제
+        await deleteDoc(voteDocRef);
+        setIsLoading(false);
+      }
+    } catch (e) {
+      console.log(e);
+      setIsLoading(false);
+    } finally {
+      setIsShowAlertDelete(true);
+    }
+  };
+
+  const clickVoteComplete = () => {
+    setIsShowAlertComplete(true);
+  };
+
+  const clickDeleteComplete = () => {
+    setIsShowAlertDelete(false);
+    navigate(0);
+  };
+
+  const onVoteComplete = async () => {
+    setIsLoading(true);
+
+    const q = query(
+      collection(db, "vote"),
+      where("user_id", "==", user?.uid),
+      orderBy("create_at", "desc"),
+      limit(1)
+    );
+    const querySnapshot = await getDocs(q);
+
     if (!querySnapshot.empty) {
       const latestDoc = querySnapshot.docs[0];
       const voteDocRef = doc(db, "vote", latestDoc.id);
@@ -374,6 +368,7 @@ export default function Home() {
         is_complete: true,
         vote_winner: highestVote.name,
       });
+      setIsLoading(false);
       navigate(0);
     }
   };
@@ -397,13 +392,14 @@ export default function Home() {
     }
 
     return () => {
-      clearTimeout(timeout); // 컴포넌트가 unmount되거나 상태가 업데이트되면 타이머를 클리어
+      clearTimeout(timeout);
     };
   }, [isToast]);
 
   return (
     <>
       <Header />
+      {isLoading && <LoadingScreen />}
       {votes[0]?.user_id === user?.uid ? (
         <>
           {votes[0].is_complete === false ? (
@@ -448,10 +444,18 @@ export default function Home() {
                       ))}
                     </MemberList>
                   </VoterContainer>
-                  <ButtonPrimary
-                    label={"투표 종료하기"}
-                    onClick={clickVoteComplete}
-                  />
+                  <div style={{ display: "flex", width: "100%", gap: "8px" }}>
+                    <ButtonError
+                      label={"투표 삭제하기"}
+                      onClick={clickDelete}
+                      isWidthFull
+                    />
+                    <ButtonPrimary
+                      label={"투표 종료하기"}
+                      onClick={clickVoteComplete}
+                      isWidthFull
+                    />
+                  </div>
                 </CurrentVote>
               </Wrapper>
               <BottomButton01
@@ -545,6 +549,31 @@ export default function Home() {
             <ButtonPrimary
               label={"종료하기"}
               onClick={onVoteComplete}
+              isWidthFull
+            />,
+          ]}
+        />
+      )}
+      {isShowAlertDeleteConfirm && (
+        <Alert
+          message={"정말 투표를 삭제하시겠습니까?"}
+          buttons={[
+            <ButtonSecondary
+              label={"취소"}
+              onClick={() => setIsShowAlertDeleteConfirm(false)}
+              isWidthFull
+            />,
+            <ButtonError label={"삭제하기"} onClick={onDelete} isWidthFull />,
+          ]}
+        />
+      )}
+      {isShowAlertDelete && (
+        <Alert
+          message={"투표를 삭제하였습니다."}
+          buttons={[
+            <ButtonPrimary
+              label={"확인"}
+              onClick={clickDeleteComplete}
               isWidthFull
             />,
           ]}
