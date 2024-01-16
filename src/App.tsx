@@ -1,35 +1,35 @@
-import { useEffect, useState } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import { useEffect, useState } from 'react';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
-import { auth } from "./firebase";
+import { auth } from './firebase';
 
-import { Global } from "@emotion/react";
+import { Global } from '@emotion/react';
 
-import Home from "./routes/home";
-import Profile from "./routes/profile";
-import Login from "./routes/login";
-import CreateAccount from "./routes/create-account";
+import Home from './routes/home';
+import Profile from './routes/profile';
+import Login from './routes/login';
+import CreateAccount from './routes/create-account';
 
-import Layout from "./component/Layout";
-import LoadingScreen from "./component/LoadingScreen";
-import ProtectedRoute from "./component/ProtectedRoute";
+import Layout from './component/Layout';
+import LoadingScreen from './component/LoadingScreen';
+import ProtectedRoute from './component/ProtectedRoute';
 
-import { Container, Wrapper } from "./style/layout";
-import global from "./style/global";
-import ResetPaswrd from "./routes/reset-password";
-import Splash from "./component/Splash";
+import { Container, Wrapper } from './style/layout';
+import global from './style/global';
+import ResetPaswrd from './routes/reset-password';
+import Splash from './component/Splash';
 
-import NotFound from "./routes/not-found";
-import Vote from "./routes/vote";
-import VoterRegister from "./routes/vote-register/voter";
-import CandidateRegister from "./routes/vote-register/candidate";
-import IndexRegister from "./routes/vote-register";
-import VoteResult from "./routes/vote-result";
+import NotFound from './routes/not-found';
+import Vote from './routes/vote';
+import VoterRegister from './routes/vote-register/voter';
+import CandidateRegister from './routes/vote-register/candidate';
+import IndexRegister from './routes/vote-register';
+import VoteResult from './routes/vote-result';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: (
       <ProtectedRoute>
         <Layout />
@@ -37,23 +37,23 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "",
+        path: '',
         element: <Home />,
       },
       {
-        path: "/profile",
+        path: '/profile',
         element: <Profile />,
       },
     ],
   },
   {
-    path: "/login",
+    path: '/login',
     element: <Login />,
   },
-  { path: "/create-account", element: <CreateAccount /> },
-  { path: "/reset-password", element: <ResetPaswrd /> },
+  { path: '/create-account', element: <CreateAccount /> },
+  { path: '/reset-password', element: <ResetPaswrd /> },
   {
-    path: "/vote-register",
+    path: '/vote-register',
     element: (
       <ProtectedRoute>
         <IndexRegister />
@@ -61,22 +61,22 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "",
+        path: '',
         element: <VoterRegister />,
       },
       {
-        path: "/vote-register/candidate",
+        path: '/vote-register/candidate',
         element: <CandidateRegister />,
       },
     ],
   },
-  { path: "/vote/:id", element: <Vote /> },
+  { path: '/vote/:id', element: <Vote /> },
   {
-    path: "/vote-result/:id",
+    path: '/vote-result/:id',
     element: <VoteResult />,
   },
   {
-    path: "*",
+    path: '*',
     element: <NotFound />,
   },
 ]);
