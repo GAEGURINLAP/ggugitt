@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+// import { Helmet } from 'react-helmet-async';
 
 import { auth } from './firebase';
 
@@ -100,12 +100,12 @@ function App() {
 
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <title>불개미 불개미!</title>
         <meta name="description" content="MOM MOM" />
         <meta property="og:image" content="/images/logo/404.png" />
         <meta property="og:url" content="https://bullgaemi-survey.web.app/" />
-      </Helmet>
+      </Helmet> */}
       <Splash progress={progress} />
       <Container>
         <Wrapper>
