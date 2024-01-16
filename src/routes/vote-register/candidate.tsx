@@ -233,13 +233,9 @@ export default function CandidateRegister() {
     }
 
     return () => {
-      clearTimeout(timeout); // 컴포넌트가 unmount되거나 상태가 업데이트되면 타이머를 클리어
+      clearTimeout(timeout);
     };
   }, [isToast]);
-
-  // const clickAddItem = () => {
-  //   handleSubmit(addItem)();
-  // };
 
   const clickRegister = () => {
     setIsShowAlert(true);
@@ -288,11 +284,11 @@ export default function CandidateRegister() {
                     <Input
                       {...register("name", {
                         required: true,
-                        // pattern: {
-                        //   // value: /^[^a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]*$/, // 특수문자, 공백, 숫자, 영문 불가
-                        //   value: /^[^a-zA-Z\s!@#$%^&*(),.?":{}|<>]*$/, // 특수문자, 공백, 영문 불가
-                        //   message: '특수문자,공백,숫자,영문은 입력이 불가능합니다.',
-                        // },
+                        pattern: {
+                          value: /^[^a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]*$/,
+                          message:
+                            "특수문자,공백,숫자,영문은 입력이 불가능합니다.",
+                        },
                         minLength: {
                           value: 2,
                           message: "이름은 2자 이상이어야 합니다.",
