@@ -6,7 +6,13 @@ import ButtonSecondary from "./ButtonSecondary";
 import ButtonPrimary from "./ButtonPrimary";
 
 import { auth } from "../firebase";
-import { Container, Name, Wrapper } from "../style/header";
+import {
+  BackButton,
+  Container,
+  Name,
+  Wrapper,
+  WrapperRight,
+} from "../style/header";
 
 export default function Header() {
   const [isShowAlert, setShowAlert] = useState(false);
@@ -28,16 +34,27 @@ export default function Header() {
     <>
       <Container>
         <Wrapper>
-          <Name>
-            <b>{userName}</b>님
-          </Name>
-          <img
-            src="/images/icon/common/icon-logout.svg"
-            width={24}
-            height={24}
-            style={{ cursor: "pointer" }}
-            onClick={clickLogOut}
-          />
+          <BackButton>
+            <img
+              src="/images/icon/common/icon-arrow-left.svg"
+              width={24}
+              height={24}
+              style={{ cursor: "pointer" }}
+              onClick={clickLogOut}
+            />
+          </BackButton>
+          <WrapperRight>
+            <Name>
+              <b>{userName}</b>님
+            </Name>
+            <img
+              src="/images/icon/common/icon-logout.svg"
+              width={24}
+              height={24}
+              style={{ cursor: "pointer" }}
+              onClick={clickLogOut}
+            />
+          </WrapperRight>
         </Wrapper>
       </Container>
       {isShowAlert && (

@@ -14,8 +14,25 @@ export const Container = styled.div`
 export const Wrapper = styled.div`
   width: 100%;
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
   align-items: center;
+  gap: 8px;
+`;
+
+export const BackButton = styled.div`
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+`;
+
+export const WrapperRight = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* width: 100%; */
   gap: 8px;
 `;
 
