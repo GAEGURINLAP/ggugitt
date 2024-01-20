@@ -22,7 +22,7 @@ const fadeOutToast = keyframes`
   }
 `;
 export const Container = styled.div<IToastProps>`
-  position: absolute;
+  position: fixed;
   bottom: ${(props) => (props.isComplete ? "48px" : "96px")};
   display: flex;
   width: 100%;
