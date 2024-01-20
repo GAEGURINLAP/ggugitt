@@ -404,7 +404,7 @@ export default function CandidateRegister() {
           ]}
         />
       )}
-      {isToast && <Toast message={"클립보드에 복사되었습니다."} />}
+      {isToast && <Toast isComplete message={"클립보드에 복사되었습니다."} />}
     </>
   );
 }

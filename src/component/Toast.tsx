@@ -1,12 +1,13 @@
 import { Container, Message, Wrapper } from "../style/toast";
 
-interface ToastProps {
+export interface IToastProps {
+  isComplete?: boolean;
   message: string;
 }
 
-export default function Toast({ message }: ToastProps) {
+export default function Toast({ message, isComplete }: IToastProps) {
   return (
-    <Container>
+    <Container message={message} isComplete={isComplete}>
       <Wrapper>
         <Message>{message}</Message>
       </Wrapper>
