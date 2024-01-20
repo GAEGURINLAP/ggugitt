@@ -7,7 +7,7 @@ export const Container = styled.div`
   height: 80px;
   width: 100%;
   max-width: 500px;
-  padding: 0 24px;
+  padding: 0 24px 0 20px;
   background-color: var(--white);
 `;
 
@@ -19,13 +19,15 @@ export const Wrapper = styled.div`
   gap: 8px;
 `;
 
-export const BackButton = styled.div`
-  cursor: pointer;
+export const ButtonWrap = styled.div`
   width: 48px;
   height: 48px;
   display: flex;
-  /* justify-content: center; */
   align-items: center;
+`;
+
+export const BackButton = styled.div`
+  cursor: pointer;
 `;
 
 export const WrapperRight = styled.div`

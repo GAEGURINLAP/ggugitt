@@ -8,16 +8,25 @@ import ButtonPrimary from "./ButtonPrimary";
 import { auth } from "../firebase";
 import {
   BackButton,
+  ButtonWrap,
   Container,
   Name,
   Wrapper,
   WrapperRight,
 } from "../style/header";
 
-export default function Header() {
+interface IHeaderProp {
+  isNavigator?: boolean;
+}
+
+export default function Header({ isNavigator }: IHeaderProp) {
   const [isShowAlert, setShowAlert] = useState(false);
 
   const navigate = useNavigate();
+
+  const clickBackButton = () => {
+    navigate(-1);
+  };
 
   const clickLogOut = () => {
     setShowAlert(true);
@@ -34,15 +43,18 @@ export default function Header() {
     <>
       <Container>
         <Wrapper>
-          <BackButton>
-            <img
-              src="/images/icon/common/icon-arrow-left.svg"
-              width={24}
-              height={24}
-              style={{ cursor: "pointer" }}
-              onClick={clickLogOut}
-            />
-          </BackButton>
+          <ButtonWrap>
+            {isNavigator && (
+              <BackButton onClick={clickBackButton}>
+                <img
+                  src="/images/icon/common/icon-arrow-left.svg"
+                  width={24}
+                  height={24}
+                />
+              </BackButton>
+            )}
+          </ButtonWrap>
+
           <WrapperRight>
             <Name>
               <b>{userName}</b>님
