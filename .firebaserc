@@ -1,5 +1,22 @@
 {
   "projects": {
-    "default": "bullgaemi-survey"
+    "default": "bullgaemi-survey-dev",
+    "prd": "bullgaemi-survey"
+  },
+  "targets": {
+    "bullgaemi-survey": {
+      "hosting": {
+        "bullgaemi-survey": [
+          "bullgaemi-survey"
+        ]
+      }
+    },
+    "bullgaemi-survey-prd": {
+      "hosting": {
+        "bullgaemi-survey-prd": [
+          "bullgaemi-survey-prd"
+        ]
+      }
+    }
   }
 }
