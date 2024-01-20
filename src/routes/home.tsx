@@ -32,8 +32,8 @@ import LoadingScreen from "../component/LoadingScreen";
 const Wrapper = styled.div`
   padding: 0 24px;
   padding-top: 120px;
-  height: 100vh;
-  padding-bottom: 80px;
+  /* height: 100vh; */
+  padding-bottom: 160px;
 `;
 
 const Title = styled.h1`
@@ -579,6 +579,7 @@ export default function Home() {
           ]}
         />
       )}
+      {/* <Toast message={"클립보드에 복사되었습니다."} /> */}
     </>
   );
 }
