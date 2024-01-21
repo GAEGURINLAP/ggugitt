@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { auth, db } from "../firebase";
+import LoadingScreen from "../component/LoadingScreen";
 
 const Wrapper = styled.div`
   /* padding: 0 24px; */
@@ -94,10 +95,9 @@ export const WinnerName = styled.h4`
   /* color: #525252; */
 `;
 
-// const array = ["0", "1", "2", "3"];
-
 export default function VoteHistory() {
   const [votes, setVotes] = useState<IVote[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -150,6 +150,7 @@ export default function VoteHistory() {
     } catch (err) {
       console.log(err);
     } finally {
+      setIsLoading(false);
     }
   };
 
@@ -172,7 +173,9 @@ export default function VoteHistory() {
           히스토리 입니다
         </Title>
         <List>
-          {votes.length > 0 ? (
+          {isLoading ? (
+            <LoadingScreen />
+          ) : votes.length > 0 ? (
             votes.map((item, index) => (
               <Item key={`item${index}`}>
                 <WrapperLeft>
@@ -205,6 +208,7 @@ export default function VoteHistory() {
           )}
         </List>
       </Wrapper>
+
       <BottomButton01 label={"투표 새로 만들기"} onClick={clickSurvey} />
     </>
   );
