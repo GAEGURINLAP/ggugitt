@@ -295,6 +295,7 @@ export default function Home() {
 
       const voteWinner = snapshot.docs.pop()?.data().vote_winner;
       setVoteWinner(voteWinner);
+
       const votes = snapshot.docs.map((doc) => {
         const {
           vote_id,

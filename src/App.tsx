@@ -78,7 +78,12 @@ const router = createBrowserRouter([
   },
   {
     path: "/vote-history",
-    element: <VoteHistory />,
+
+    element: (
+      <ProtectedRoute>
+        <VoteHistory />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "*",

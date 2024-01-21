@@ -3,7 +3,11 @@ import styled from "@emotion/styled";
 import Header from "../component/Header";
 import BottomButton01 from "../component/BottomButon01";
 
-import { Label } from "./home";
+import { IVote, Label } from "./home";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import { auth, db } from "../firebase";
 
 const Wrapper = styled.div`
   /* padding: 0 24px; */
@@ -28,6 +32,20 @@ export const Title = styled.h1`
 export const List = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+export const NoItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 48px;
+  gap: 32px;
+`;
+
+export const NoItemLabel = styled.div`
+  font-size: 20px;
+  color: #a2a2a2;
 `;
 
 export const Item = styled.div`
@@ -62,7 +80,7 @@ export const Name = styled.h2`
   font-size: 18px;
   font-weight: 500;
 `;
-export const Winner = styled.h4`
+export const Winner = styled.div`
   display: flex;
   flex-direction: row;
   gap: 8px;
@@ -76,41 +94,118 @@ export const WinnerName = styled.h4`
   /* color: #525252; */
 `;
 
-const array = ["0", "1", "2", "3"];
+// const array = ["0", "1", "2", "3"];
 
 export default function VoteHistory() {
+  const [votes, setVotes] = useState<IVote[]>([]);
+
+  const navigate = useNavigate();
+
+  const user = auth.currentUser;
+
+  const fetchVotes = async () => {
+    try {
+      const votesQuery = query(
+        collection(db, "vote"),
+        where("user_id", "==", user?.uid),
+        where("is_complete", "==", true),
+        orderBy("create_at", "desc")
+      );
+      const snapshot = await getDocs(votesQuery);
+
+      const votes = snapshot.docs.map((doc) => {
+        const {
+          vote_id,
+          vote_list,
+          voter_list,
+          vote_name,
+          vote_winner,
+          total_votes_cnt,
+          available_votes_cnt,
+          already_voters,
+          is_complete,
+          close_time,
+          user_id,
+          user_name,
+          create_at,
+        } = doc.data();
+        return {
+          vote_id,
+          vote_list,
+          voter_list,
+          vote_name,
+          vote_winner,
+          total_votes_cnt,
+          available_votes_cnt,
+          already_voters,
+          is_complete,
+          close_time,
+          user_id,
+          user_name,
+          create_at,
+          id: doc.id,
+        };
+      });
+      setVotes(votes);
+    } catch (err) {
+      console.log(err);
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    fetchVotes();
+  }, []);
+
+  console.log("vote제대로?", votes);
+
+  const clickSurvey = () => {
+    navigate("/vote-register");
+  };
+
   return (
     <>
       <Header isNavigator />
       <Wrapper>
         <Title>
           역대 불개미 <br />
-          히스토리 입니다.
+          히스토리 입니다
         </Title>
         <List>
-          {array.map((item) => (
-            <Item>
-              <WrapperLeft>
-                <Name>2024년 1월 8일 불개미</Name>
-                <Winner>
-                  <WinnerLabel>우승자</WinnerLabel>
-                  <WinnerName>박박지</WinnerName>
-                </Winner>
-              </WrapperLeft>
-              <WrapperRight>
-                <Label>투표 결과</Label>
-                <img
-                  src="/images/icon/common/icon-arrow-left.svg"
-                  width={24}
-                  height={24}
-                  style={{ transform: "rotate(0.5turn)" }}
-                />
-              </WrapperRight>
-            </Item>
-          ))}
+          {votes.length > 0 ? (
+            votes.map((item, index) => (
+              <Item key={`item${index}`}>
+                <WrapperLeft>
+                  <Name>{item.vote_name}</Name>
+                  <Winner>
+                    <WinnerLabel>우승자</WinnerLabel>
+                    <WinnerName>{item.vote_winner}</WinnerName>
+                  </Winner>
+                </WrapperLeft>
+                <WrapperRight>
+                  <Label>투표 결과</Label>
+                  <img
+                    src="/images/icon/common/icon-arrow-left.svg"
+                    width={24}
+                    height={24}
+                    style={{ transform: "rotate(0.5turn)" }}
+                  />
+                </WrapperRight>
+              </Item>
+            ))
+          ) : (
+            <NoItem>
+              <img
+                src="/images/illust/illust-noitem.svg"
+                width={240}
+                height={240}
+              />
+              <NoItemLabel>아직 종료된 투표가 없어요!</NoItemLabel>
+            </NoItem>
+          )}
         </List>
       </Wrapper>
-      <BottomButton01 label={"투표 새로 만들기"} />
+      <BottomButton01 label={"투표 새로 만들기"} onClick={clickSurvey} />
     </>
   );
 }
