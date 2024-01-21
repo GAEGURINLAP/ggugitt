@@ -29,6 +29,26 @@ import BottomButton02 from "../component/BottomButon02";
 import ButtonError from "../component/ButtonError";
 import LoadingScreen from "../component/LoadingScreen";
 
+const History = styled.div`
+  /* position: fixed; */
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  width: fit-content;
+  height: fit-content;
+  padding-top: 12px;
+  /* max-width: 500px; */
+  /* top: 80px; */
+  cursor: pointer;
+`;
+
+const HistoryLabel = styled.h4`
+  font-size: 16px;
+  &:hover {
+    color: var(--main);
+  }
+`;
+
 const Wrapper = styled.div`
   padding: 0 24px;
   padding-top: 120px;
@@ -46,6 +66,12 @@ const Title = styled.h1`
     font-weight: 700;
     color: red;
   }
+`;
+
+export const CurrentTitleWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 export const CurrentTitle = styled.h1`
@@ -304,6 +330,10 @@ export default function Home() {
     setIsShowAlertDeleteConfirm(true);
   };
 
+  const clickHistory = () => {
+    navigate("/vote-history");
+  };
+
   const onDelete = async () => {
     setIsLoading(true);
 
@@ -399,6 +429,7 @@ export default function Home() {
   return (
     <>
       <Header />
+
       {isLoading && <LoadingScreen />}
       {votes[0]?.user_id === user?.uid ? (
         <>
@@ -406,10 +437,22 @@ export default function Home() {
             <>
               <Wrapper>
                 <CurrentVote>
-                  <CurrentTitle>
-                    <b>{votes[0]?.vote_name}</b> <br />
-                    투표 현황입니다.
-                  </CurrentTitle>
+                  <CurrentTitleWrapper>
+                    <CurrentTitle>
+                      <b>{votes[0]?.vote_name}</b> <br />
+                      투표 현황입니다.
+                    </CurrentTitle>
+                    <History onClick={clickHistory}>
+                      <HistoryLabel>투표 히스토리</HistoryLabel>
+                      <img
+                        src="/images/icon/common/icon-arrow-left.svg"
+                        width={24}
+                        height={24}
+                        style={{ transform: "rotate(0.5turn)" }}
+                      />
+                    </History>
+                  </CurrentTitleWrapper>
+
                   <VoteResultList>
                     {votes[0]?.vote_list.map((item, index) => (
                       <VoteResult key={`item${index}`}>
