@@ -75,6 +75,10 @@ export const WrapperRight = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-use-select: none;
+  user-select: none;
 `;
 
 export const Name = styled.h2`
@@ -97,13 +101,14 @@ export const WinnerName = styled.h4`
 
 export default function VoteHistory() {
   const [votes, setVotes] = useState<IVote[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const user = auth.currentUser;
 
   const fetchVotes = async () => {
+    setIsLoading(true);
     try {
       const votesQuery = query(
         collection(db, "vote"),
@@ -177,7 +182,10 @@ export default function VoteHistory() {
             <LoadingScreen />
           ) : votes.length > 0 ? (
             votes.map((item, index) => (
-              <Item key={`item${index}`}>
+              <Item
+                key={`item${index}`}
+                onClick={() => navigate(`/vote-history-result/${item.vote_id}`)}
+              >
                 <WrapperLeft>
                   <Name>{item.vote_name}</Name>
                   <Winner>

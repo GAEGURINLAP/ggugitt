@@ -66,7 +66,7 @@ const HistroyArrow = styled.div`
   }
 `;
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   padding: 0 24px;
   padding-top: 120px;
   /* height: 100vh; */
@@ -143,14 +143,14 @@ export const VoteItem = styled.div<VoteItemProps>`
   }
 `;
 
-const VoteResultList = styled.div`
+export const VoteResultList = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 24px;
 `;
-const VoteResult = styled.div`
+export const VoteResult = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -158,25 +158,25 @@ const VoteResult = styled.div`
   gap: 24px;
   align-self: stretch;
 `;
-const Content = styled.div`
+export const Content = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 `;
 
-const Name = styled.div<{ isVoteWinner: boolean }>`
+export const Name = styled.div<{ isVoteWinner: boolean }>`
   font-size: 18px;
   font-weight: 500;
   color: ${(props) => props.isVoteWinner && "var(--main)"};
 `;
-const VotesCnt = styled.div<{ isVoteWinner: boolean }>`
+export const VotesCnt = styled.div<{ isVoteWinner: boolean }>`
   font-size: 18px;
   font-weight: 500;
   color: ${(props) => props.isVoteWinner && "var(--main)"};
 `;
 
-const Bar = styled.div`
+export const Bar = styled.div`
   width: 100%;
   height: 8px;
   background-color: #edf0f3;
@@ -184,7 +184,7 @@ const Bar = styled.div`
   overflow: hidden;
 `;
 
-const Fill = styled.div<{
+export const Fill = styled.div<{
   votesCnt: number;
   totalVotesCnt: number;
   isVoteWinner: boolean;
@@ -205,6 +205,10 @@ export const VoterContainer = styled.div`
 export const Label = styled.h3`
   font-size: 14px;
   color: #525252;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-use-select: none;
+  user-select: none;
 `;
 
 export const MemberList = styled.div`

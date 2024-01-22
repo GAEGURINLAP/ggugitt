@@ -19,9 +19,11 @@ import { auth, db } from "../firebase";
 import { useParams } from "react-router-dom";
 import { WrapperMid, Title } from "./vote-result";
 import Header from "../component/Header";
+import LoadingScreen from "../component/LoadingScreen";
 
 export default function VoteHistoryResult() {
   const [vote, setVote] = useState<IVote>();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { id } = useParams();
 
@@ -30,6 +32,7 @@ export default function VoteHistoryResult() {
   const user = auth.currentUser;
 
   const fetchVotes = async () => {
+    setIsLoading(true);
     try {
       const votesQuery = query(collection(db, "vote"));
       const snapshot = await getDocs(votesQuery);
@@ -75,6 +78,7 @@ export default function VoteHistoryResult() {
     } catch (err) {
       alert(err);
     } finally {
+      setIsLoading(false);
     }
   };
 
@@ -87,7 +91,9 @@ export default function VoteHistoryResult() {
   return (
     <>
       <Header isNavigator />
-      {vote?.user_id === user?.uid ? (
+      {isLoading ? (
+        <LoadingScreen />
+      ) : vote?.user_id === user?.uid ? (
         vote?.is_complete ? (
           <Wrapper>
             <CurrentVote>

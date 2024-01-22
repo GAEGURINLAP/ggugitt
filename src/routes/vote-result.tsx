@@ -7,7 +7,7 @@ import { IVote } from "./home";
 // import { Helmet } from 'react-helmet-async';
 // import { IVoteList } from "./vote-register/candidate";
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   padding: 0 24px;
   padding-top: 120px;
   height: 100vh;
@@ -17,7 +17,7 @@ const Wrapper = styled.div`
   align-items: center;
   gap: 120px;
 `;
-const WrapperMid = styled.div`
+export const WrapperMid = styled.div`
   padding: 0 24px;
   padding-top: 320px;
   height: 100vh;
@@ -25,13 +25,15 @@ const WrapperMid = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 32px;
 `;
 
 export const Title = styled.h1`
-  font-size: 32px;
-  font-weight: 600;
+  /* font-weight: 600; */
   line-height: 140%;
   text-align: center;
+  font-size: 20px;
+  color: #a2a2a2;
 `;
 export const Winner = styled.h1`
   font-size: 56px;
