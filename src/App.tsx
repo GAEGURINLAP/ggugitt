@@ -27,6 +27,7 @@ import CandidateRegister from "./routes/vote-register/candidate";
 import IndexRegister from "./routes/vote-register";
 import VoteResult from "./routes/vote-result";
 import VoteHistory from "./routes/vote-history";
+import VoteHistoryResult from "./routes/vote-history-result";
 
 const router = createBrowserRouter([
   {
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
   {
     path: "/vote-result/:id",
     element: <VoteResult />,
+  },
+  {
+    path: "/vote-history-result/:id",
+    element: <VoteHistoryResult />,
   },
   {
     path: "/vote-history",
