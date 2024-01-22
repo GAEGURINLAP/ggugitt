@@ -277,6 +277,7 @@ export default function Home() {
   const baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
   const fetchVotes = async () => {
+    setIsLoading(true);
     try {
       const votesQuery = query(
         collection(db, "vote"),
@@ -337,6 +338,7 @@ export default function Home() {
     } catch (err) {
       alert(err);
     } finally {
+      setIsLoading(false);
     }
   };
 
@@ -452,8 +454,9 @@ export default function Home() {
     <>
       <Header />
 
-      {isLoading && <LoadingScreen />}
-      {votes[0]?.user_id === user?.uid ? (
+      {isLoading ? (
+        <LoadingScreen />
+      ) : votes[0]?.user_id === user?.uid ? (
         <>
           {votes[0].is_complete === false ? (
             <>
