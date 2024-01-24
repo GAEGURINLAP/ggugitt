@@ -132,8 +132,8 @@ export default function VoteHistoryResult() {
           <WrapperMid>
             <img
               src="/images/illust/illust-noitem.svg"
-              width={240}
-              height={240}
+              width={320}
+              height={320}
             />
             <Title>
               아직 종료되지 않은 <br /> 투표입니다!
