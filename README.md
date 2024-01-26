@@ -21,7 +21,19 @@
 이 서비스의 방향성은 **'투표 등록자는 조금 불편하게, 투표자는 간편하게'**입니다. 아마추어 스포츠 팀의 운영진 입장에서는 속상하게도, 카카오톡 투표하기로 받는 투표조차 응답을 제 때 받기 쉽지 않다는 페인 포인트가 있었습니다. 때문에 마치 구글폼 응답을 받는 것처럼, 투표자들은 공유받은 링크를 열어 **'단순히 투표만'** 하면 되도록 방향성을 잡고 기능을 만들 예정입니다.
 
 ## 어떤 기술을 쓸 것인가?
+<br>
 
+<div>
+
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white">
+<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
+<img src="https://img.shields.io/badge/Vite-AA4EFE?style=for-the-badge&logo=vite&logoColor=white">
+<img src="https://img.shields.io/badge/emotion-C43BAD?style=for-the-badge&logo=emotion&logoColor=white">
+<img src="https://img.shields.io/badge/firebase-049BE5?style=for-the-badge&logo=firebase&logoColor=FFCC31">
+</div>
+
+<br>
+    
 - **React**: 사실 프론트엔드로 React를 선택한 이유는 단순합니다. 현업에서 Vue를 사용하고 있기 때문에, React를 실제 프로젝트에서 사용해보고 싶었기 때문입니다.
 - **Vite**: 현업에서 사용하고 있는 Vite로부터 실제로 Dev Server의 구동 속도, 빌드에서 훌륭한 퍼포먼스를 체감하였기 때문에 React + Vite 조합으로 프로젝트를 생성하기로 결정했습니다.
 - **react-hook-form**: 공부할 때도 느꼈지만 React에서 Form의 에러를 비롯하여 다양한 케이스를 직접 State로 관리한다는 것은 너무 비용이 많이 드는 일이었기 때문에 react-hook-form을 선택하였습니다.
