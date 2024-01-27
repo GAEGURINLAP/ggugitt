@@ -102,7 +102,10 @@ export default function VoteProgress() {
   const fetchVotes = async () => {
     setIsLoading(true);
     try {
-      const votesQuery = query(collection(db, "vote"));
+      const votesQuery = query(
+        collection(db, "vote"),
+        where("user_id", "==", user?.uid)
+      );
       const snapshot = await getDocs(votesQuery);
 
       const votes = snapshot.docs.map((doc) => {
@@ -354,9 +357,7 @@ export default function VoteProgress() {
             </Wrapper>
             <BottomButton01
               label={"투표 링크 공유하기"}
-              onClick={() =>
-                handleCopyClipBoard(`${baseURL}/vote-progress/${voteId}`)
-              }
+              onClick={() => handleCopyClipBoard(`${baseURL}/vote/${id}`)}
             />
           </>
         )

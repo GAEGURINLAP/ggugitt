@@ -409,7 +409,7 @@ export default function Vote() {
       )}
       {vote?.is_complete && (
         <Alert
-          message={"종료된 투표입니다!"}
+          message={"이미 종료된 투표입니다!"}
           buttons={[
             <ButtonPrimary
               label={"확인"}
