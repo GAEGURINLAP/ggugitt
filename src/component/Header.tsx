@@ -17,15 +17,16 @@ import {
 
 interface IHeaderProp {
   isNavigator?: boolean;
+  path?: string;
 }
 
-export default function Header({ isNavigator }: IHeaderProp) {
+export default function Header({ isNavigator, path }: IHeaderProp) {
   const [isShowAlert, setShowAlert] = useState(false);
 
   const navigate = useNavigate();
 
   const clickBackButton = () => {
-    navigate(-1);
+    navigate(`/${path}`);
   };
 
   const clickLogOut = () => {
