@@ -90,6 +90,7 @@ export default function VoteProgress() {
   const [isShowAlertDeleteConfirm, setIsShowAlertDeleteConfirm] =
     useState(false);
   const [isShowAlertDelete, setIsShowAlertDelete] = useState(false);
+  const [isShowAlertFail, setIsShowAlertFail] = useState(false);
 
   const navigate = useNavigate();
 
@@ -211,6 +212,11 @@ export default function VoteProgress() {
   };
 
   const clickVoteComplete = () => {
+    if (vote?.total_votes_cnt === 0) {
+      setIsLoading(false);
+      setIsShowAlertFail(true);
+      return;
+    }
     setIsShowAlertComplete(true);
   };
 
@@ -416,6 +422,18 @@ export default function VoteProgress() {
             <ButtonPrimary
               label={"확인"}
               onClick={clickDeleteComplete}
+              isWidthFull
+            />,
+          ]}
+        />
+      )}
+      {isShowAlertFail && (
+        <Alert
+          message={"아직 투표한 사람이 없습니다!"}
+          buttons={[
+            <ButtonPrimary
+              label={"확인"}
+              onClick={() => setIsShowAlertFail(false)}
               isWidthFull
             />,
           ]}
