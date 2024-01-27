@@ -95,20 +95,31 @@ export default function VoteProgress() {
 
   const { id } = useParams();
 
+  const NewID = Number(id);
+
   const baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
   const user = auth.currentUser;
 
+  const executeVoteQuery = async (userId: string | undefined) => {
+    const q = query(
+      collection(db, "vote"),
+      where("user_id", "==", userId),
+      where("vote_id", "==", NewID),
+      limit(1)
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot;
+  };
+
   const fetchVotes = async () => {
     setIsLoading(true);
     try {
-      const votesQuery = query(
-        collection(db, "vote"),
-        where("user_id", "==", user?.uid)
-      );
-      const snapshot = await getDocs(votesQuery);
+      const querySnapshot = await executeVoteQuery(user?.uid);
 
-      const votes = snapshot.docs.map((doc) => {
+      const voteDoc = querySnapshot.docs[0];
+
+      if (voteDoc) {
         const {
           vote_id,
           vote_list,
@@ -123,8 +134,10 @@ export default function VoteProgress() {
           user_id,
           user_name,
           create_at,
-        } = doc.data();
-        return {
+        } = voteDoc.data();
+
+        // 여기에서 필요한 데이터를 사용합니다.
+        setVote({
           vote_id,
           vote_list,
           voter_list,
@@ -138,20 +151,20 @@ export default function VoteProgress() {
           user_id,
           user_name,
           create_at,
-          id: doc.id,
-        };
-      });
+          id: voteDoc.id,
+        });
+      }
 
-      const newVote = votes.find((vote) => vote.vote_id == id);
-      setVote(newVote);
+      // const newVote = votes.find((vote) => vote.vote_id == id);
+      // setVote(newVote);
 
-      const voteList = snapshot.docs.pop()?.data().vote_list;
+      const voteList = querySnapshot.docs.pop()?.data().vote_list;
       setVoteList(voteList);
 
-      const voterList = snapshot.docs.pop()?.data().voter_list;
+      const voterList = querySnapshot.docs.pop()?.data().voter_list;
       setVoterList(voterList);
 
-      const voteId = snapshot.docs.pop()?.data().vote_id;
+      const voteId = querySnapshot.docs.pop()?.data().vote_id;
       setVoteId(voteId);
     } catch (err) {
       alert(err);
@@ -176,13 +189,7 @@ export default function VoteProgress() {
   const onDelete = async () => {
     setIsLoading(true);
 
-    const q = query(
-      collection(db, "vote"),
-      where("user_id", "==", user?.uid),
-      orderBy("create_at", "desc"),
-      limit(1)
-    );
-    const querySnapshot = await getDocs(q);
+    const querySnapshot = await executeVoteQuery(user?.uid);
 
     try {
       setIsShowAlertDeleteConfirm(false);
@@ -199,6 +206,7 @@ export default function VoteProgress() {
       setIsLoading(false);
     } finally {
       setIsShowAlertDelete(true);
+      navigate("/");
     }
   };
 
@@ -209,13 +217,7 @@ export default function VoteProgress() {
   const onVoteComplete = async () => {
     setIsLoading(true);
 
-    const q = query(
-      collection(db, "vote"),
-      where("user_id", "==", user?.uid),
-      orderBy("create_at", "desc"),
-      limit(1)
-    );
-    const querySnapshot = await getDocs(q);
+    const querySnapshot = await executeVoteQuery(user?.uid);
 
     if (!querySnapshot.empty) {
       const latestDoc = querySnapshot.docs[0];
@@ -233,7 +235,7 @@ export default function VoteProgress() {
         vote_winner: highestVote.name,
       });
       setIsLoading(false);
-      navigate(0);
+      navigate(`${baseURL}/vote-history-result/${id}`);
     }
   };
 

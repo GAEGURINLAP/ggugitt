@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { ButtonWrapper, Icon, Text, Wrapper } from "../style/success";
 import ButtonPrimary from "./ButtonPrimary";
 
@@ -14,6 +15,7 @@ export default function Success({
   isShowButton,
   onClick,
 }: SuccessProps) {
+  const navigate = useNavigate();
   return (
     <Wrapper>
       <Icon>
@@ -28,6 +30,7 @@ export default function Success({
       <ButtonWrapper>
         {isShowButton && <ButtonPrimary label={label} onClick={onClick} />}
       </ButtonWrapper>
+      <ButtonPrimary label="메인으로 가기" onClick={() => navigate("/")} />
     </Wrapper>
   );
 }
