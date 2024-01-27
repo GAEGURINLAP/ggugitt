@@ -85,10 +85,15 @@ export const Name = styled.h2`
   font-size: 18px;
   font-weight: 500;
 `;
-export const Winner = styled.div`
+export const Status = styled.div`
   display: flex;
   flex-direction: row;
   gap: 8px;
+`;
+
+export const StatusProgress = styled.label`
+  font-size: 16px;
+  color: var(--main);
 `;
 
 export const WinnerLabel = styled.h4`
@@ -113,7 +118,6 @@ export default function VoteHistory() {
       const votesQuery = query(
         collection(db, "vote"),
         where("user_id", "==", user?.uid),
-        where("is_complete", "==", true),
         orderBy("create_at", "desc")
       );
       const snapshot = await getDocs(votesQuery);
@@ -171,53 +175,89 @@ export default function VoteHistory() {
 
   return (
     <>
-      <Header isNavigator />
-      <Wrapper>
-        <Title>
-          역대 불개미 <br />
-          히스토리 입니다
-        </Title>
-        <List>
-          {isLoading ? (
-            <LoadingScreen />
-          ) : votes.length > 0 ? (
-            votes.map((item, index) => (
-              <Item
-                key={`item${index}`}
-                onClick={() => navigate(`/vote-history-result/${item.vote_id}`)}
-              >
-                <WrapperLeft>
-                  <Name>{item.vote_name}</Name>
-                  <Winner>
-                    <WinnerLabel>우승자</WinnerLabel>
-                    <WinnerName>{item.vote_winner}</WinnerName>
-                  </Winner>
-                </WrapperLeft>
-                <WrapperRight>
-                  <Label>투표 결과</Label>
-                  <img
-                    src="/images/icon/common/icon-arrow-left.svg"
-                    width={24}
-                    height={24}
-                    style={{ transform: "rotate(0.5turn)" }}
-                  />
-                </WrapperRight>
-              </Item>
-            ))
+      <Header />
+      {isLoading ? (
+        <LoadingScreen />
+      ) : (
+        <>
+          {votes.length > 0 ? (
+            <Wrapper>
+              <Title>
+                MOM 투표 <br />
+                히스토리 입니다.
+              </Title>
+              <List>
+                {votes.map((item, index) =>
+                  item.is_complete ? (
+                    <Item
+                      key={`item${index}`}
+                      onClick={() =>
+                        navigate(`/vote-history-result/${item.vote_id}`)
+                      }
+                    >
+                      <WrapperLeft>
+                        <Name>{item.vote_name}</Name>
+                        <Status>
+                          <WinnerLabel>우승자</WinnerLabel>
+                          <WinnerName>{item.vote_winner}</WinnerName>
+                        </Status>
+                      </WrapperLeft>
+                      <WrapperRight>
+                        <Label>투표 결과</Label>
+                        <img
+                          src="/images/icon/common/icon-arrow-left.svg"
+                          width={24}
+                          height={24}
+                          style={{ transform: "rotate(0.5turn)" }}
+                        />
+                      </WrapperRight>
+                    </Item>
+                  ) : (
+                    <Item
+                      key={`item${index}`}
+                      onClick={() =>
+                        navigate(`/vote-history-result/${item.vote_id}`)
+                      }
+                    >
+                      <WrapperLeft>
+                        <Name>{item.vote_name}</Name>
+                        <Status>
+                          <StatusProgress>투표 진행중</StatusProgress>
+                        </Status>
+                      </WrapperLeft>
+                      <WrapperRight>
+                        <Label>투표 현황</Label>
+                        <img
+                          src="/images/icon/common/icon-arrow-left.svg"
+                          width={24}
+                          height={24}
+                          style={{ transform: "rotate(0.5turn)" }}
+                        />
+                      </WrapperRight>
+                    </Item>
+                  )
+                )}
+              </List>
+            </Wrapper>
           ) : (
-            <NoItem>
-              <img
-                src="/images/illust/illust-noitem.svg"
-                width={240}
-                height={240}
-              />
-              <NoItemLabel>아직 종료된 투표가 없어요!</NoItemLabel>
-            </NoItem>
+            <Wrapper>
+              <Title>
+                과연 오늘의 <b>불개미</b>는? <br />
+                두구두구
+              </Title>
+              <NoItem>
+                <img
+                  src="/images/logo/bullgaemi.png"
+                  alt="불개미"
+                  width={176}
+                  height={240}
+                />
+              </NoItem>
+            </Wrapper>
           )}
-        </List>
-      </Wrapper>
-
-      <BottomButton01 label={"투표 새로 만들기"} onClick={clickSurvey} />
+          <BottomButton01 label={"투표 새로 만들기"} onClick={clickSurvey} />
+        </>
+      )}
     </>
   );
 }
