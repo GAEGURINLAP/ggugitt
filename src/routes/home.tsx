@@ -53,7 +53,7 @@ const History = styled.div`
   }
 `;
 
-const Refresh = styled.div`
+export const Refresh = styled.div`
   cursor: pointer;
 `;
 
@@ -169,7 +169,7 @@ export const Content = styled.div`
   justify-content: space-between;
 `;
 
-export const Name = styled.div<{ isVoteWinner: boolean }>`
+export const Name = styled.div<{ isVoteWinner?: boolean }>`
   font-size: 18px;
   font-weight: 500;
   color: ${(props) => props.isVoteWinner && "var(--main)"};
@@ -258,7 +258,7 @@ export interface IVote {
   id: string;
 }
 
-export default function Home() {
+export default function Vote() {
   const [votes, setVotes] = useState<IVote[]>([]);
   const [voteID, setVoteID] = useState();
   const [voteList, setVoteList] = useState<IVoteList[]>([]);

@@ -7,7 +7,6 @@ import { auth } from "./firebase";
 import { Global } from "@emotion/react";
 
 import Home from "./routes/home";
-import Profile from "./routes/profile";
 import Login from "./routes/login";
 import CreateAccount from "./routes/create-account";
 
@@ -27,6 +26,7 @@ import CandidateRegister from "./routes/vote-register/candidate";
 import IndexRegister from "./routes/vote-register";
 import VoteResult from "./routes/vote-result";
 import VoteHistory from "./routes/vote-history";
+import VoteProgress from "./routes/vote-progress";
 import VoteHistoryResult from "./routes/vote-history-result";
 
 const router = createBrowserRouter([
@@ -76,6 +76,10 @@ const router = createBrowserRouter([
   {
     path: "/vote-history-result/:id",
     element: <VoteHistoryResult />,
+  },
+  {
+    path: "/vote-progress/:id",
+    element: <VoteProgress />,
   },
   {
     path: "/vote-history",
