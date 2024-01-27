@@ -27,8 +27,6 @@ export default function VoteHistoryResult() {
 
   const { id } = useParams();
 
-  console.log("id??", id);
-
   const user = auth.currentUser;
 
   const fetchVotes = async () => {
@@ -71,8 +69,6 @@ export default function VoteHistoryResult() {
         };
       });
 
-      console.log("votes??", votes);
-
       const newVote = votes.find((vote) => vote.vote_id == id);
       setVote(newVote);
     } catch (err) {
@@ -90,44 +86,48 @@ export default function VoteHistoryResult() {
 
   return (
     <>
-      <Header isNavigator />
       {isLoading ? (
         <LoadingScreen />
       ) : vote?.user_id === user?.uid ? (
         vote?.is_complete ? (
-          <Wrapper>
-            <CurrentVote>
-              <CurrentTitleWrapper>
-                <CurrentTitle>
-                  {vote?.vote_name} <br />
-                  투표 결과입니다.
-                  <br />
-                  우승자는 <b>{vote?.vote_winner}</b>입니다!!
-                </CurrentTitle>
-              </CurrentTitleWrapper>
-              <VoteResultList>
-                {vote?.vote_list.map((item, index) => (
-                  <VoteResult key={`item${index}`}>
-                    <Content>
-                      <Name isVoteWinner={item.name === vote.vote_winner}>
-                        {item.name}
-                      </Name>
-                      <VotesCnt isVoteWinner={item.name === vote?.vote_winner}>
-                        {item.votes_cnt}명
-                      </VotesCnt>
-                    </Content>
-                    <Bar>
-                      <Fill
-                        votesCnt={item.votes_cnt}
-                        totalVotesCnt={vote?.total_votes_cnt}
-                        isVoteWinner={item.name === vote?.vote_winner}
-                      />
-                    </Bar>
-                  </VoteResult>
-                ))}
-              </VoteResultList>
-            </CurrentVote>
-          </Wrapper>
+          <>
+            <Header isNavigator path="" />
+            <Wrapper>
+              <CurrentVote>
+                <CurrentTitleWrapper>
+                  <CurrentTitle>
+                    {vote?.vote_name} <br />
+                    투표 결과입니다.
+                    <br />
+                    우승자는 <b>{vote?.vote_winner}</b>입니다!!
+                  </CurrentTitle>
+                </CurrentTitleWrapper>
+                <VoteResultList>
+                  {vote?.vote_list.map((item, index) => (
+                    <VoteResult key={`item${index}`}>
+                      <Content>
+                        <Name isVoteWinner={item.name === vote.vote_winner}>
+                          {item.name}
+                        </Name>
+                        <VotesCnt
+                          isVoteWinner={item.name === vote?.vote_winner}
+                        >
+                          {item.votes_cnt}명
+                        </VotesCnt>
+                      </Content>
+                      <Bar>
+                        <Fill
+                          votesCnt={item.votes_cnt}
+                          totalVotesCnt={vote?.total_votes_cnt}
+                          isVoteWinner={item.name === vote?.vote_winner}
+                        />
+                      </Bar>
+                    </VoteResult>
+                  ))}
+                </VoteResultList>
+              </CurrentVote>
+            </Wrapper>
+          </>
         ) : (
           <WrapperMid>
             <img

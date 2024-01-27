@@ -167,8 +167,6 @@ export default function VoteHistory() {
     fetchVotes();
   }, []);
 
-  console.log("vote제대로?", votes);
-
   const clickSurvey = () => {
     navigate("/vote-register");
   };
@@ -215,9 +213,7 @@ export default function VoteHistory() {
                   ) : (
                     <Item
                       key={`item${index}`}
-                      onClick={() =>
-                        navigate(`/vote-history-result/${item.vote_id}`)
-                      }
+                      onClick={() => navigate(`/vote-progress/${item.vote_id}`)}
                     >
                       <WrapperLeft>
                         <Name>{item.vote_name}</Name>
