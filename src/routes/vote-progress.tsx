@@ -272,6 +272,11 @@ export default function VoteProgress() {
             <Title>
               아직 종료되지 않은 <br /> 투표입니다!
             </Title>
+            <ButtonPrimary
+              label="메인으로 가기"
+              isWidthFull
+              onClick={() => navigate("/")}
+            />
           </WrapperMid>
         ) : (
           <>
@@ -363,6 +368,11 @@ export default function VoteProgress() {
             height={240}
           />
           <Title>다른 유저의 투표입니다!</Title>
+          <ButtonPrimary
+            label="메인으로 가기"
+            isWidthFull
+            onClick={() => navigate("/")}
+          />
         </WrapperMid>
       )}
       {isToast && <Toast message={"클립보드에 복사되었습니다."} />}
