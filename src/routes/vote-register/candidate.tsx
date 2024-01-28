@@ -168,6 +168,7 @@ export default function CandidateRegister() {
         voter_list: voterList,
         vote_name: `${formattedDate}`,
         vote_winner: highestVote.name,
+        already_voters: [],
         total_votes_cnt: 0,
         available_votes_cnt: 11,
         is_complete: false,
