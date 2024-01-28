@@ -27,7 +27,6 @@ import {
   doc,
   getDocs,
   limit,
-  orderBy,
   query,
   updateDoc,
   where,
@@ -36,7 +35,7 @@ import { auth, db } from "../firebase";
 import { useNavigate, useParams } from "react-router-dom";
 import { WrapperMid, Title } from "./vote-result";
 import Header from "../component/Header";
-import LoadingScreen from "../component/LoadingScreen";
+// import LoadingScreen from "../component/LoadingScreen";
 
 import Alert from "../component/Alert";
 
@@ -81,9 +80,9 @@ export default function VoteProgress() {
   const [vote, setVote] = useState<IVote>();
   const [voterList, setVoterList] = useState<string[]>([]);
   const [voteList, setVoteList] = useState<IVoteList[]>([]);
-  const [voteId, setVoteId] = useState();
+  // const [voteId, setVoteId] = useState();
 
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [isToast, setIsToast] = useState(false);
 
   const [isShowAlertComplete, setIsShowAlertComplete] = useState(false);
@@ -114,7 +113,7 @@ export default function VoteProgress() {
   };
 
   const fetchVotes = async () => {
-    setIsLoading(true);
+    // setIsLoading(true);
     try {
       const querySnapshot = await executeVoteQuery(user?.uid);
 
@@ -165,18 +164,20 @@ export default function VoteProgress() {
       const voterList = querySnapshot.docs.pop()?.data().voter_list;
       setVoterList(voterList);
 
-      const voteId = querySnapshot.docs.pop()?.data().vote_id;
-      setVoteId(voteId);
+      // const voteId = querySnapshot.docs.pop()?.data().vote_id;
+      // setVoteId(voteId);
     } catch (err) {
       alert(err);
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   };
 
   useEffect(() => {
     fetchVotes();
   }, [id]);
+
+  console.log("voterk 어떻게 나오는거지?", vote);
 
   const clickDelete = () => {
     setIsShowAlertDeleteConfirm(true);
@@ -188,7 +189,7 @@ export default function VoteProgress() {
   };
 
   const onDelete = async () => {
-    setIsLoading(true);
+    // setIsLoading(true);
 
     const querySnapshot = await executeVoteQuery(user?.uid);
 
@@ -200,11 +201,11 @@ export default function VoteProgress() {
 
         // 문서 삭제
         await deleteDoc(voteDocRef);
-        setIsLoading(false);
+        // setIsLoading(false);
       }
     } catch (e) {
       console.log(e);
-      setIsLoading(false);
+      // setIsLoading(false);
     } finally {
       setIsShowAlertDelete(true);
       navigate("/");
@@ -212,16 +213,16 @@ export default function VoteProgress() {
   };
 
   const clickVoteComplete = () => {
-    if (vote?.total_votes_cnt === 0) {
-      setIsLoading(false);
-      setIsShowAlertFail(true);
-      return;
-    }
+    // if (vote?.total_votes_cnt === 0) {
+    //   setIsLoading(false);
+    //   setIsShowAlertFail(true);
+    //   return;
+    // }
     setIsShowAlertComplete(true);
   };
 
   const onVoteComplete = async () => {
-    setIsLoading(true);
+    // setIsLoading(true);
 
     const querySnapshot = await executeVoteQuery(user?.uid);
 
@@ -229,19 +230,28 @@ export default function VoteProgress() {
       const latestDoc = querySnapshot.docs[0];
       const voteDocRef = doc(db, "vote", latestDoc.id);
 
-      const highestVote = voteList.reduce(
-        (prev, current) =>
-          current.votes_cnt > prev.votes_cnt ? current : prev,
-        { name: "", votes_cnt: -1 }
-      );
+      // const highestVote = voteList.reduce(
+      //   (prev, current) =>
+      //     current.votes_cnt > prev.votes_cnt ? current : prev,
+      //   { name: "", votes_cnt: -1 }
+      // );
 
+      let highestVote = { name: "", votes_cnt: -1 };
+
+      voteList.forEach((current) => {
+        if (current.votes_cnt > highestVote.votes_cnt) {
+          highestVote = current;
+        }
+      });
+
+      console.log("highestVote 가 어떻게 나오는지", highestVote);
       // 문서 업데이트
       await updateDoc(voteDocRef, {
         is_complete: true,
         vote_winner: highestVote.name,
       });
-      setIsLoading(false);
-      navigate(`${baseURL}/vote-history-result/${id}`);
+      // setIsLoading(false);
+      navigate(`/vote-history-result/${id}`);
     }
   };
 
@@ -270,9 +280,7 @@ export default function VoteProgress() {
 
   return (
     <>
-      {isLoading ? (
-        <LoadingScreen />
-      ) : vote?.user_id === user?.uid ? (
+      {vote?.user_id === user?.uid ? (
         vote?.is_complete ? (
           <WrapperMid>
             <img
@@ -384,7 +392,9 @@ export default function VoteProgress() {
           />
         </WrapperMid>
       )}
+
       {isToast && <Toast message={"클립보드에 복사되었습니다."} />}
+
       {isShowAlertComplete && (
         <Alert
           message={"정말 투표를 종료하실건가요?"}
@@ -402,6 +412,7 @@ export default function VoteProgress() {
           ]}
         />
       )}
+
       {isShowAlertDeleteConfirm && (
         <Alert
           message={"정말 투표를 삭제하시겠습니까?"}
@@ -415,6 +426,7 @@ export default function VoteProgress() {
           ]}
         />
       )}
+
       {isShowAlertDelete && (
         <Alert
           message={"투표를 삭제하였습니다."}
@@ -427,6 +439,7 @@ export default function VoteProgress() {
           ]}
         />
       )}
+
       {isShowAlertFail && (
         <Alert
           message={"아직 투표한 사람이 없습니다!"}
