@@ -33,6 +33,7 @@ export const Title = styled.h1`
 export const List = styled.div`
   display: flex;
   flex-direction: column;
+  padding-bottom: 160px;
 `;
 
 export const NoItem = styled.div`
