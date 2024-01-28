@@ -13,7 +13,7 @@ import LoadingScreen from "../component/LoadingScreen";
 const Wrapper = styled.div`
   /* padding: 0 24px; */
   padding-top: 120px;
-  height: 100vh;
+  /* height: 100vh; */
   padding-bottom: 80px;
   display: flex;
   flex-direction: column;

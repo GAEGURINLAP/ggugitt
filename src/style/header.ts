@@ -9,6 +9,7 @@ export const Container = styled.div`
   max-width: 500px;
   padding: 0 24px 0 20px;
   background-color: var(--white);
+  z-index: 99999;
 `;
 
 export const Wrapper = styled.div`
