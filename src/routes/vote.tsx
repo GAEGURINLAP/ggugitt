@@ -32,12 +32,9 @@ import Toast from "../component/Toast";
 import LoadingScreen from "../component/LoadingScreen";
 
 const Wrapper = styled.div`
-  /* padding: 0 24px; */
+  padding: 0 24px;
   padding-top: 120px;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   /* padding-bottom: 80px; */
 `;
 
@@ -55,7 +52,6 @@ export const CurrentVote = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding: 0 24px;
 `;
 
 export const VoteTitle = styled.h2`
@@ -378,11 +374,8 @@ export default function Vote() {
                 </div>
               </FormContainer>
             </CurrentVote>
-            <BottomButton01
-              onClick={handleSubmit(clickConfim)}
-              label={"확인"}
-            />
           </Wrapper>
+          <BottomButton01 onClick={handleSubmit(clickConfim)} label={"확인"} />
         </>
       )}
 

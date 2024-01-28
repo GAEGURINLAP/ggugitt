@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
 import ButtonPrimary from "./ButtonPrimary";
 
-const Container = styled.div<BottomButtonProps>`
-  position: ${(props) => (props.isNotFixed ? "fixed" : "flex")};
-  bottom: ${(props) => props.isNotFixed && "0"};
+const Container = styled.div`
+  position: fixed;
+  bottom: 0;
   width: 100%;
   max-width: 500px;
   background-color: var(--white);
@@ -19,19 +19,14 @@ const Wrapper = styled.div`
 
 interface BottomButtonProps {
   label: string;
-  isNotFixed?: boolean;
+  isFixed?: boolean;
   onClick?: () => void;
   isDisabled?: boolean;
 }
 
-const BottomButton = ({
-  onClick,
-  label,
-  isDisabled,
-  isNotFixed,
-}: BottomButtonProps) => {
+const BottomButton = ({ onClick, label, isDisabled }: BottomButtonProps) => {
   return (
-    <Container label={label} isNotFixed={isNotFixed}>
+    <Container>
       <Wrapper>
         <ButtonPrimary
           label={label}
