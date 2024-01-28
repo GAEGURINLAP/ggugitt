@@ -170,7 +170,6 @@ export default function CandidateRegister() {
         vote_winner: highestVote.name,
         total_votes_cnt: 0,
         available_votes_cnt: 11,
-        already_voters: null,
         is_complete: false,
         close_time: closeTime,
         user_id: user?.uid,

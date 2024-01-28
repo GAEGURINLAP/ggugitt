@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import { auth, db } from "../firebase";
+import { db } from "../firebase";
 import {
   collection,
   getDocs,
@@ -113,36 +113,40 @@ export interface IVote {
   id: string;
 }
 
+export interface IFormInput {
+  name: string;
+}
+
 export default function Vote() {
+  const navigate = useNavigate();
+
   const [vote, setVote] = useState<IVote>();
-  // const [successMessege, isSuccessMessege] = useState('');
+  const [alreadyVoter, setAlreadyVoter] = useState<String>();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isShowAlertVote, setShowAlertVote] = useState(false);
   const [isShowAlertConfirm, setShowAlertConfirm] = useState(false);
   const [isShowAlertVoterFail, setIsShowAlertVoterFail] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isShowAlertAlreadyVoter, setIsShowAlertAlreadyVoter] = useState(false);
 
   const [isToast, setIsToast] = useState(false);
 
   const baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
-  // const [voterList, setVoterList] = useState<string[]>([]);
-
-  // const [voterName, setVoterName] = useState("");
-
   const [isVoter, setIsVoter] = useState(false);
-
-  // const [voteID, setVoteID] = useState(false);
 
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
     null
   );
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInput>();
+
   const { id } = useParams();
-
-  const navigate = useNavigate();
-
-  const user = auth.currentUser;
 
   const NewID = Number(id);
 
@@ -195,16 +199,6 @@ export default function Vote() {
     // setVoterList(voterList);
   };
 
-  interface IFormInput {
-    name: string;
-  }
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IFormInput>();
-
   const clickVote = () => {
     setShowAlertVote(true);
   };
@@ -212,8 +206,17 @@ export default function Vote() {
   const clickConfim = async (data: IFormInput) => {
     const { name } = data;
 
+    setAlreadyVoter(name);
+
+    if (vote?.already_voters.some((item) => item === name)) {
+      setIsShowAlertAlreadyVoter(true);
+
+      return;
+    }
+
     if (vote?.voter_list.some((item) => item === name)) {
       setIsVoter(true);
+      setAlreadyVoter(name);
     } else {
       setIsShowAlertVoterFail(true);
     }
@@ -241,9 +244,6 @@ export default function Vote() {
       clearTimeout(timeout); // 컴포넌트가 unmount되거나 상태가 업데이트되면 타이머를 클리어
     };
   }, [isToast]);
-  // const clickVoteConfirm = () => {
-  //   setShowAlertConfirm(true);
-  // };
 
   const onRegister = async () => {
     if (selectedItemIndex !== null) {
@@ -256,6 +256,8 @@ export default function Vote() {
       VotesCnt += 1;
       TotalVotesCnt += 1;
       AvailableVotesCnt -= 1;
+
+      const AlreadyVoters = [...(vote?.already_voters || []), alreadyVoter];
 
       const q = query(collection(db, "vote"), where("vote_id", "==", NewID));
 
@@ -275,7 +277,7 @@ export default function Vote() {
             ),
             total_votes_cnt: TotalVotesCnt,
             available_votes_cnt: AvailableVotesCnt,
-            already_voters: user?.uid || null,
+            already_voters: AlreadyVoters,
           });
         } catch (err) {
           setIsLoading(false);
@@ -384,6 +386,18 @@ export default function Vote() {
             <ButtonPrimary
               label={"다시 입력"}
               onClick={() => setIsShowAlertVoterFail(false)}
+              isWidthFull
+            />,
+          ]}
+        />
+      )}
+      {isShowAlertAlreadyVoter && (
+        <Alert
+          message={"이미 투표한 팀원입니다!"}
+          buttons={[
+            <ButtonPrimary
+              label={"확인"}
+              onClick={() => setIsShowAlertAlreadyVoter(false)}
               isWidthFull
             />,
           ]}

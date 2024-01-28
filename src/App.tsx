@@ -6,7 +6,7 @@ import { auth } from "./firebase";
 
 import { Global } from "@emotion/react";
 
-import Home from "./routes/home";
+// import Home from "./routes/home";
 import Login from "./routes/login";
 import CreateAccount from "./routes/create-account";
 
@@ -79,7 +79,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/vote-progress/:id",
-    element: <VoteProgress />,
+    element: (
+      <ProtectedRoute>
+        <VoteProgress />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/vote-history",
@@ -126,7 +130,7 @@ function App() {
         <Wrapper>
           <Global styles={global} />
           {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
-          {/* <BottomButton /> */}
+          {/* <RouterProvider router={router} /> */}
         </Wrapper>
       </Container>
     </>
