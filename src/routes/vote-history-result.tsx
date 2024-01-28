@@ -18,19 +18,35 @@ import { collection, getDocs, query } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { useNavigate, useParams } from "react-router-dom";
 import { WrapperMid, Title } from "./vote-result";
+
 import Header from "../component/Header";
 import LoadingScreen from "../component/LoadingScreen";
+import BottomButton01 from "../component/BottomButon01";
 import ButtonPrimary from "../component/ButtonPrimary";
+import Toast from "../component/Toast";
 
 export default function VoteHistoryResult() {
   const [vote, setVote] = useState<IVote>();
   const [isLoading, setIsLoading] = useState(false);
+  const [isToast, setIsToast] = useState(false);
 
   const navigate = useNavigate();
 
   const { id } = useParams();
 
   const user = auth.currentUser;
+
+  const baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
+
+  const handleCopyClipBoard = async (text: string) => {
+    try {
+      setIsToast(true);
+      await navigator.clipboard.writeText(text);
+    } catch (err) {
+      console.log(err);
+    } finally {
+    }
+  };
 
   const fetchVotes = async () => {
     setIsLoading(true);
@@ -130,6 +146,12 @@ export default function VoteHistoryResult() {
                 </VoteResultList>
               </CurrentVote>
             </Wrapper>
+            <BottomButton01
+              label={"투표 결과 공유하기"}
+              onClick={() =>
+                handleCopyClipBoard(`${baseURL}/vote-result/${id}`)
+              }
+            />
           </>
         ) : (
           <WrapperMid>
@@ -163,6 +185,7 @@ export default function VoteHistoryResult() {
           />
         </WrapperMid>
       )}
+      {isToast && <Toast message={"클립보드에 복사되었습니다."} />}
     </>
   );
 }
