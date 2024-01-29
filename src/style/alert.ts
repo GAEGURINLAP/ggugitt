@@ -10,7 +10,7 @@ export const Dim = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.4);
-  z-index: 2;
+  z-index: 999999;
 `;
 
 export const Container = styled.div`

@@ -30,6 +30,7 @@ import {
 import { useForm } from "react-hook-form";
 import Toast from "../component/Toast";
 import LoadingScreen from "../component/LoadingScreen";
+import { registerServiceWorker } from "../utils/common/notification";
 
 const Wrapper = styled.div`
   padding: 0 24px;
@@ -287,6 +288,11 @@ export default function Vote() {
           setSelectedItemIndex(null);
           setShowAlertConfirm(true);
           return;
+          async function handleAllowNotification() {
+            const permission = await Notification.requestPermission();
+
+            registerServiceWorker();
+          }
         }
       }
     }

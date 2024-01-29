@@ -4,16 +4,32 @@
     <meta charset="UTF-8" />
     <meta name="theme-color" content="#ffffff" />
     <link rel="icon" type="image/svg+xml" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/public/images/logo/logo-pwa-152.png" sizes="152x152" />
+    <link
+      rel="apple-touch-icon"
+      href="/public/images/logo/logo-pwa-152.png"
+      sizes="152x152"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>오늘의 불개미는 과연?</title>
-    <meta name="title" property="og:title" content="오늘의 불개미는??" />
-    <meta name="description" property="og:description" content="투표에 참여해주세요!" />
-    <meta name="image" property="og:image" content="/images/logo/404.png" />
-    <meta property="og:image:width" content="240" />
-    <meta property="og:image:height" content="240" />
-    <meta name="url" property="og:url" content="https://bullgaemi-survey.web.app/" />
+    <title>꾸깃 - 꾹 눌러 담은 투표!</title>
+    <meta
+      name="title"
+      property="og:title"
+      content="그렇다고 정말 꾸기진 마세요!"
+    />
+    <meta
+      name="description"
+      property="og:description"
+      content="오늘의 1위는 누구일까요?"
+    />
+    <meta
+      name="image"
+      property="og:image"
+      content="/images/illust/illust-ggugitt.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="url" property="og:url" content="ggugitt.com" />
 
     <link rel="manifest" href="manifest.json" />
     <script type="module" src="/src/main.tsx"></script>
@@ -21,19 +37,19 @@
   <body>
     <div id="root"></div>
     <script>
-      if ('serviceWorker' in navigator) {
+      if ("serviceWorker" in navigator) {
         // Register a service worker hosted at the root of the
         // site using the default scope.
         navigator.serviceWorker
-          .register('/sw.js')
-          .then(registration => {
-            console.log('Service worker registration succeeded:', registration);
+          .register("/sw.js")
+          .then((registration) => {
+            console.log("Service worker registration succeeded:", registration);
           })
-          .catch(err => {
-            console.log('Service worker registration failed:', error);
+          .catch((err) => {
+            console.log("Service worker registration failed:", error);
           });
       } else {
-        console.log('Service workers are not supported.');
+        console.log("Service workers are not supported.");
       }
     </script>
   </body>

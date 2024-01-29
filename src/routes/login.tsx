@@ -68,7 +68,7 @@ export default function Login() {
       <Wrapper>
         <img src="/images/logo/404.png" alt="개구린" width={180} height={180} />
         <Title>
-          <b>불개미</b> 로그인
+          <b>꾸깃</b> 로그인
         </Title>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Input

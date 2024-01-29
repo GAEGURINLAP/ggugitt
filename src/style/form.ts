@@ -16,7 +16,7 @@ export const Title = styled.h1`
   font-size: 32px;
   font-weight: 300;
   b {
-    color: tomato;
+    color: var(--main);
     font-weight: 700;
   }
 `;

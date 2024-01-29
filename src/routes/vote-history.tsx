@@ -182,7 +182,7 @@ export default function VoteHistory() {
           {votes.length > 0 ? (
             <Wrapper>
               <Title>
-                MOM 투표 <br />
+                진행하신 투표 <br />
                 히스토리 입니다.
               </Title>
               <List>
