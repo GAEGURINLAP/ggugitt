@@ -82,6 +82,7 @@ export default function VoteProgress() {
   const [voteList, setVoteList] = useState<IVoteList[]>([]);
   const [voterList, setVoterList] = useState<string[]>([]);
   const [alreadyVoterList, setAlreadyVoterList] = useState<string[]>([]);
+  const [notVoterList, setNotVoterList] = useState<string[]>([]);
   // const [voteId, setVoteId] = useState();
 
   // const [isLoading, setIsLoading] = useState(false);
@@ -169,6 +170,12 @@ export default function VoteProgress() {
       const alreadyVoterList = querySnapshot.docs.pop()?.data().already_voters;
       setAlreadyVoterList(alreadyVoterList);
 
+      const notVoterList = voterList.filter(
+        (voter: string) => !alreadyVoterList.includes(voter)
+      );
+
+      setNotVoterList(notVoterList);
+
       // const voteId = querySnapshot.docs.pop()?.data().vote_id;
       // setVoteId(voteId);
     } catch (err) {
@@ -182,7 +189,13 @@ export default function VoteProgress() {
     fetchVotes();
   }, [id]);
 
+  // useEffect(() => {
+  //   console.log("notVoterList??", notVoterList);
+  // }, []);
+
   console.log("voterk 어떻게 나오는거지?", vote);
+
+  console.log("notVoterList??", notVoterList);
 
   const clickDelete = () => {
     setIsShowAlertDeleteConfirm(true);
@@ -363,15 +376,15 @@ export default function VoteProgress() {
                   </MemberList>
                 </VoterContainer>
                 <VoterContainer>
-                  <Label>투표한 사람들</Label>
+                  <Label>투표하지 않은 사람들</Label>
                   <MemberList>
-                    {alreadyVoterList.length > 0 ? (
-                      alreadyVoterList.map((voter, index) => (
+                    {notVoterList.length > 0 ? (
+                      notVoterList.map((voter, index) => (
                         <Member key={`voter${index}`}>{voter}</Member>
                       ))
                     ) : (
                       <GuideText style={{ marginTop: "4px" }}>
-                        아직 투표한 사람이 없습니다.
+                        모두 투표를 완료했습니다!
                       </GuideText>
                     )}
                   </MemberList>
