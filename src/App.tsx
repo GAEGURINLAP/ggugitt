@@ -17,7 +17,7 @@ import ProtectedRoute from "./component/ProtectedRoute";
 import { Container, Wrapper } from "./style/layout";
 import global from "./style/global";
 import ResetPaswrd from "./routes/reset-password";
-import Splash from "./component/Splash";
+// import Splash from "./component/Splash";
 
 import NotFound from "./routes/not-found";
 import Vote from "./routes/vote";
