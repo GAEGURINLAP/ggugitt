@@ -4,6 +4,8 @@ import {
   Container,
   Dim,
   Message,
+  MessageWrapper,
+  SubMessage,
   Title,
   Wrapper,
 } from "../style/alert";
@@ -11,18 +13,30 @@ import {
 interface AlertProps {
   title?: string;
   message: string;
+  subMessage?: string;
   isShowTitle?: boolean;
+  isShowSubMessege?: boolean;
   buttons: React.ReactNode[];
 }
 
-const Alert = ({ title, message, isShowTitle, buttons }: AlertProps) => {
+const Alert = ({
+  title,
+  message,
+  subMessage,
+  buttons,
+  isShowTitle,
+  isShowSubMessege,
+}: AlertProps) => {
   return (
     <>
       <Dim>
         <Container>
           <Wrapper>
             {isShowTitle && <Title>{title}</Title>}
-            <Message>{message}</Message>
+            <MessageWrapper>
+              <Message>{message}</Message>
+              {isShowSubMessege && <SubMessage>{subMessage}</SubMessage>}
+            </MessageWrapper>
             <ButtonContainer>
               {buttons.map((button, index) => (
                 <ButtonWrapper key={index}>{button}</ButtonWrapper>

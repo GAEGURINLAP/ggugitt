@@ -125,7 +125,7 @@ function App() {
         <meta property="og:image" content="/images/logo/404.png" />
         <meta property="og:url" content="https://bullgaemi-survey.web.app/" />
       </Helmet> */}
-      <Splash progress={progress} />
+      {/* <Splash progress={progress} /> */}
       <Container>
         <Wrapper>
           <Global styles={global} />

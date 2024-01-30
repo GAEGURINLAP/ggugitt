@@ -36,8 +36,17 @@ export const Wrapper = styled.div`
 export const Title = styled.div`
   font-size: 24px;
 `;
+export const MessageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
 export const Message = styled.div`
   font-size: 16px;
+`;
+export const SubMessage = styled.div`
+  font-size: 12px;
+  color: #a2a2a2;
 `;
 
 export const ButtonContainer = styled.div`

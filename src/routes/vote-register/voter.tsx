@@ -61,6 +61,11 @@ export const Error = styled.span`
   color: tomato;
 `;
 
+export const GuideText = styled.span`
+  font-size: 14px;
+  color: #a2a2a2;
+`;
+
 export const VoteWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;

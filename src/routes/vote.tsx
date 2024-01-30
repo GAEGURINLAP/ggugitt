@@ -24,6 +24,7 @@ import {
   Form,
   FormContainer,
   FormWrapper,
+  GuideText,
   Input,
 } from "./vote-register/voter";
 
@@ -352,7 +353,13 @@ export default function Vote() {
                 입력해주세요.
               </CurrentTitle>
               <FormContainer>
-                <div style={{ display: "flex", flexDirection: "column" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "8px",
+                  }}
+                >
                   <Form onSubmit={handleSubmit(clickConfim)}>
                     <FormWrapper>
                       <Input
@@ -372,11 +379,15 @@ export default function Vote() {
                             message: "이름은 10자를 초과할 수 없습니다.",
                           },
                         })}
-                        placeholder="팀원 이름을 입력해주세요"
+                        placeholder="이름을 입력해주세요"
                       />
                     </FormWrapper>
                   </Form>
-                  {errors.name && <Error>{errors.name.message}</Error>}
+                  {errors.name ? (
+                    <Error>{errors.name.message}</Error>
+                  ) : (
+                    <GuideText>ex) 김꾸깃</GuideText>
+                  )}
                 </div>
               </FormContainer>
             </CurrentVote>
@@ -388,6 +399,8 @@ export default function Vote() {
       {isShowAlertVoterFail && (
         <Alert
           message={"투표권이 없는 이름입니다! ㅠㅠ"}
+          subMessage={"이름을 정확히 입력해주셔야 합니다."}
+          isShowSubMessege
           buttons={[
             <ButtonPrimary
               label={"다시 입력"}
