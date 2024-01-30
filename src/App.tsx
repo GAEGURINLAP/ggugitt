@@ -102,7 +102,7 @@ const router = createBrowserRouter([
 
 function App() {
   const [isLoading, setLoading] = useState(true);
-  const [progress, setProgress] = useState<number>(0);
+  // const [progress, setProgress] = useState<number>(0);
 
   const handleProgress = () => {
     setProgress(100);
