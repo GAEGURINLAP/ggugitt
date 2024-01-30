@@ -47,6 +47,7 @@ import BottomButton01 from "../component/BottomButon01";
 
 import { IVoteList } from "./vote-register/candidate";
 import Toast from "../component/Toast";
+import { GuideText } from "./vote-register/voter";
 
 export interface IVote {
   vote_id: number;
@@ -78,8 +79,9 @@ export const RefreshWrapper = styled.div`
 
 export default function VoteProgress() {
   const [vote, setVote] = useState<IVote>();
-  const [voterList, setVoterList] = useState<string[]>([]);
   const [voteList, setVoteList] = useState<IVoteList[]>([]);
+  const [voterList, setVoterList] = useState<string[]>([]);
+  const [alreadyVoterList, setAlreadyVoterList] = useState<string[]>([]);
   // const [voteId, setVoteId] = useState();
 
   // const [isLoading, setIsLoading] = useState(false);
@@ -163,6 +165,9 @@ export default function VoteProgress() {
 
       const voterList = querySnapshot.docs.pop()?.data().voter_list;
       setVoterList(voterList);
+
+      const alreadyVoterList = querySnapshot.docs.pop()?.data().already_voters;
+      setAlreadyVoterList(alreadyVoterList);
 
       // const voteId = querySnapshot.docs.pop()?.data().vote_id;
       // setVoteId(voteId);
@@ -350,11 +355,25 @@ export default function VoteProgress() {
                   ))}
                 </VoteResultList>
                 <VoterContainer>
-                  <Label>투표할 사람들</Label>
+                  <Label>유권자</Label>
                   <MemberList>
                     {voterList.map((member, index) => (
                       <Member key={`member${index}`}>{member}</Member>
                     ))}
+                  </MemberList>
+                </VoterContainer>
+                <VoterContainer>
+                  <Label>투표한 사람들</Label>
+                  <MemberList>
+                    {alreadyVoterList.length > 0 ? (
+                      alreadyVoterList.map((voter, index) => (
+                        <Member key={`voter${index}`}>{voter}</Member>
+                      ))
+                    ) : (
+                      <GuideText style={{ marginTop: "4px" }}>
+                        아직 투표한 사람이 없습니다.
+                      </GuideText>
+                    )}
                   </MemberList>
                 </VoterContainer>
                 <div style={{ display: "flex", width: "100%", gap: "8px" }}>
