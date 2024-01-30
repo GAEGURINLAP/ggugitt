@@ -81,7 +81,7 @@ export default function VoteProgress() {
   const [vote, setVote] = useState<IVote>();
   const [voteList, setVoteList] = useState<IVoteList[]>([]);
   const [voterList, setVoterList] = useState<string[]>([]);
-  const [alreadyVoterList, setAlreadyVoterList] = useState<string[]>([]);
+  // const [alreadyVoterList, setAlreadyVoterList] = useState<string[]>([]);
   const [notVoterList, setNotVoterList] = useState<string[]>([]);
   // const [voteId, setVoteId] = useState();
 
@@ -168,7 +168,7 @@ export default function VoteProgress() {
       setVoterList(voterList);
 
       const alreadyVoterList = querySnapshot.docs.pop()?.data().already_voters;
-      setAlreadyVoterList(alreadyVoterList);
+      // setAlreadyVoterList(alreadyVoterList);
 
       const notVoterList = voterList.filter(
         (voter: string) => !alreadyVoterList.includes(voter)
