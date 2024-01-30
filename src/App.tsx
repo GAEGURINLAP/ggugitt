@@ -104,9 +104,9 @@ function App() {
   const [isLoading, setLoading] = useState(true);
   // const [progress, setProgress] = useState<number>(0);
 
-  const handleProgress = () => {
-    setProgress(100);
-  };
+  // const handleProgress = () => {
+  //   setProgress(100);
+  // };
 
   const init = async () => {
     await auth.authStateReady();
@@ -114,7 +114,7 @@ function App() {
   };
   useEffect(() => {
     init();
-    handleProgress();
+    // handleProgress();
   }, []);
 
   return (
