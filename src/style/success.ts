@@ -46,4 +46,7 @@ export const Text = styled.h2`
 export const ButtonWrapper = styled.div`
   animation: ${fadeInCheck} 0.6s ease;
   margin-top: 24px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
 `;

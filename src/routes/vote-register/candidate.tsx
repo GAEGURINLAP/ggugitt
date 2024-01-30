@@ -264,6 +264,7 @@ export default function CandidateRegister() {
           message={"투표 등록이 완료 되었습니다!"}
           label="투표 링크 공유하기"
           isShowButton
+          isShowSecondaryButton
           onClick={() => handleCopyClipBoard(`${baseURL}/vote/${voteId}`)}
         />
       ) : (
