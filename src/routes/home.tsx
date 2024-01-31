@@ -28,6 +28,7 @@ import ButtonSecondary from "../component/ButtonSecondary";
 import BottomButton02 from "../component/BottomButon02";
 import ButtonError from "../component/ButtonError";
 import LoadingScreen from "../component/LoadingScreen";
+import { Helmet } from "react-helmet-async";
 
 const History = styled.div`
   /* position: fixed; */
@@ -55,6 +56,7 @@ const History = styled.div`
 
 export const Refresh = styled.div`
   cursor: pointer;
+  padding-bottom: 8px;
 `;
 
 const HistoryLabel = styled.h4`
@@ -456,6 +458,13 @@ export default function Vote() {
 
   return (
     <>
+      <Helmet>
+        <title>꾸깃 - 투표 현황</title>
+        <meta name="description" content="오호호홍" />
+        <meta property="og:title" content="투표해투표해" />
+        <meta property="og:image" content="/images/illust/illust-ggugitt.png" />
+        <meta property="og:url" content="https://ggugit.com/" />
+      </Helmet>
       <Header />
 
       {isLoading ? (

@@ -31,6 +31,7 @@ import {
 import { useForm } from "react-hook-form";
 import Toast from "../component/Toast";
 import LoadingScreen from "../component/LoadingScreen";
+import { Helmet } from "react-helmet-async";
 // import { registerServiceWorker } from "../utils/common/notification";
 
 const Wrapper = styled.div`
@@ -308,6 +309,16 @@ export default function Vote() {
   return (
     <>
       {/* <LoadingScreen /> */}
+      <Helmet>
+        <title>꾸깃 - 투표하라고</title>
+        <meta name="description" content="투표투표제발" />
+        <meta property="og:title" content="우헤헿" />
+        <meta
+          property="og:image"
+          content="/images/illust/illust-ggugitt-vote.png"
+        />
+        <meta property="og:url" content="https://ggugit.com/vote" />
+      </Helmet>
       {isShowAlertConfirm ? (
         <Success
           message={"투표 완료 되었습니다!"}

@@ -48,6 +48,7 @@ import BottomButton01 from "../component/BottomButon01";
 import { IVoteList } from "./vote-register/candidate";
 import Toast from "../component/Toast";
 import { GuideText } from "./vote-register/voter";
+import { Helmet } from "react-helmet-async";
 
 export interface IVote {
   vote_id: number;
@@ -298,6 +299,16 @@ export default function VoteProgress() {
 
   return (
     <>
+      <Helmet>
+        <title>꾸깃 - 투표 현황이요~</title>
+        <meta name="description" content="꾸깃꾸우깃" />
+        <meta property="og:title" content="아하하하하" />
+        <meta
+          property="og:image"
+          content="/images/illust/illust-ggugitt-progress.png"
+        />
+        <meta property="og:url" content="https://ggugit.com/vote-progress" />
+      </Helmet>
       {vote?.user_id === user?.uid ? (
         vote?.is_complete ? (
           <WrapperMid>

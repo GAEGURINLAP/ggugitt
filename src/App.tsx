@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-// import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
 
 import { auth } from "./firebase";
 
 import { Global } from "@emotion/react";
 
-// import Home from "./routes/home";
 import Login from "./routes/login";
 import CreateAccount from "./routes/create-account";
 
-import Layout from "./component/Layout";
 import LoadingScreen from "./component/LoadingScreen";
 import ProtectedRoute from "./component/ProtectedRoute";
 
@@ -28,6 +26,7 @@ import VoteResult from "./routes/vote-result";
 import VoteHistory from "./routes/vote-history";
 import VoteProgress from "./routes/vote-progress";
 import VoteHistoryResult from "./routes/vote-history-result";
+import Layout from "./component/layout";
 
 const router = createBrowserRouter([
   {
@@ -119,12 +118,13 @@ function App() {
 
   return (
     <>
-      {/* <Helmet>
-        <title>불개미 불개미!</title>
-        <meta name="description" content="MOM MOM" />
-        <meta property="og:image" content="/images/logo/404.png" />
-        <meta property="og:url" content="https://bullgaemi-survey.web.app/" />
-      </Helmet> */}
+      <Helmet>
+        <title>꾸깃 - 꾸잇? 꾸잇!</title>
+        <meta name="description" content="꾸깃꾸우깃" />
+        <meta property="og:title" content="뚜잇뚜잇츄" />
+        <meta property="og:image" content="/images/illust/illust-ggugitt.png" />
+        <meta property="og:url" content="https://ggugit.com/" />
+      </Helmet>
       {/* <Splash progress={progress} /> */}
       <Container>
         <Wrapper>
