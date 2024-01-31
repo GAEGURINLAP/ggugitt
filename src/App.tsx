@@ -26,7 +26,7 @@ import VoteResult from "./routes/vote-result";
 import VoteHistory from "./routes/vote-history";
 import VoteProgress from "./routes/vote-progress";
 import VoteHistoryResult from "./routes/vote-history-result";
-import Layout from "./component/layout";
+import Layout from "./component/Layout";
 
 const router = createBrowserRouter([
   {

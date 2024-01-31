@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 import styled from "@emotion/styled";
 
@@ -48,7 +49,6 @@ import BottomButton01 from "../component/BottomButon01";
 import { IVoteList } from "./vote-register/candidate";
 import Toast from "../component/Toast";
 import { GuideText } from "./vote-register/voter";
-import { Helmet } from "react-helmet-async";
 
 export interface IVote {
   vote_id: number;
