@@ -133,9 +133,9 @@ export default function Vote() {
   const [isShowAlertVoterFail, setIsShowAlertVoterFail] = useState(false);
   const [isShowAlertAlreadyVoter, setIsShowAlertAlreadyVoter] = useState(false);
 
-  const [isToast, setIsToast] = useState(false);
+  // const [isToast, setIsToast] = useState(false);
 
-  const baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
+  // const baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
   const [isVoter, setIsVoter] = useState(false);
 
@@ -268,18 +268,18 @@ export default function Vote() {
     }
   };
 
-  useEffect(() => {
-    let timeout: NodeJS.Timeout;
-    if (isToast) {
-      timeout = setTimeout(() => {
-        setIsToast(false);
-      }, 1200);
-    }
+  // useEffect(() => {
+  //   let timeout: NodeJS.Timeout;
+  //   if (isToast) {
+  //     timeout = setTimeout(() => {
+  //       setIsToast(false);
+  //     }, 1200);
+  //   }
 
-    return () => {
-      clearTimeout(timeout); // 컴포넌트가 unmount되거나 상태가 업데이트되면 타이머를 클리어
-    };
-  }, [isToast]);
+  //   return () => {
+  //     clearTimeout(timeout); // 컴포넌트가 unmount되거나 상태가 업데이트되면 타이머를 클리어
+  //   };
+  // }, [isToast]);
 
   const onRegister = async () => {
     if (selectedItemIndex !== null) {
