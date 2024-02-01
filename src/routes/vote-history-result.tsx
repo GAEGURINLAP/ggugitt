@@ -27,6 +27,7 @@ import Toast from "../component/Toast";
 
 export default function VoteHistoryResult() {
   const [vote, setVote] = useState<IVote>();
+  const [voteName, setVoteName] = useState<String>();
   const [isLoading, setIsLoading] = useState(false);
   const [isToast, setIsToast] = useState(false);
 
@@ -45,6 +46,38 @@ export default function VoteHistoryResult() {
     } catch (err) {
       console.log(err);
     } finally {
+    }
+  };
+
+  const shareKakao = () => {
+    if (window.Kakao) {
+      const kakao = window.Kakao;
+      if (!kakao.isInitialized()) {
+        kakao.init(import.meta.env.VITE_KAKAO_KEY);
+      }
+
+      kakao.Link.sendDefault({
+        objectType: "feed",
+        content: {
+          title: `${vote?.vote_name}의 우승자는 과연?!`,
+          description: "긴장하고 들어오세요! 하 궁금해...",
+          imageUrl:
+            "https://firebasestorage.googleapis.com/v0/b/bullgaemi-survey.appspot.com/o/illust-kakao-vote-result.png?alt=media&token=7916104b-2e65-43bb-86e4-ba27e0089698",
+          link: {
+            mobileWebUrl: "https://ggugitt.com",
+            webUrl: "https://ggugitt.com",
+          },
+        },
+        buttons: [
+          {
+            title: "당장 확인하러 가기",
+            link: {
+              mobileWebUrl: `https://ggugitt.com/vote-result/${id}`,
+              webUrl: `https://ggugitt.com/vote-result/${id}`,
+            },
+          },
+        ],
+      });
     }
   };
 
@@ -90,6 +123,9 @@ export default function VoteHistoryResult() {
 
       const newVote = votes.find((vote) => vote.vote_id == id);
       setVote(newVote);
+
+      const voteName = snapshot.docs.pop()?.data().vote_name;
+      setVoteName(voteName);
     } catch (err) {
       alert(err);
     } finally {
@@ -100,8 +136,6 @@ export default function VoteHistoryResult() {
   useEffect(() => {
     fetchVotes();
   }, [id]);
-
-  console.log("vote??", vote);
 
   return (
     <>
@@ -148,9 +182,10 @@ export default function VoteHistoryResult() {
             </Wrapper>
             <BottomButton01
               label={"투표 결과 공유하기"}
-              onClick={() =>
-                handleCopyClipBoard(`${baseURL}/vote-result/${id}`)
-              }
+              // onClick={() =>
+              //   handleCopyClipBoard(`${baseURL}/vote-result/${id}`)
+              // }
+              onClick={() => shareKakao()}
             />
           </>
         ) : (

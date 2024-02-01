@@ -107,7 +107,6 @@ export default function VoteProgress() {
   const user = auth.currentUser;
 
   const shareKakao = () => {
-    // console.log("반응은 있나?", process.env.KAKAO_KEY);
     if (window.Kakao) {
       const kakao = window.Kakao;
       if (!kakao.isInitialized()) {
@@ -136,7 +135,6 @@ export default function VoteProgress() {
           },
         ],
       });
-      console.log("여기까진 됏나?");
     }
   };
 
@@ -292,7 +290,6 @@ export default function VoteProgress() {
         }
       });
 
-      console.log("highestVote 가 어떻게 나오는지", highestVote);
       // 문서 업데이트
       await updateDoc(voteDocRef, {
         is_complete: true,
@@ -303,15 +300,15 @@ export default function VoteProgress() {
     }
   };
 
-  const handleCopyClipBoard = async (text: string) => {
-    try {
-      setIsToast(true);
-      await navigator.clipboard.writeText(text);
-    } catch (err) {
-      console.log(err);
-    } finally {
-    }
-  };
+  // const handleCopyClipBoard = async (text: string) => {
+  //   try {
+  //     setIsToast(true);
+  //     await navigator.clipboard.writeText(text);
+  //   } catch (err) {
+  //     console.log(err);
+  //   } finally {
+  //   }
+  // };
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
