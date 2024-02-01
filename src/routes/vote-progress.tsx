@@ -80,6 +80,7 @@ export const RefreshWrapper = styled.div`
 
 export default function VoteProgress() {
   const [vote, setVote] = useState<IVote>();
+  const [voteName, setVoteName] = useState<String>();
   const [voteList, setVoteList] = useState<IVoteList[]>([]);
   const [voterList, setVoterList] = useState<string[]>([]);
   // const [alreadyVoterList, setAlreadyVoterList] = useState<string[]>([]);
@@ -101,24 +102,23 @@ export default function VoteProgress() {
 
   const NewID = Number(id);
 
-  const baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
+  // const baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
   const user = auth.currentUser;
 
   const shareKakao = () => {
-    console.log("반응은 있나?");
+    // console.log("반응은 있나?", process.env.KAKAO_KEY);
     if (window.Kakao) {
       const kakao = window.Kakao;
       if (!kakao.isInitialized()) {
-        kakao.init("c1a86e0245074c5fabe4249f23d6c512");
+        kakao.init(import.meta.env.VITE_KAKAO_KEY);
       }
-      console.log("window.Kakao는 있나?");
 
       kakao.Link.sendDefault({
         objectType: "feed",
         content: {
-          title: "꾸깃 투표 할 시간이에요!",
-          description: "오늘의 MOM은 누구일까요? 두구두구두구",
+          title: `${voteName} 꾸깃할 시간이에요!`,
+          description: "오늘의 MOM은 과연 누굴까요? \n두구두구두구",
           imageUrl:
             "https://firebasestorage.googleapis.com/v0/b/bullgaemi-survey.appspot.com/o/illust-kakao-vote.png?alt=media&token=f27539f3-42ab-4aff-bb22-ea2fda1049b9",
           link: {
@@ -128,10 +128,10 @@ export default function VoteProgress() {
         },
         buttons: [
           {
-            title: "곧장 투표하러 가기",
+            title: "당장 투표하러 가기",
             link: {
-              mobileWebUrl: "https://ggugitt.com",
-              webUrl: "https://ggugitt.com",
+              mobileWebUrl: `https://ggugitt.com/vote/${id}`,
+              webUrl: `https://ggugitt.com/vote/${id}`,
             },
           },
         ],
@@ -197,6 +197,8 @@ export default function VoteProgress() {
       // const newVote = votes.find((vote) => vote.vote_id == id);
       // setVote(newVote);
 
+      const voteName = querySnapshot.docs.pop()?.data().vote_name;
+      setVoteName(voteName);
       const voteList = querySnapshot.docs.pop()?.data().vote_list;
       setVoteList(voteList);
 
