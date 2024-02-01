@@ -29,7 +29,7 @@ import {
 } from "./vote-register/voter";
 
 import { useForm } from "react-hook-form";
-import Toast from "../component/Toast";
+// import Toast from "../component/Toast";
 import LoadingScreen from "../component/LoadingScreen";
 import { Helmet } from "react-helmet-async";
 // import { registerServiceWorker } from "../utils/common/notification";
@@ -187,6 +187,7 @@ export default function Vote() {
         id: doc.id,
       };
     });
+
     const newVote = votes.find((vote) => vote.vote_id == id);
 
     // const voteID = snapshot.docs.pop()?.data().vote_id;
@@ -225,13 +226,45 @@ export default function Vote() {
     }
   };
 
-  const handleCopyClipBoard = async (text: string) => {
-    try {
-      setIsToast(true);
-      await navigator.clipboard.writeText(text);
-    } catch (err) {
-      console.log(err);
-    } finally {
+  // const handleCopyClipBoard = async (text: string) => {
+  //   try {
+  //     setIsToast(true);
+  //     await navigator.clipboard.writeText(text);
+  //   } catch (err) {
+  //     console.log(err);
+  //   } finally {
+  //   }
+  // };
+
+  const shareKakao = () => {
+    if (window.Kakao) {
+      const kakao = window.Kakao;
+      if (!kakao.isInitialized()) {
+        kakao.init(import.meta.env.VITE_KAKAO_KEY);
+      }
+
+      kakao.Link.sendDefault({
+        objectType: "feed",
+        content: {
+          title: `${vote?.vote_name} 꾸깃할 시간이에요!`,
+          description: "오늘의 MOM은 과연 누굴까요? \n두구두구두구",
+          imageUrl:
+            "https://firebasestorage.googleapis.com/v0/b/bullgaemi-survey.appspot.com/o/illust-kakao-vote.png?alt=media&token=f27539f3-42ab-4aff-bb22-ea2fda1049b9",
+          link: {
+            mobileWebUrl: "https://ggugitt.com",
+            webUrl: "https://ggugitt.com",
+          },
+        },
+        buttons: [
+          {
+            title: "당장 투표하러 가기",
+            link: {
+              mobileWebUrl: `https://ggugitt.com/vote/${NewID}`,
+              webUrl: `https://ggugitt.com/vote/${NewID}`,
+            },
+          },
+        ],
+      });
     }
   };
 
@@ -324,7 +357,8 @@ export default function Vote() {
           message={"투표 완료 되었습니다!"}
           label="다른 팀원 투표 강요하기"
           isShowButton
-          onClick={() => handleCopyClipBoard(`${baseURL}/vote/${NewID}`)}
+          // onClick={() => handleCopyClipBoard(`${baseURL}/vote/${NewID}`)}
+          onClick={() => shareKakao()}
         />
       ) : isVoter ? (
         <>
@@ -404,6 +438,7 @@ export default function Vote() {
             </CurrentVote>
           </Wrapper>
           <BottomButton01 onClick={handleSubmit(clickConfim)} label={"확인"} />
+          <BottomButton01 onClick={handleSubmit(clickConfim)} label={"확인"} />
         </>
       )}
 
@@ -433,7 +468,7 @@ export default function Vote() {
           ]}
         />
       )}
-      {isToast && <Toast message={"클립보드에 복사되었습니다."} />}
+      {/* {isToast && <Toast message={"클립보드에 복사되었습니다."} />} */}
       {isShowAlertVote && (
         <Alert
           message={"선택한 팀원으로 투표 하시겠습니까?"}

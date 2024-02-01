@@ -23,12 +23,12 @@ import Header from "../component/Header";
 import LoadingScreen from "../component/LoadingScreen";
 import BottomButton01 from "../component/BottomButon01";
 import ButtonPrimary from "../component/ButtonPrimary";
-import Toast from "../component/Toast";
+// import Toast from "../component/Toast";
 
 export default function VoteHistoryResult() {
   const [vote, setVote] = useState<IVote>();
   const [isLoading, setIsLoading] = useState(false);
-  const [isToast, setIsToast] = useState(false);
+  // const [isToast, setIsToast] = useState(false);
 
   const navigate = useNavigate();
 
@@ -216,7 +216,7 @@ export default function VoteHistoryResult() {
           />
         </WrapperMid>
       )}
-      {isToast && <Toast message={"클립보드에 복사되었습니다."} />}
+      {/* {isToast && <Toast message={"클립보드에 복사되었습니다."} />} */}
     </>
   );
 }

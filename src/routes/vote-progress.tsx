@@ -47,7 +47,7 @@ import ButtonError from "../component/ButtonError";
 import BottomButton01 from "../component/BottomButon01";
 
 import { IVoteList } from "./vote-register/candidate";
-import Toast from "../component/Toast";
+// import Toast from "../component/Toast";
 import { GuideText } from "./vote-register/voter";
 
 export interface IVote {
@@ -88,7 +88,7 @@ export default function VoteProgress() {
   // const [voteId, setVoteId] = useState();
 
   // const [isLoading, setIsLoading] = useState(false);
-  const [isToast, setIsToast] = useState(false);
+  // const [isToast, setIsToast] = useState(false);
 
   const [isShowAlertComplete, setIsShowAlertComplete] = useState(false);
   const [isShowAlertDeleteConfirm, setIsShowAlertDeleteConfirm] =
@@ -310,18 +310,18 @@ export default function VoteProgress() {
   //   }
   // };
 
-  useEffect(() => {
-    let timeout: NodeJS.Timeout;
-    if (isToast) {
-      timeout = setTimeout(() => {
-        setIsToast(false);
-      }, 1200);
-    }
+  // useEffect(() => {
+  //   let timeout: NodeJS.Timeout;
+  //   if (isToast) {
+  //     timeout = setTimeout(() => {
+  //       setIsToast(false);
+  //     }, 1200);
+  //   }
 
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [isToast]);
+  //   return () => {
+  //     clearTimeout(timeout);
+  //   };
+  // }, [isToast]);
 
   return (
     <>
@@ -463,7 +463,7 @@ export default function VoteProgress() {
         </WrapperMid>
       )}
 
-      {isToast && <Toast message={"클립보드에 복사되었습니다."} />}
+      {/* {isToast && <Toast message={"클립보드에 복사되었습니다."} />} */}
 
       {isShowAlertComplete && (
         <Alert
