@@ -105,6 +105,41 @@ export default function VoteProgress() {
 
   const user = auth.currentUser;
 
+  const shareKakao = () => {
+    console.log("반응은 있나?");
+    if (window.Kakao) {
+      const kakao = window.Kakao;
+      if (!kakao.isInitialized()) {
+        kakao.init("c1a86e0245074c5fabe4249f23d6c512");
+      }
+      console.log("window.Kakao는 있나?");
+
+      kakao.Link.sendDefault({
+        objectType: "feed",
+        content: {
+          title: "꾸깃 투표 할 시간이에요!",
+          description: "오늘의 MOM은 누구일까요? 두구두구두구",
+          imageUrl:
+            "https://firebasestorage.googleapis.com/v0/b/bullgaemi-survey.appspot.com/o/illust-kakao-vote.png?alt=media&token=f27539f3-42ab-4aff-bb22-ea2fda1049b9",
+          link: {
+            mobileWebUrl: "https://ggugitt.com",
+            webUrl: "https://ggugitt.com",
+          },
+        },
+        buttons: [
+          {
+            title: "곧장 투표하러 가기",
+            link: {
+              mobileWebUrl: "https://ggugitt.com",
+              webUrl: "https://ggugitt.com",
+            },
+          },
+        ],
+      });
+      console.log("여기까진 됏나?");
+    }
+  };
+
   const executeVoteQuery = async (userId: string | undefined) => {
     const q = query(
       collection(db, "vote"),
@@ -189,14 +224,6 @@ export default function VoteProgress() {
   useEffect(() => {
     fetchVotes();
   }, [id]);
-
-  // useEffect(() => {
-  //   console.log("notVoterList??", notVoterList);
-  // }, []);
-
-  console.log("voterk 어떻게 나오는거지?", vote);
-
-  console.log("notVoterList??", notVoterList);
 
   const clickDelete = () => {
     setIsShowAlertDeleteConfirm(true);
@@ -416,7 +443,8 @@ export default function VoteProgress() {
             </Wrapper>
             <BottomButton01
               label={"투표 링크 공유하기"}
-              onClick={() => handleCopyClipBoard(`${baseURL}/vote/${id}`)}
+              // onClick={() => handleCopyClipBoard(`${baseURL}/vote/${id}`)}
+              onClick={() => shareKakao()}
             />
           </>
         )
