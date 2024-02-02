@@ -21,7 +21,7 @@ import Success from "../../component/Success";
 import Alert from "../../component/Alert";
 import ButtonSecondary from "../../component/ButtonSecondary";
 import ButtonPrimary from "../../component/ButtonPrimary";
-import Toast from "../../component/Toast";
+// import Toast from "../../component/Toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Label, Member, MemberList, VoterContainer } from "../home";
 
@@ -248,15 +248,15 @@ export default function CandidateRegister() {
     setVoteList(updatedVoteItems);
   };
 
-  const handleCopyClipBoard = async (text: string) => {
-    try {
-      setIsToast(true);
-      await navigator.clipboard.writeText(text);
-    } catch (err) {
-      console.log(err);
-    } finally {
-    }
-  };
+  // const handleCopyClipBoard = async (text: string) => {
+  //   try {
+  //     setIsToast(true);
+  //     await navigator.clipboard.writeText(text);
+  //   } catch (err) {
+  //     console.log(err);
+  //   } finally {
+  //   }
+  // };
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -440,7 +440,7 @@ export default function CandidateRegister() {
           ]}
         />
       )}
-      {isToast && <Toast isComplete message={"클립보드에 복사되었습니다."} />}
+      {/* {isToast && <Toast isComplete message={"클립보드에 복사되었습니다."} />} */}
     </>
   );
 }
