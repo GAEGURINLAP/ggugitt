@@ -111,6 +111,7 @@ export interface IVoteList {
 
 export default function CandidateRegister() {
   const [voteList, setVoteList] = useState<IVoteList[]>([]);
+  const [voteName, setVoteName] = useState<String>();
   const [isLoading, setIsLoading] = useState(false);
 
   const location = useLocation();
@@ -126,10 +127,42 @@ export default function CandidateRegister() {
   const [voteId, setVoteId] = useState();
   const [isToast, setIsToast] = useState(false);
 
-  const baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
+  // const baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
   // Todo 인풋 삭제 버튼 먹히도록 만들기
   // const [isInputFocused, setIsInputFocused] = useState(false);
+
+  const shareKakao = () => {
+    if (window.Kakao) {
+      const kakao = window.Kakao;
+      if (!kakao.isInitialized()) {
+        kakao.init(import.meta.env.VITE_KAKAO_KEY);
+      }
+
+      kakao.Link.sendDefault({
+        objectType: "feed",
+        content: {
+          title: `${voteName} 꾸깃할 시간이에요!`,
+          description: "오늘의 MOM은 과연 누굴까요? \n두구두구두구",
+          imageUrl:
+            "https://firebasestorage.googleapis.com/v0/b/bullgaemi-survey.appspot.com/o/illust-kakao-vote.png?alt=media&token=f27539f3-42ab-4aff-bb22-ea2fda1049b9",
+          link: {
+            mobileWebUrl: "https://ggugitt.com",
+            webUrl: "https://ggugitt.com",
+          },
+        },
+        buttons: [
+          {
+            title: "당장 투표하러 가기",
+            link: {
+              mobileWebUrl: `https://ggugitt.com/vote/${voteId}`,
+              webUrl: `https://ggugitt.com/vote/${voteId}`,
+            },
+          },
+        ],
+      });
+    }
+  };
 
   const onRegister = async () => {
     const user = auth.currentUser;
@@ -141,6 +174,7 @@ export default function CandidateRegister() {
     const currentTime = Date.now();
     // const closeTime = currentTime + 5 * 60 * 60 * 1000; // 5시간을 밀리초로 변환
     const closeTime = currentTime + 2 * 60 * 1000; // 2분을 밀리초로 변환
+    setVoteName(formattedDate);
 
     const votesQuery = query(
       collection(db, "vote"),
@@ -265,7 +299,8 @@ export default function CandidateRegister() {
           label="투표 링크 공유하기"
           isShowButton
           isShowSecondaryButton
-          onClick={() => handleCopyClipBoard(`${baseURL}/vote/${voteId}`)}
+          // onClick={() => handleCopyClipBoard(`${baseURL}/vote/${voteId}`)}
+          onClick={() => shareKakao()}
         />
       ) : (
         <>
