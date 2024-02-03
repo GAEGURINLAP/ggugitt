@@ -239,8 +239,8 @@ export default function VoteHistory() {
           ) : (
             <Wrapper>
               <Title>
-                과연 오늘의 <b>불개미</b>는? <br />
-                두구두구
+                오늘의 꾸깃 <br />
+                시작해보세요!
               </Title>
               <NoItem>
                 <img
