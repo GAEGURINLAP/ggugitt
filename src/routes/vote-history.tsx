@@ -244,9 +244,9 @@ export default function VoteHistory() {
               </Title>
               <NoItem>
                 <img
-                  src="/images/logo/bullgaemi.png"
-                  alt="불개미"
-                  width={176}
+                  src="/images/logo/splash.png"
+                  alt="개구린"
+                  width={240}
                   height={240}
                 />
               </NoItem>
