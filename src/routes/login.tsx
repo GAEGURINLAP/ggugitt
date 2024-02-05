@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+
+import styled from "@emotion/styled";
 
 import { auth } from "../firebase";
 import { FirebaseError } from "firebase/app";
@@ -24,6 +26,19 @@ interface FormInputs {
   email: string;
   password: string;
 }
+
+export const ButtonKakao = styled.div`
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 48px;
+  background-color: #fee500;
+  color: rgba(0, 0, 0, 0.85);
+  border-radius: 100px;
+  gap: 4px;
+`;
 
 export default function Login() {
   // Todo
@@ -61,6 +76,27 @@ export default function Login() {
 
   const handleAlertClose = () => {
     setShowAlert(false);
+  };
+
+  useEffect(() => {
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init(import.meta.env.VITE_KAKAO_KEY);
+    }
+    return;
+  }, []);
+
+  const onLoginWithKakao = () => {
+    const redirectUri = `${location.origin}/callback/kakaotalk`;
+    // const scope = [
+    //   KAKAO_SCOPE_NICKNAME,
+    //   KAKAO_SCOPE_GENDER,
+    //   KAKAO_SCOPE_BIRTHDAY,
+    // ].join(",");
+
+    window.Kakao.Auth.authorize({
+      redirectUri,
+      // scope,
+    });
   };
 
   return (
@@ -105,6 +141,10 @@ export default function Login() {
             isWidthFull
           />
         </Form>
+        <ButtonKakao onClick={onLoginWithKakao}>
+          <img src="/images/logo/logo-kakao.svg" alt="카카오톡" width={20} />
+          카카오 로그인
+        </ButtonKakao>
         <Switcher>
           계정이 없으신가요? {""}
           <StyledLink to="/create-account">회원 가입 &rarr;</StyledLink>
