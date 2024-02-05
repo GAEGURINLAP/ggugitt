@@ -85,19 +85,19 @@ export default function Login() {
     return;
   }, []);
 
-  const onLoginWithKakao = () => {
-    const redirectUri = `${location.origin}/callback/kakaotalk`;
-    // const scope = [
-    //   KAKAO_SCOPE_NICKNAME,
-    //   KAKAO_SCOPE_GENDER,
-    //   KAKAO_SCOPE_BIRTHDAY,
-    // ].join(",");
+  // const onLoginWithKakao = () => {
+  //   const redirectUri = `${location.origin}/callback/kakaotalk`;
+  //   // const scope = [
+  //   //   KAKAO_SCOPE_NICKNAME,
+  //   //   KAKAO_SCOPE_GENDER,
+  //   //   KAKAO_SCOPE_BIRTHDAY,
+  //   // ].join(",");
 
-    window.Kakao.Auth.authorize({
-      redirectUri,
-      // scope,
-    });
-  };
+  //   window.Kakao.Auth.authorize({
+  //     redirectUri,
+  //     // scope,
+  //   });
+  // };
 
   return (
     <>
