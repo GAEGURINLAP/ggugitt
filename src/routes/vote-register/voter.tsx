@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
@@ -8,6 +8,8 @@ import BottomButton02 from "../../component/BottomButon02";
 import Alert from "../../component/Alert";
 import ButtonSecondary from "../../component/ButtonSecondary";
 import ButtonPrimary from "../../component/ButtonPrimary";
+import { VoteRegisterContext } from "../../store/vote-register-context";
+import { IFormInput } from ".";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -94,7 +96,7 @@ export const VoteContent = styled.div`
 `;
 
 export default function VoterRegister() {
-  const [voterList, setVoterList] = useState<string[]>([]);
+  const { voterList, addItem, deleteItem } = useContext(VoteRegisterContext);
 
   const [isShowAlert, setIsShowAlert] = useState(false);
   const [isShowAlreadyAlert, setIsShowAlreadyAlert] = useState(false);
@@ -110,22 +112,22 @@ export default function VoterRegister() {
     });
   };
 
-  const addItem = async (data: IFormInput) => {
-    const { member_name } = data;
+  // const addItem = async (data: IFormInput) => {
+  //   const { member_name } = data;
 
-    if (voterList.some((name) => name === member_name)) {
-      setIsShowAlreadyAlert(true);
-      return;
-    } else {
-      const newVoteItems = [...voterList, member_name];
-      setVoterList(newVoteItems);
-    }
-  };
+  //   if (voterList.some((name) => name === member_name)) {
+  //     setIsShowAlreadyAlert(true);
+  //     return;
+  //   } else {
+  //     const newVoteItems = [...voterList, member_name];
+  //     setNewVoterList(newVoteItems);
+  //   }
+  // };
 
-  const deleteItem = (itemToDelete: string) => {
-    const updatedVoteItems = voterList.filter((item) => item !== itemToDelete);
-    setVoterList(updatedVoteItems);
-  };
+  // const deleteItem = (itemToDelete: string) => {
+  //   const updatedVoteItems = voterList.filter((item) => item !== itemToDelete);
+  //   setNewVoterList(updatedVoteItems);
+  // };
 
   // const clickAddItem = () => {
   //   handleSubmit(addItem)();
@@ -135,13 +137,9 @@ export default function VoterRegister() {
     setIsShowAlert(true);
   };
 
-  const clickDeleteItem = (item: string) => {
+  const clickDeleteItem = (item: String) => {
     deleteItem(item);
   };
-
-  interface IFormInput {
-    member_name: string;
-  }
 
   const {
     register,

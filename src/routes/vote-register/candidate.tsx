@@ -13,7 +13,7 @@ import {
 import { auth, db } from "../../firebase";
 
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import LoadingScreen from "../../component/LoadingScreen";
 import BottomButton02 from "../../component/BottomButon02";
@@ -24,6 +24,8 @@ import ButtonPrimary from "../../component/ButtonPrimary";
 // import Toast from "../../component/Toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Label, Member, MemberList, VoterContainer } from "../home";
+import Header from "../../component/Header";
+import { VoteRegisterContext } from "../../store/vote-register-context";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -114,10 +116,12 @@ export default function CandidateRegister() {
   const [voteName, setVoteName] = useState<String>();
   const [isLoading, setIsLoading] = useState(false);
 
-  const location = useLocation();
+  // const location = useLocation();
   const navigate = useNavigate();
 
-  const { voterList } = location.state || {};
+  const { voterList } = useContext(VoteRegisterContext);
+
+  // const { voterList } = location.state || {};
 
   const [isShowAlert, setIsShowAlert] = useState(false);
   const [isShowAlreadyAlert, setIsShowAlreadyAlert] = useState(false);
@@ -293,6 +297,7 @@ export default function CandidateRegister() {
   return (
     <>
       {isLoading && <LoadingScreen />}
+      <Header isNavigator path="vote-register" />
       {isComplete ? (
         <Success
           message={"투표 등록이 완료 되었습니다!"}
