@@ -22,7 +22,7 @@ import Alert from "../../component/Alert";
 import ButtonSecondary from "../../component/ButtonSecondary";
 import ButtonPrimary from "../../component/ButtonPrimary";
 // import Toast from "../../component/Toast";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Label, Member, MemberList, VoterContainer } from "../home";
 import Header from "../../component/Header";
 import { VoteRegisterContext } from "../../store/vote-register-context";
@@ -375,7 +375,7 @@ export default function CandidateRegister() {
             <VoterContainer>
               <Label>등록한 팀원</Label>
               <MemberList>
-                {voterList?.map((member: string, index: number) => (
+                {voterList?.map((member: String, index: number) => (
                   <Member key={`member${index}`}>{member}</Member>
                 ))}
               </MemberList>
