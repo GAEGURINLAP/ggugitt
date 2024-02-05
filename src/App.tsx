@@ -109,6 +109,7 @@ function App() {
 
   const init = async () => {
     await auth.authStateReady();
+    // requestPermission();
     setLoading(false);
   };
   useEffect(() => {
