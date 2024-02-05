@@ -141,10 +141,10 @@ export default function Login() {
             isWidthFull
           />
         </Form>
-        <ButtonKakao onClick={onLoginWithKakao}>
+        {/* <ButtonKakao onClick={onLoginWithKakao}>
           <img src="/images/logo/logo-kakao.svg" alt="카카오톡" width={20} />
           카카오 로그인
-        </ButtonKakao>
+        </ButtonKakao> */}
         <Switcher>
           계정이 없으신가요? {""}
           <StyledLink to="/create-account">회원 가입 &rarr;</StyledLink>
