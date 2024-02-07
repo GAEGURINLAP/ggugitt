@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
-import { auth } from "./firebase";
+import { auth, initFCM, requestNotificationPermission } from "./firebase";
 
 import { Global } from "@emotion/react";
 
@@ -107,15 +107,29 @@ function App() {
   //   setProgress(100);
   // };
 
+  const handleButtonClick = () => {
+    // 알림 권한 다시 요청
+    requestNotificationPermission();
+  };
+
   const init = async () => {
     await auth.authStateReady();
-    // requestPermission();
     setLoading(false);
   };
   useEffect(() => {
     init();
+    initFCM();
+    // 알림 권한 다시 요청
+    requestNotificationPermission();
     // handleProgress();
   }, []);
+
+  useEffect(() => {
+    // 페이지 로딩 후 알림 권한 요청 다이얼로그 표시
+    if (!isLoading) {
+      requestNotificationPermission();
+    }
+  }, [isLoading]);
 
   return (
     <>
@@ -132,6 +146,7 @@ function App() {
           <Global styles={global} />
           {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
           {/* <RouterProvider router={router} /> */}
+          <button onClick={handleButtonClick}>알림 권한 요청</button>
         </Wrapper>
       </Container>
     </>
