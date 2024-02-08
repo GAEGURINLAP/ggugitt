@@ -20,7 +20,7 @@ messaging
   })
   .then((currentToken) => {
     if (currentToken) {
-      console.log("성공했다 말해줘!");
+      console.log("성공 혹은??!");
     } else {
       // Show permission request UI
       console.log(
