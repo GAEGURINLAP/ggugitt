@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -78,12 +78,12 @@ export default function Login() {
     setShowAlert(false);
   };
 
-  useEffect(() => {
-    if (!window.Kakao.isInitialized()) {
-      window.Kakao.init(import.meta.env.VITE_KAKAO_KEY);
-    }
-    return;
-  }, []);
+  // useEffect(() => {
+  //   if (!window.Kakao.isInitialized()) {
+  //     window.Kakao.init(import.meta.env.VITE_KAKAO_KEY);
+  //   }
+  //   return;
+  // }, []);
 
   // const onLoginWithKakao = () => {
   //   const redirectUri = `${location.origin}/callback/kakaotalk`;

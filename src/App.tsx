@@ -107,10 +107,10 @@ function App() {
   //   setProgress(100);
   // };
 
-  const handleButtonClick = () => {
-    // 알림 권한 다시 요청
-    requestNotificationPermission();
-  };
+  // const handleButtonClick = () => {
+  //   // 알림 권한 다시 요청
+  //   requestNotificationPermission();
+  // };
 
   const init = async () => {
     await auth.authStateReady();
@@ -146,7 +146,7 @@ function App() {
           <Global styles={global} />
           {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
           {/* <RouterProvider router={router} /> */}
-          <button onClick={handleButtonClick}>알림 권한 요청</button>
+          {/* <button onClick={handleButtonClick}>알림 권한 요청</button> */}
         </Wrapper>
       </Container>
     </>
