@@ -30,6 +30,9 @@ import {
   GuideText,
   Input,
 } from "./vote-register/voter";
+import { Wrapper } from "./not-found";
+import { CurrentTitle, CurrentVote, VoteItem } from "./home";
+import { VoteForm } from "../style/vote";
 
 export interface VoteItemProps {
   isSelected: boolean;
@@ -245,14 +248,13 @@ export default function Vote() {
           property="og:image"
           content="/images/illust/illust-ggugitt-vote.png"
         />
-        <meta property="og:url" content="https://ggugit.com/vote" />
+        <meta property="og:url" content="https://ggugitt.com/vote" />
       </Helmet>
       {isShowAlertConfirm ? (
         <Success
           message={"투표 완료 되었습니다!"}
           label="다른 팀원 투표 강요하기"
           isShowButton
-          // onClick={() => handleCopyClipBoard(`${baseURL}/vote/${NewID}`)}
           onClick={() => shareKakao()}
         />
       ) : isVoter ? (
@@ -363,7 +365,7 @@ export default function Vote() {
           ]}
         />
       )}
-      {/* {isToast && <Toast message={"클립보드에 복사되었습니다."} />} */}
+
       {isShowAlertVote && (
         <Alert
           message={"선택한 팀원으로 투표 하시겠습니까?"}

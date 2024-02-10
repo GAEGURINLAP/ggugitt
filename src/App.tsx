@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
-import { auth, initFCM, requestNotificationPermission } from "./firebase";
+import { auth } from "./firebase";
 
 import { Global } from "@emotion/react";
 
@@ -118,18 +118,18 @@ function App() {
   };
   useEffect(() => {
     init();
-    initFCM();
+    // initFCM();
     // 알림 권한 다시 요청
-    requestNotificationPermission();
+    // requestNotificationPermission();
     // handleProgress();
   }, []);
 
-  useEffect(() => {
-    // 페이지 로딩 후 알림 권한 요청 다이얼로그 표시
-    if (!isLoading) {
-      requestNotificationPermission();
-    }
-  }, [isLoading]);
+  // useEffect(() => {
+  //   // 페이지 로딩 후 알림 권한 요청 다이얼로그 표시
+  //   if (!isLoading) {
+  //     requestNotificationPermission();
+  //   }
+  // }, [isLoading]);
 
   return (
     <>
@@ -138,7 +138,7 @@ function App() {
         <meta name="description" content="꾸깃꾸우깃" />
         <meta property="og:title" content="뚜잇뚜잇츄" />
         <meta property="og:image" content="/images/illust/illust-ggugitt.png" />
-        <meta property="og:url" content="https://ggugit.com/" />
+        <meta property="og:url" content="https://ggugitt.com/" />
       </Helmet>
       {/* <Splash progress={progress} /> */}
       <Container>

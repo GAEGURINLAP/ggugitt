@@ -3,6 +3,8 @@ import { Helmet } from "react-helmet-async";
 
 import styled from "@emotion/styled";
 
+// const { Kakao } = window;
+
 import {
   Wrapper,
   CurrentTitle,
@@ -83,12 +85,7 @@ export default function VoteProgress() {
   const [voteName, setVoteName] = useState<String>();
   const [voteList, setVoteList] = useState<IVoteList[]>([]);
   const [voterList, setVoterList] = useState<string[]>([]);
-  // const [alreadyVoterList, setAlreadyVoterList] = useState<string[]>([]);
   const [notVoterList, setNotVoterList] = useState<string[]>([]);
-  // const [voteId, setVoteId] = useState();
-
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [isToast, setIsToast] = useState(false);
 
   const [isShowAlertComplete, setIsShowAlertComplete] = useState(false);
   const [isShowAlertDeleteConfirm, setIsShowAlertDeleteConfirm] =
@@ -102,9 +99,16 @@ export default function VoteProgress() {
 
   const NewID = Number(id);
 
-  // const baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
-
   const user = auth.currentUser;
+
+  // useEffect(() => {
+  //   // init 해주기 전에 clean up 을 해준다.
+  //   Kakao.cleanup();
+  //   // 자신의 js 키를 넣어준다.
+  //   Kakao.init("c0000000000");
+  //   // 잘 적용되면 true 를 뱉는다.
+  //   console.log(Kakao.isInitialized());
+  // }, []);
 
   const shareKakao = () => {
     if (window.Kakao) {
@@ -333,7 +337,7 @@ export default function VoteProgress() {
           property="og:image"
           content="/images/illust/illust-ggugitt-progress.png"
         />
-        <meta property="og:url" content="https://ggugit.com/vote-progress" />
+        <meta property="og:url" content="https://ggugitt.com/vote-progress" />
       </Helmet>
       {vote?.user_id === user?.uid ? (
         vote?.is_complete ? (
