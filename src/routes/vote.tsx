@@ -1,7 +1,8 @@
-import styled from "@emotion/styled";
+import { useEffect, useState } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Helmet } from "react-helmet-async";
 
 import { db } from "../firebase";
 import {
@@ -12,12 +13,14 @@ import {
   where,
 } from "firebase/firestore";
 
-import BottomButton01 from "../component/BottomButon01";
-import { IVoteList } from "./vote-register/candidate";
 import Alert from "../component/Alert";
+import BottomButton01 from "../component/BottomButon01";
 import ButtonSecondary from "../component/ButtonSecondary";
 import ButtonPrimary from "../component/ButtonPrimary";
+import LoadingScreen from "../component/LoadingScreen";
 import Success from "../component/Success";
+
+import { IVoteList } from "./vote-register/candidate";
 
 import {
   Error,
@@ -28,76 +31,7 @@ import {
   Input,
 } from "./vote-register/voter";
 
-import { useForm } from "react-hook-form";
-// import Toast from "../component/Toast";
-import LoadingScreen from "../component/LoadingScreen";
-import { Helmet } from "react-helmet-async";
-// import { registerServiceWorker } from "../utils/common/notification";
-
-const Wrapper = styled.div`
-  padding: 0 24px;
-  padding-top: 120px;
-  height: 100vh;
-  /* padding-bottom: 80px; */
-`;
-
-export const CurrentTitle = styled.h1`
-  font-size: 32px;
-  font-weight: 600;
-  line-height: 140%;
-  b {
-    color: red;
-  }
-`;
-
-export const CurrentVote = styled.div`
-  /* margin-top: 48px; */
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-`;
-
-export const VoteTitle = styled.h2`
-  text-align: center;
-  font-size: 24px;
-`;
-
-export const VoteForm = styled.form`
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  gap: 8px;
-`;
-
-export const VoteItem = styled.div<VoteItemProps>`
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-use-select: none;
-  user-select: none;
-  -webkit-user-drag: none;
-  -khtml-user-drag: none;
-  -moz-user-drag: none;
-  -o-user-drag: none;
-  display: flex;
-  padding: 4px 16px;
-  justify-content: center;
-  align-items: center;
-  font-size: 18px;
-  line-height: 32px;
-  color: ${({ isSelected }) => (isSelected ? "var(--white)" : "var(--black)")};
-  background-color: ${({ isSelected }) =>
-    isSelected ? "var(--main)" : "#ededed"};
-  border-radius: 100px;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  &:hover,
-  :active {
-    color: var(--white);
-    background-color: var(--main);
-  }
-`;
-
-interface VoteItemProps {
+export interface VoteItemProps {
   isSelected: boolean;
 }
 
@@ -121,37 +55,29 @@ export interface IFormInput {
 }
 
 export default function Vote() {
-  const navigate = useNavigate();
-
   const [vote, setVote] = useState<IVote>();
   const [alreadyVoter, setAlreadyVoter] = useState<String>();
-
+  const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(false);
-
   const [isShowAlertVote, setShowAlertVote] = useState(false);
   const [isShowAlertConfirm, setShowAlertConfirm] = useState(false);
   const [isShowAlertVoterFail, setIsShowAlertVoterFail] = useState(false);
   const [isShowAlertAlreadyVoter, setIsShowAlertAlreadyVoter] = useState(false);
-
-  // const [isToast, setIsToast] = useState(false);
-
-  // const baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
-
   const [isVoter, setIsVoter] = useState(false);
 
-  const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
-    null
-  );
+  const navigate = useNavigate();
+
+  const { id } = useParams();
+
+  const NewID = Number(id);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInput>();
-
-  const { id } = useParams();
-
-  const NewID = Number(id);
 
   const fetchVotes = async () => {
     const q = query(collection(db, "vote"));
@@ -198,9 +124,6 @@ export default function Vote() {
     // }
 
     setVote(newVote);
-
-    // const voterList = snapshot.docs.pop()?.data().voter_list;
-    // setVoterList(voterList);
   };
 
   const clickVote = () => {
@@ -225,16 +148,6 @@ export default function Vote() {
       setIsShowAlertVoterFail(true);
     }
   };
-
-  // const handleCopyClipBoard = async (text: string) => {
-  //   try {
-  //     setIsToast(true);
-  //     await navigator.clipboard.writeText(text);
-  //   } catch (err) {
-  //     console.log(err);
-  //   } finally {
-  //   }
-  // };
 
   const shareKakao = () => {
     if (window.Kakao) {
@@ -267,19 +180,6 @@ export default function Vote() {
       });
     }
   };
-
-  // useEffect(() => {
-  //   let timeout: NodeJS.Timeout;
-  //   if (isToast) {
-  //     timeout = setTimeout(() => {
-  //       setIsToast(false);
-  //     }, 1200);
-  //   }
-
-  //   return () => {
-  //     clearTimeout(timeout); // 컴포넌트가 unmount되거나 상태가 업데이트되면 타이머를 클리어
-  //   };
-  // }, [isToast]);
 
   const onRegister = async () => {
     if (selectedItemIndex !== null) {
@@ -323,11 +223,6 @@ export default function Vote() {
           setSelectedItemIndex(null);
           setShowAlertConfirm(true);
           return;
-          // async function handleAllowNotification() {
-          //   const permission = await Notification.requestPermission();
-
-          //   registerServiceWorker();
-          // }
         }
       }
     }
