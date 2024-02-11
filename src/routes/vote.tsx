@@ -29,7 +29,7 @@ import {
   FormWrapper,
   GuideText,
   Input,
-} from "./vote-register/voter";
+} from "../style/vote-register";
 import { Wrapper } from "./not-found";
 import { CurrentTitle, CurrentVote, VoteItem } from "./home";
 import { VoteForm } from "../style/vote";

@@ -50,7 +50,7 @@ import BottomButton01 from "../component/BottomButon01";
 
 import { IVoteList } from "./vote-register/candidate";
 // import Toast from "../component/Toast";
-import { GuideText } from "./vote-register/voter";
+import { GuideText } from "../style/vote-register";
 
 export interface IVote {
   vote_id: number;

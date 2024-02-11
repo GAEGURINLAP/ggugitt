@@ -1,99 +1,26 @@
-import styled from "@emotion/styled";
-
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { VoteRegisterContext } from "../../store/vote-register-context";
 
 import BottomButton02 from "../../component/BottomButon02";
-import Alert from "../../component/Alert";
 import ButtonSecondary from "../../component/ButtonSecondary";
 import ButtonPrimary from "../../component/ButtonPrimary";
-import { VoteRegisterContext } from "../../store/vote-register-context";
+import Alert from "../../component/Alert";
+
 import { IFormInput } from ".";
-
-export const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 48px;
-  padding: 96px 24px 0;
-`;
-
-export const Title = styled.h1`
-  font-size: 32px;
-  font-weight: 600;
-  line-height: 140%;
-`;
-
-export const FormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-`;
-
-export const Form = styled.form`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  gap: 12px;
-  border: none;
-  height: fit-content;
-  border-bottom: 1px solid #d0d1d2;
-  transition: border-bottom-color 0.3s ease;
-
-  & :active,
-  :focus-within {
-    border-bottom-color: var(--main);
-  }
-`;
-
-export const FormWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  padding-right: 8px;
-  width: 100%;
-`;
-
-export const Input = styled.input`
-  width: 100%;
-  height: 48px;
-`;
-
-export const Error = styled.span`
-  font-size: 14px;
-  color: tomato;
-`;
-
-export const GuideText = styled.span`
-  font-size: 14px;
-  color: #a2a2a2;
-`;
-
-export const VoteWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  gap: 8px;
-`;
-export const VoteItem = styled.div`
-  display: flex;
-  padding: 4px 12px;
-  justify-content: center;
-  align-items: center;
-  font-size: 18px;
-  line-height: 32px;
-  background-color: #ededed;
-  border-radius: 100px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-use-select: none;
-  user-select: none;
-`;
-
-export const VoteContent = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-`;
+import {
+  Error,
+  Form,
+  FormContainer,
+  FormWrapper,
+  Input,
+  Title,
+  VoteContent,
+  VoteItem,
+  VoteWrapper,
+  Wrapper,
+} from "../../style/vote-register";
 
 export default function VoterRegister() {
   const { voterList, addItem, deleteItem } = useContext(VoteRegisterContext);
@@ -103,35 +30,11 @@ export default function VoterRegister() {
 
   const navigate = useNavigate();
 
-  // Todo 인풋 삭제 버튼 먹히도록 만들기
-  // const [isInputFocused, setIsInputFocused] = useState(false);
-
   const onRegister = () => {
     navigate("/vote-register/candidate", {
       state: { voterList },
     });
   };
-
-  // const addItem = async (data: IFormInput) => {
-  //   const { member_name } = data;
-
-  //   if (voterList.some((name) => name === member_name)) {
-  //     setIsShowAlreadyAlert(true);
-  //     return;
-  //   } else {
-  //     const newVoteItems = [...voterList, member_name];
-  //     setNewVoterList(newVoteItems);
-  //   }
-  // };
-
-  // const deleteItem = (itemToDelete: string) => {
-  //   const updatedVoteItems = voterList.filter((item) => item !== itemToDelete);
-  //   setNewVoterList(updatedVoteItems);
-  // };
-
-  // const clickAddItem = () => {
-  //   handleSubmit(addItem)();
-  // };
 
   const clickRegister = () => {
     setIsShowAlert(true);
@@ -182,18 +85,7 @@ export default function VoterRegister() {
                       },
                     })}
                     placeholder="팀원 이름을 입력해주세요"
-
-                    // Todo 인풋 삭제 버튼 먹히도록 만들기
-                    // onFocus={() => setIsInputFocused(true)}
-                    // onBlur={() => setIsInputFocused(false)}
                   />
-                  {/* {isInputFocused && (
-                  <img
-                    src="/images/icon/common/icon-x-circle.svg"
-                    width={20}
-                    style={{ cursor: "pointer" }}
-                  />
-                )} */}
                 </FormWrapper>
               </Form>
               {errors.member_name && (
