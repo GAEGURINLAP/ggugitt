@@ -134,9 +134,9 @@ function App() {
   return (
     <>
       <Helmet>
-        <title>꾸깃 - 꾸잇? 꾸잇!</title>
-        <meta name="description" content="꾸깃꾸우깃" />
-        <meta property="og:title" content="뚜잇뚜잇츄" />
+        <title>꾸깃 - 꾸준히 한 곳에서 투표해요!</title>
+        <meta name="description" content="꾸준히 한 곳에서 투표해요!" />
+        <meta property="og:title" content="꾸깃" />
         <meta property="og:image" content="/images/illust/illust-ggugitt.png" />
         <meta property="og:url" content="https://ggugitt.com/" />
       </Helmet>
@@ -145,8 +145,6 @@ function App() {
         <Wrapper>
           <Global styles={global} />
           {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
-          {/* <RouterProvider router={router} /> */}
-          {/* <button onClick={handleButtonClick}>알림 권한 요청</button> */}
         </Wrapper>
       </Container>
     </>

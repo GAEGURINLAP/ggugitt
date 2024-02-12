@@ -25,6 +25,7 @@ import Header from "../component/Header";
 import LoadingScreen from "../component/LoadingScreen";
 import BottomButton01 from "../component/BottomButon01";
 import ButtonPrimary from "../component/ButtonPrimary";
+import { Helmet } from "react-helmet-async";
 
 export default function VoteHistoryResult() {
   const [vote, setVote] = useState<IVote>();
@@ -123,6 +124,16 @@ export default function VoteHistoryResult() {
 
   return (
     <>
+      <Helmet>
+        <title>꾸깃 - 투표 결과</title>
+        <meta name="description" content="투표 결과" />
+        <meta property="og:title" content="꾸깃" />
+        <meta
+          property="og:image"
+          content="/images/illust/illust-ggugitt-progress.png"
+        />
+        <meta property="og:url" content="https://ggugitt.com/vote-progress" />
+      </Helmet>
       {isLoading ? (
         <LoadingScreen />
       ) : vote?.user_id === user?.uid ? (

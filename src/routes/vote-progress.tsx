@@ -330,9 +330,9 @@ export default function VoteProgress() {
   return (
     <>
       <Helmet>
-        <title>꾸깃 - 투표 현황이요~</title>
-        <meta name="description" content="꾸깃꾸우깃" />
-        <meta property="og:title" content="아하하하하" />
+        <title>꾸깃 - 투표 현황</title>
+        <meta name="description" content="투표 현황" />
+        <meta property="og:title" content="꾸깃" />
         <meta
           property="og:image"
           content="/images/illust/illust-ggugitt-progress.png"

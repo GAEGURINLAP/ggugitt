@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IVote } from "./home";
 import LoadingScreen from "../component/LoadingScreen";
+import { Helmet } from "react-helmet-async";
 // import { Helmet } from 'react-helmet-async';
 // import { IVoteList } from "./vote-register/candidate";
 
@@ -124,12 +125,16 @@ export default function VoteResult() {
 
   return (
     <>
-      {/* <Helmet>
-        <title>오늘의 불개미는 과연 누구일까요?!</title>
-        <meta name="description" content="두구두구두구 기대되죠?" />
-        <meta property="og:image" content="/images/logo/bullgaemi.png" />
-        <meta property="og:url" content="https://bullgaemi-survey.web.app/" />
-      </Helmet> */}
+      <Helmet>
+        <title>꾸깃 - 투표 결과를 확인하세요!</title>
+        <meta name="description" content="투표 결과 확인" />
+        <meta property="og:title" content="꾸깃" />
+        <meta
+          property="og:image"
+          content="/images/illust/illust-ggugitt-progress.png"
+        />
+        <meta property="og:url" content="https://ggugitt.com/vote-progress" />
+      </Helmet>
       {isLoading ? (
         <LoadingScreen />
       ) : vote?.is_complete ? (

@@ -241,9 +241,9 @@ export default function Vote() {
     <>
       {/* <LoadingScreen /> */}
       <Helmet>
-        <title>꾸깃 - 투표하라고</title>
-        <meta name="description" content="투표투표제발" />
-        <meta property="og:title" content="우헤헿" />
+        <title>꾸깃 - 투표하기</title>
+        <meta name="description" content="투표하기" />
+        <meta property="og:title" content="꾸깃" />
         <meta
           property="og:image"
           content="/images/illust/illust-ggugitt-vote.png"
