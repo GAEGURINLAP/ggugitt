@@ -85,6 +85,7 @@ export default function VoteProgress() {
   const [voteName, setVoteName] = useState<String>();
   const [voteList, setVoteList] = useState<IVoteList[]>([]);
   const [voterList, setVoterList] = useState<string[]>([]);
+  const [voteId, setVoteId] = useState();
   const [notVoterList, setNotVoterList] = useState<string[]>([]);
 
   const [isShowAlertComplete, setIsShowAlertComplete] = useState(false);
@@ -121,9 +122,9 @@ export default function VoteProgress() {
         objectType: "feed",
         content: {
           title: `${voteName} 꾸깃할 시간이에요!`,
-          description: "오늘의 MOM은 과연 누굴까요? \n두구두구두구",
+          description: "오늘의 투표 후보는 과연 누구일까요?! \n두구두구두구",
           imageUrl:
-            "https://firebasestorage.googleapis.com/v0/b/bullgaemi-survey.appspot.com/o/illust-kakao-vote.png?alt=media&token=f27539f3-42ab-4aff-bb22-ea2fda1049b9",
+            "https://firebasestorage.googleapis.com/v0/b/bullgaemi-survey.appspot.com/o/il-vote-progress-squre.png?alt=media&token=c6985243-d021-4cb3-a178-4b299a22fdc9",
           link: {
             mobileWebUrl: "https://ggugitt.com",
             webUrl: "https://ggugitt.com",
@@ -133,8 +134,8 @@ export default function VoteProgress() {
           {
             title: "당장 투표하러 가기",
             link: {
-              mobileWebUrl: `https://ggugitt.com/vote/${id}`,
-              webUrl: `https://ggugitt.com/vote/${id}`,
+              mobileWebUrl: `https://ggugitt.com/vote/${voteId}`,
+              webUrl: `https://ggugitt.com/vote/${voteId}`,
             },
           },
         ],
@@ -216,8 +217,8 @@ export default function VoteProgress() {
 
       setNotVoterList(notVoterList);
 
-      // const voteId = querySnapshot.docs.pop()?.data().vote_id;
-      // setVoteId(voteId);
+      const voteId = querySnapshot.docs.pop()?.data().vote_id;
+      setVoteId(voteId);
     } catch (err) {
       alert(err);
     } finally {
