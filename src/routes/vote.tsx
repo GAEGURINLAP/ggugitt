@@ -246,7 +246,7 @@ export default function Vote() {
         <meta property="og:title" content="꾸깃" />
         <meta
           property="og:image"
-          content="/images/illust/illust-ggugitt-vote.png"
+          content="/images/illust/il-vote-progress-landscape.png"
         />
         <meta property="og:url" content="https://ggugitt.com/vote" />
       </Helmet>

@@ -137,7 +137,10 @@ function App() {
         <title>꾸깃 - 꾸준히 한 곳에서 투표해요!</title>
         <meta name="description" content="꾸준히 한 곳에서 투표해요!" />
         <meta property="og:title" content="꾸깃" />
-        <meta property="og:image" content="/images/illust/illust-ggugitt.png" />
+        <meta
+          property="og:image"
+          content="/images/illust/il-vote-progress-landscape.png"
+        />
         <meta property="og:url" content="https://ggugitt.com/" />
       </Helmet>
       {/* <Splash progress={progress} /> */}

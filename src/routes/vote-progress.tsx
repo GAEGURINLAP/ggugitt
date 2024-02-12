@@ -336,7 +336,7 @@ export default function VoteProgress() {
         <meta property="og:title" content="꾸깃" />
         <meta
           property="og:image"
-          content="/images/illust/illust-ggugitt-progress.png"
+          content="/images/illust/il-vote-progress-landscape.png"
         />
         <meta property="og:url" content="https://ggugitt.com/vote-progress" />
       </Helmet>

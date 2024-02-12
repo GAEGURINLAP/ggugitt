@@ -462,7 +462,7 @@ export default function Vote() {
         <title>꾸깃 - 투표 현황</title>
         <meta name="description" content="오호호홍" />
         <meta property="og:title" content="투표해투표해" />
-        <meta property="og:image" content="/images/illust/illust-ggugitt.png" />
+        <meta property="og:image" content="/images/illust/il-vote-progress-landscape.png"
         <meta property="og:url" content="https://ggugit.com/" />
       </Helmet>
       <Header />
