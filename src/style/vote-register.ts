@@ -83,3 +83,41 @@ export const VoteContent = styled.div`
   flex-direction: row;
   gap: 10px;
 `;
+
+export const Label = styled.h3`
+  font-size: 14px;
+  color: #525252;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-use-select: none;
+  user-select: none;
+`;
+
+export const MemberList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 8px;
+`;
+
+export const VoterContainer = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const Member = styled.div`
+  display: flex;
+  padding: 2px 12px;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  line-height: 32px;
+  background-color: #ededed;
+  border-radius: 100px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-use-select: none;
+  user-select: none;
+`;
