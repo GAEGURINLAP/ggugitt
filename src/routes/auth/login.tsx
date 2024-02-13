@@ -4,23 +4,24 @@ import { useNavigate } from "react-router-dom";
 
 import styled from "@emotion/styled";
 
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
 import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
-import Alert from "../component/Alert";
-import ButtonPrimary from "../component/ButtonPrimary";
+import Alert from "../../component/Alert";
+import ButtonPrimary from "../../component/ButtonPrimary";
 
 import {
   Error,
   ForgotPassword,
   Form,
+  Image,
   Input,
   StyledLink,
   Switcher,
   Title,
   Wrapper,
-} from "../style/form";
+} from "../../style/form";
 
 interface FormInputs {
   email: string;
@@ -102,7 +103,14 @@ export default function Login() {
   return (
     <>
       <Wrapper>
-        <img src="/images/logo/404.png" alt="개구린" width={180} height={180} />
+        <Image>
+          <img
+            src="/images/illust/il-vote-progress-squre.png"
+            alt="꾸깃"
+            width={180}
+            height={180}
+          />
+        </Image>
         <Title>
           <b>꾸깃</b> 로그인
         </Title>

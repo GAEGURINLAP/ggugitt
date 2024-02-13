@@ -58,3 +58,10 @@ export const StyledLink = styled(RouterLink)`
     color: var(--main-hover);
   }
 `;
+
+export const Image = styled.div`
+  border-radius: 16px;
+  overflow: hidden;
+  width: 180px;
+  height: 180px;
+`;

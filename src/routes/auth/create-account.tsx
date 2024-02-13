@@ -2,12 +2,16 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import { auth } from "../firebase";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "../../firebase";
+import {
+  browserPopupRedirectResolver,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 
-import Alert from "../component/Alert";
-import ButtonPrimary from "../component/ButtonPrimary";
+import Alert from "../../component/Alert";
+import ButtonPrimary from "../../component/ButtonPrimary";
 
 import {
   Wrapper,
@@ -17,7 +21,8 @@ import {
   Error,
   Switcher,
   StyledLink,
-} from "../style/form";
+  Image,
+} from "../../style/form";
 
 interface FormInputs {
   name: string;
@@ -26,11 +31,6 @@ interface FormInputs {
 }
 
 export default function CreateAccount() {
-  // Todo
-  // 계정 생성
-  // 사용자 이름 설정
-  // home page로 리다이렉션
-
   const [isLoading, setLoading] = useState(false);
   const [isShowAlert, setShowAlert] = useState(false);
   const [error, setError] = useState("");
@@ -74,9 +74,16 @@ export default function CreateAccount() {
   return (
     <>
       <Wrapper>
-        <img src="/images/logo/404.png" alt="개구린" width={180} height={180} />
+        <Image>
+          <img
+            src="/images/illust/il-vote-progress-squre.png"
+            alt="꾸깃"
+            width={180}
+            height={180}
+          />
+        </Image>
         <Title>
-          <b>불개미</b> 회원가입
+          <b>꾸깃</b> 회원가입
         </Title>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Input

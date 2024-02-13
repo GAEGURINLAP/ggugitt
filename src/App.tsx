@@ -6,15 +6,14 @@ import { auth } from "./firebase";
 
 import { Global } from "@emotion/react";
 
-import Login from "./routes/login";
-import CreateAccount from "./routes/create-account";
+import Login from "./routes/auth/login";
 
 import LoadingScreen from "./component/LoadingScreen";
 import ProtectedRoute from "./component/ProtectedRoute";
 
 import { Container, Wrapper } from "./style/layout";
 import global from "./style/global";
-import ResetPaswrd from "./routes/reset-password";
+import ResetPaswrd from "./routes/auth/reset-password";
 // import Splash from "./component/Splash";
 
 import NotFound from "./routes/not-found";
@@ -27,6 +26,7 @@ import VoteHistory from "./routes/vote-history";
 import VoteProgress from "./routes/vote-progress";
 import VoteHistoryResult from "./routes/vote-history-result";
 import Layout from "./component/Layout";
+import CreateAccount from "./routes/auth/create-account";
 
 const router = createBrowserRouter([
   {

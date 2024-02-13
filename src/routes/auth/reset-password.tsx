@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
 import { FirebaseError } from "firebase/app";
 import { sendPasswordResetEmail } from "firebase/auth";
 
-import Alert from "../component/Alert";
-import ButtonPrimary from "../component/ButtonPrimary";
+import Alert from "../../component/Alert";
+import ButtonPrimary from "../../component/ButtonPrimary";
 
-import { Error, Form, Input, Title, Wrapper } from "../style/form";
+import { Error, Form, Image, Input, Title, Wrapper } from "../../style/form";
 
 interface FormInputs {
   email: string;
@@ -52,6 +52,14 @@ export default function ForgotPassword() {
   return (
     <>
       <Wrapper>
+        <Image>
+          <img
+            src="/images/illust/il-vote-progress-squre.png"
+            alt="꾸깃"
+            width={180}
+            height={180}
+          />
+        </Image>
         <Title>
           <b>비밀번호</b> 재설정
         </Title>
