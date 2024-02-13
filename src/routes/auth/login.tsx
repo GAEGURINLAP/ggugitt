@@ -68,7 +68,8 @@ export default function Login() {
     } catch (e) {
       if (e instanceof FirebaseError) {
         setShowAlert(true);
-        setError(e.message);
+        console.log(e.message);
+        // setError(e.message);
       }
     } finally {
       setLoading(false);
@@ -161,7 +162,8 @@ export default function Login() {
 
       {isShowAlert && (
         <Alert
-          message={error}
+          message={"로그인 정보가 틀렸어요!"}
+          // message={error}
           buttons={[
             <ButtonPrimary
               label={"확인"}
