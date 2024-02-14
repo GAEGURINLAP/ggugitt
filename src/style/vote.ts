@@ -1,11 +1,12 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
-import { VoteItemProps } from "../routes/vote";
+import { VoteItemProps } from '../routes/vote';
 
 export const Wrapper = styled.div`
-  padding: 0 24px;
-  padding-top: 120px;
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding: 96px 24px 0;
 `;
 
 export const CurrentTitle = styled.h1`
@@ -51,9 +52,8 @@ export const VoteItem = styled.div<VoteItemProps>`
   align-items: center;
   font-size: 18px;
   line-height: 32px;
-  color: ${({ isSelected }) => (isSelected ? "var(--white)" : "var(--black)")};
-  background-color: ${({ isSelected }) =>
-    isSelected ? "var(--main)" : "#ededed"};
+  color: ${({ isSelected }) => (isSelected ? 'var(--white)' : 'var(--black)')};
+  background-color: ${({ isSelected }) => (isSelected ? 'var(--main)' : '#ededed')};
   border-radius: 100px;
   transition: all 0.2s ease;
   cursor: pointer;
