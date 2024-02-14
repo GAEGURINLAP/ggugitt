@@ -49,7 +49,7 @@ export default function Login() {
 
   const [isLoading, setLoading] = useState(false);
   const [isShowAlert, setShowAlert] = useState(false);
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
