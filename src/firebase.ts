@@ -3,7 +3,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
-import { getMessaging } from 'firebase/messaging';
+// import { getMessaging } from 'firebase/messaging';
 
 export const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -27,7 +27,7 @@ export const storage = getStorage(app);
 
 export const db = getFirestore(app);
 
-export const messaging = getMessaging(app);
+// export const messaging = getMessaging(app);
 
 // getToken(messaging, {
 //   vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
