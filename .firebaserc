@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "bullgaemi-survey-dev",
+    "default": "bullgaemi-survey",
     "prd": "bullgaemi-survey"
   },
   "targets": {
