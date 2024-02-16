@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import { Helmet } from "react-helmet-async";
+import { useEffect, useState } from "react";
+// import { Helmet } from "react-helmet-async";
 
 import styled from "@emotion/styled";
 
@@ -301,29 +301,6 @@ export default function VoteProgress() {
       navigate(`/vote-history-result/${id}`);
     }
   };
-
-  // const handleCopyClipBoard = async (text: string) => {
-  //   try {
-  //     setIsToast(true);
-  //     await navigator.clipboard.writeText(text);
-  //   } catch (err) {
-  //     console.log(err);
-  //   } finally {
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   let timeout: NodeJS.Timeout;
-  //   if (isToast) {
-  //     timeout = setTimeout(() => {
-  //       setIsToast(false);
-  //     }, 1200);
-  //   }
-
-  //   return () => {
-  //     clearTimeout(timeout);
-  //   };
-  // }, [isToast]);
 
   console.log("이거 어캐됨?", vote?.user_id === user?.uid);
   console.log("progrss 로딩 어캐댐", isLoading);

@@ -154,7 +154,7 @@ export default function VoteHistory() {
           ) : (
             <List>
               {skeleton.map((item, index) => (
-                <SkeletonItem key={`item${index}`}>
+                <SkeletonItem key={`item${item}${index}`}>
                   <SkeletonWrapperLeft>
                     <SkeletonName />
                     <SkeletonStatus>
