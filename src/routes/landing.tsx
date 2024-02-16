@@ -20,7 +20,7 @@ export default function Landing() {
       <Wrapper>
         <TextWrapper>
           <BrandingWrapper>
-            <img src={BrandingTitle} height={48} />
+            <img src={BrandingTitle} height={64} />
           </BrandingWrapper>
           <Desc>
             <Title>
