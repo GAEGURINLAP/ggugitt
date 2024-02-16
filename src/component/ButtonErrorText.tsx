@@ -9,12 +9,14 @@ const Wrapper = styled.button<ButtonProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${(props) => (props.isDisabled ? "#a2a2a2" : "white")};
-  background-color: ${(props) => (props.isDisabled ? "#e6e6e6" : "tomato")};
-  box-shadow: 0 0 0 1px tomato inset;
+  color: tomato;
+  /* color: ${(props) => (props.isDisabled ? "#a2a2a2" : "white")}; */
+  /* background-color: ${(props) =>
+    props.isDisabled ? "#e6e6e6" : "tomato"}; */
   transition: all 0.2s ease;
   &:hover {
-    background-color: ${(props) => !props.isDisabled && "#ef553a"};
+    /* background-color: ${(props) => !props.isDisabled && "#ef553a"}; */
+    font-weight: 500;
     cursor: ${(props) => (props.isDisabled ? "default" : "pointer")};
   }
   -webkit-user-select: none;
@@ -32,7 +34,7 @@ interface ButtonProps {
   onClick?: () => void;
 }
 
-const ButtonError = ({
+const ButtonErrorText = ({
   onClick,
   label,
   size,
@@ -64,4 +66,4 @@ const ButtonError = ({
   );
 };
 
-export default ButtonError;
+export default ButtonErrorText;

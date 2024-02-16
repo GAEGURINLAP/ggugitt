@@ -52,6 +52,8 @@ import { IVoteList } from "./vote-register/candidate";
 // import Toast from "../component/Toast";
 import { GuideText } from "../style/vote-register";
 import LoadingScreen from "../component/LoadingScreen";
+import ButtonThird from "../component/ButtonThird";
+import ButtonErrorText from "../component/ButtonErrorText";
 
 export interface IVote {
   vote_id: number;
@@ -402,7 +404,15 @@ export default function VoteProgress() {
                     )}
                   </MemberList>
                 </VoterContainer>
-                <div style={{ display: "flex", width: "100%", gap: "8px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "100%",
+                    gap: "8px",
+                    marginTop: "24px",
+                  }}
+                >
                   <ButtonError
                     label={"투표 삭제하기"}
                     onClick={clickDelete}
