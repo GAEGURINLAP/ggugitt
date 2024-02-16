@@ -208,7 +208,7 @@ export default function CandidateRegister() {
 
   return (
     <>
-      {isLoading && <LoadingScreen />}
+      {isLoading && <LoadingScreen isDim />}
 
       {isComplete ? (
         <Success
