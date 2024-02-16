@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -54,6 +54,13 @@ export default function Login() {
   // const [error, setError] = useState("");
 
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if (user !== null) {
+  //     navigate("/");
+  //     alert("이미 로그인하셨어요!");
+  //   }
+  // }, []);
 
   const {
     register,
