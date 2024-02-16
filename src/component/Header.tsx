@@ -72,7 +72,7 @@ export default function Header({ isNavigator, path }: IHeaderProp) {
       </Container>
       {isShowAlert && (
         <Alert
-          message={"정말로 로그아웃 할건가요ㅠㅠ"}
+          message={"정말로 로그아웃 하시나요?!"}
           buttons={[
             <ButtonSecondary
               label={"아니오"}
