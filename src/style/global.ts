@@ -209,12 +209,12 @@ const global = css`
     // Primary
 
     // 기존 파란색
-    --main: #528ff9;
-    --main-hover: #417bde;
+    /* --main: #528ff9;
+    --main-hover: #417bde; */
 
     // 시도하는 메인 컬러
-    /* --main: #00a4a9; 
-    --main-hover: #019398;  */
+    --main: #00a4a9;
+    --main-hover: #019398;
   }
 
   a {
