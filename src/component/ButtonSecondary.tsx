@@ -45,7 +45,7 @@ const ButtonSecondary = ({
       isWidthFull={isWidthFull}
       label={label}
     >
-      {isLoading ? "Loading..." : label}
+      {isLoading ? "로딩중입니다..." : label}
     </Wrapper>
   );
 };

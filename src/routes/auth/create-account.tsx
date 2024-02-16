@@ -149,7 +149,7 @@ export default function CreateAccount() {
             <Error>{errors.confirmPassword.message}</Error>
           )}
           <ButtonPrimary
-            label={isLoading ? "Loading..." : "회원가입"}
+            label={isLoading ? "로딩중입니다..." : "회원가입"}
             isRadiusFull
             isWidthFull
           />

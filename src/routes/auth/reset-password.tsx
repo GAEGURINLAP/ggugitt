@@ -78,7 +78,7 @@ export default function ForgotPassword() {
           {errors.email && <Error>{errors.email.message}</Error>}
 
           <ButtonPrimary
-            label={isLoading ? "Loading..." : "비밀번호 재설정"}
+            label={isLoading ? "로딩중입니다..." : "비밀번호 재설정"}
             isRadiusFull
             isWidthFull
           />
