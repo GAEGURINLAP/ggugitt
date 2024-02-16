@@ -36,7 +36,7 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { useNavigate, useParams } from "react-router-dom";
-import { WrapperMid, Title } from "./vote-result";
+import { WrapperMid, Title } from "../style/vote-result";
 import Header from "../component/Header";
 // import LoadingScreen from "../component/LoadingScreen";
 
@@ -52,7 +52,7 @@ import { IVoteList } from "./vote-register/candidate";
 // import Toast from "../component/Toast";
 import { GuideText } from "../style/vote-register";
 import LoadingScreen from "../component/LoadingScreen";
-import { AuthCheckContext } from "../store/auth-check-context";
+// import { AuthCheckContext } from "../store/auth-check-context";
 
 export interface IVote {
   vote_id: number;

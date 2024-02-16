@@ -19,7 +19,7 @@ import {
   IVote,
 } from "./home";
 
-import { WrapperMid, Title } from "./vote-result";
+import { WrapperMid, Title } from "../style/vote-result";
 
 import Header from "../component/Header";
 import LoadingScreen from "../component/LoadingScreen";

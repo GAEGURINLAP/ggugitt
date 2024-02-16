@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import { collection, getDocs, query } from "firebase/firestore";
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
@@ -6,60 +5,20 @@ import { useParams } from "react-router-dom";
 import { IVote } from "./home";
 import LoadingScreen from "../component/LoadingScreen";
 import { Helmet } from "react-helmet-async";
-// import { Helmet } from 'react-helmet-async';
+import AniResult from "/images/animation/ani-vote-result.gif";
+
+import {
+  Wrapper,
+  ResultTitle,
+  WinnerWrapper,
+  Winner,
+  WrapperMid,
+  Title,
+  Ani,
+  BG,
+} from "../style/vote-result";
+
 // import { IVoteList } from "./vote-register/candidate";
-
-export const Wrapper = styled.div`
-  padding: 0 24px;
-  padding-top: 120px;
-  /* height: 100vh; */
-  padding-bottom: 80px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 64px;
-`;
-export const WrapperMid = styled.div`
-  padding: 0 24px;
-  padding-top: 240px;
-  padding-bottom: 80px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 32px;
-`;
-
-export const Title = styled.h1`
-  /* font-weight: 600; */
-  line-height: 140%;
-  text-align: center;
-  font-size: 20px;
-  color: #a2a2a2;
-`;
-
-export const ResultTitle = styled.h1`
-  font-size: 32px;
-  font-weight: 600;
-  text-align: center;
-  line-height: 140%;
-`;
-
-export const WinnerWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-export const Winner = styled.h1`
-  font-size: 56px;
-  font-weight: 600;
-  line-height: 140%;
-  text-align: center;
-  b {
-    color: var(--main);
-  }
-`;
 
 export default function VoteResult() {
   const [vote, setVote] = useState<IVote>();
@@ -135,28 +94,36 @@ export default function VoteResult() {
         />
         <meta property="og:url" content="https://ggugitt.com/vote-progress" />
       </Helmet>
-      {isLoading ? (
-        <LoadingScreen />
-      ) : vote?.is_complete ? (
-        <Wrapper>
-          <ResultTitle>
-            {vote?.vote_name} 투표의
-            <br />
-            우승자는...
-          </ResultTitle>
-          <WinnerWrapper>
-            <img
-              src="/images/illust/illust-crown.png"
-              alt="우승자"
-              width={120}
-            />
-            <Winner>
-              <b>{vote?.vote_winner}</b>
+
+      <Wrapper>
+        <ResultTitle>
+          {vote?.vote_name}
+          <br />
+          투표 결과입니다!!
+        </ResultTitle>
+        <WinnerWrapper>
+          <Winner>{vote?.vote_winner}</Winner>
+        </WinnerWrapper>
+      </Wrapper>
+      <Ani>
+        <img src={AniResult} width={375} alt="애니메이션" />
+      </Ani>
+      <BG />
+
+      {/* {vote?.is_complete ? (
+        <>
+          <Wrapper>
+            <ResultTitle>
+              {vote?.vote_name}
               <br />
-              축하드립니다!
-            </Winner>
-          </WinnerWrapper>
-        </Wrapper>
+              투표 결과입니다!!
+            </ResultTitle>
+            <WinnerWrapper>
+              <Winner>{vote?.vote_winner}</Winner>
+            </WinnerWrapper>
+          </Wrapper>
+          <img src={AniResult} alt="애니메이션" />
+        </>
       ) : (
         <WrapperMid>
           <img
@@ -166,7 +133,7 @@ export default function VoteResult() {
           />
           <Title>아직 종료되지 않은 투표입니다!</Title>
         </WrapperMid>
-      )}
+      )} */}
     </>
   );
 }
