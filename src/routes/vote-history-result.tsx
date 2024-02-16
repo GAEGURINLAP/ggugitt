@@ -29,7 +29,7 @@ import { Helmet } from "react-helmet-async";
 
 export default function VoteHistoryResult() {
   const [vote, setVote] = useState<IVote>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -70,7 +70,6 @@ export default function VoteHistoryResult() {
   };
 
   const fetchVotes = async () => {
-    setIsLoading(true);
     try {
       const votesQuery = query(collection(db, "vote"));
       const snapshot = await getDocs(votesQuery);
