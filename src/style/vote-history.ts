@@ -58,12 +58,13 @@ export const List = styled.div`
 
 export const HeroImage = styled.div`
   position: absolute;
-  bottom: 0;
+  bottom: -15%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
+  height: 480px;
   max-width: 500px;
   /* object-fit: cover; */
   overflow: hidden;
