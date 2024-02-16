@@ -24,7 +24,7 @@ interface BottomButtonProps {
   isDisabled?: boolean;
 }
 
-const BottomButton = ({ onClick, label, isDisabled }: BottomButtonProps) => {
+const BottomButton01 = ({ onClick, label, isDisabled }: BottomButtonProps) => {
   return (
     <Container>
       <Wrapper>
@@ -39,4 +39,4 @@ const BottomButton = ({ onClick, label, isDisabled }: BottomButtonProps) => {
   );
 };
 
-export default BottomButton;
+export default BottomButton01;

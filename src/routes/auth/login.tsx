@@ -47,6 +47,8 @@ export default function Login() {
   // 사용자 이름 설정
   // home page로 리다이렉션
 
+  const user = auth.currentUser;
+
   const [isLoading, setLoading] = useState(false);
   const [isShowAlert, setShowAlert] = useState(false);
   // const [error, setError] = useState("");
@@ -80,6 +82,10 @@ export default function Login() {
     setShowAlert(false);
   };
 
+  const clickConfirm = () => {
+    navigate(-1);
+  };
+
   // useEffect(() => {
   //   if (!window.Kakao.isInitialized()) {
   //     window.Kakao.init(import.meta.env.VITE_KAKAO_KEY);
@@ -101,78 +107,91 @@ export default function Login() {
   //   });
   // };
 
-  return (
-    <>
-      <Wrapper>
-        <Image>
-          <img
-            src="/images/illust/il-vote-progress-squre.png"
-            alt="꾸깃"
-            width={180}
-            height={180}
-          />
-        </Image>
-        <Title>
-          <b>꾸깃</b> 로그인
-        </Title>
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <Input
-            {...register("email", {
-              required: "이메일은 필수 입력입니다.",
-              pattern: {
-                value: /\S+@\S+\.\S+/,
-                message: "이메일 형식에 맞지 않습니다.",
-              },
-            })}
-            id="email"
-            placeholder="이메일 뭐에요"
-          />
-          {errors.email && <Error>{errors.email.message}</Error>}
-          <Input
-            {...register("password", {
-              required: "비밀번호는 필수 입력입니다.",
-              minLength: {
-                value: 8,
-                message: "8자리 이상 비밀번호를 사용하세요.",
-              },
-            })}
-            id="password"
-            placeholder="패스워드 뭐에요"
-            type="password"
-          />
-          {errors.password && <Error>{errors.password.message}</Error>}
-          <ForgotPassword>
-            <StyledLink to="/reset-password">비밀번호를 잊으셨나요?</StyledLink>
-          </ForgotPassword>
-          <ButtonPrimary
-            label={isLoading ? "Loading..." : "로그인"}
-            isRadiusFull
-            isWidthFull
-          />
-        </Form>
-        {/* <ButtonKakao onClick={onLoginWithKakao}>
+  if (user === null) {
+    return (
+      <>
+        <Wrapper>
+          <Image>
+            <img
+              src="/images/illust/il-vote-progress-squre.png"
+              alt="꾸깃"
+              width={180}
+              height={180}
+            />
+          </Image>
+          <Title>
+            <b>꾸깃</b> 로그인
+          </Title>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <Input
+              {...register("email", {
+                required: "이메일은 필수 입력입니다.",
+                pattern: {
+                  value: /\S+@\S+\.\S+/,
+                  message: "이메일 형식에 맞지 않습니다.",
+                },
+              })}
+              id="email"
+              placeholder="이메일 뭐에요"
+            />
+            {errors.email && <Error>{errors.email.message}</Error>}
+            <Input
+              {...register("password", {
+                required: "비밀번호는 필수 입력입니다.",
+                minLength: {
+                  value: 8,
+                  message: "8자리 이상 비밀번호를 사용하세요.",
+                },
+              })}
+              id="password"
+              placeholder="패스워드 뭐에요"
+              type="password"
+            />
+            {errors.password && <Error>{errors.password.message}</Error>}
+            <ForgotPassword>
+              <StyledLink to="/reset-password">
+                비밀번호를 잊으셨나요?
+              </StyledLink>
+            </ForgotPassword>
+            <ButtonPrimary
+              label={isLoading ? "Loading..." : "로그인"}
+              isRadiusFull
+              isWidthFull
+            />
+          </Form>
+          {/* <ButtonKakao onClick={onLoginWithKakao}>
           <img src="/images/logo/logo-kakao.svg" alt="카카오톡" width={20} />
           카카오 로그인
         </ButtonKakao> */}
-        <Switcher>
-          계정이 없으신가요? {""}
-          <StyledLink to="/create-account">회원 가입 &rarr;</StyledLink>
-        </Switcher>
-      </Wrapper>
+          <Switcher>
+            계정이 없으신가요? {""}
+            <StyledLink to="/create-account">회원 가입 &rarr;</StyledLink>
+          </Switcher>
+        </Wrapper>
+        {isShowAlert && (
+          <Alert
+            message={"로그인 정보가 틀렸어요!"}
+            // message={error}
+            buttons={[
+              <ButtonPrimary
+                label={"확인"}
+                onClick={handleAlertClose}
+                isWidthFull
+              />,
+            ]}
+          />
+        )}
+      </>
+    );
+  }
 
-      {isShowAlert && (
-        <Alert
-          message={"로그인 정보가 틀렸어요!"}
-          // message={error}
-          buttons={[
-            <ButtonPrimary
-              label={"확인"}
-              onClick={handleAlertClose}
-              isWidthFull
-            />,
-          ]}
-        />
-      )}
-    </>
+  return (
+    <Alert
+      message={"이미 로그인 하셨습니다!"}
+      // message={error}
+      buttons={[
+        <ButtonPrimary label={"확인"} onClick={clickConfirm} isWidthFull />,
+      ]}
+    />
   );
 }

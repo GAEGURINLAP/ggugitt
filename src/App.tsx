@@ -8,7 +8,6 @@ import { Global } from "@emotion/react";
 
 import Login from "./routes/auth/login";
 
-import LoadingScreen from "./component/LoadingScreen";
 import ProtectedRoute from "./component/ProtectedRoute";
 
 import { Container, Wrapper } from "./style/layout";
@@ -22,24 +21,25 @@ import VoterRegister from "./routes/vote-register/voter";
 import CandidateRegister from "./routes/vote-register/candidate";
 import IndexRegister from "./routes/vote-register";
 import VoteResult from "./routes/vote-result";
-import VoteHistory from "./routes/vote-history";
 import VoteProgress from "./routes/vote-progress";
 import VoteHistoryResult from "./routes/vote-history-result";
 import Layout from "./component/Layout";
 import CreateAccount from "./routes/auth/create-account";
+import Index from "./routes";
+// import {
+//   // AuthCheckContext,
+//   IAuthCheckContext,
+// } from "./store/auth-check-context";
+import LoadingScreen from "./component/LoadingScreen";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <ProtectedRoute>
-        <Layout />
-      </ProtectedRoute>
-    ),
+    element: <Layout />,
     children: [
       {
         path: "",
-        element: <VoteHistory />,
+        element: <Index />,
       },
     ],
   },
@@ -85,22 +85,13 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/vote-history",
-
-    element: (
-      <ProtectedRoute>
-        <VoteHistory />
-      </ProtectedRoute>
-    ),
-  },
-  {
     path: "*",
     element: <NotFound />,
   },
 ]);
 
 function App() {
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   // const [progress, setProgress] = useState<number>(0);
 
   // const handleProgress = () => {
@@ -114,7 +105,7 @@ function App() {
 
   const init = async () => {
     await auth.authStateReady();
-    setLoading(false);
+    setIsLoading(false);
   };
   useEffect(() => {
     init();
@@ -124,12 +115,9 @@ function App() {
     // handleProgress();
   }, []);
 
-  // useEffect(() => {
-  //   // 페이지 로딩 후 알림 권한 요청 다이얼로그 표시
-  //   if (!isLoading) {
-  //     requestNotificationPermission();
-  //   }
-  // }, [isLoading]);
+  //   const ctxValue: IAuthCheckContext = {
+  //     isLoading: isLoading,
+  // }
 
   return (
     <>
@@ -147,11 +135,13 @@ function App() {
       <Container>
         <Wrapper>
           <Global styles={global} />
+          {/* <AuthCheckContext.Provider value={ctxValue}>
+            <RouterProvider router={router} />
+          </AuthCheckContext.Provider> */}
           {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
         </Wrapper>
       </Container>
     </>
   );
 }
-
 export default App;
