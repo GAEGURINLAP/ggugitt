@@ -18,7 +18,7 @@ export const BG = styled.div`
   z-index: 1;
   background-color: #101012;
   animation: ${fadeInBG} 0.2s ease forwards;
-  animation-delay: 0.75s;
+  animation-delay: 0.9s;
 `;
 
 export const Wrapper = styled.div`
@@ -87,36 +87,10 @@ export const WinnerWrapper = styled.div`
   margin-top: 88px;
 `;
 
-// const fadeInText = keyframes`
-//   0% {
-//     top: -16px;
-//     opacity: 0;
-//     transform: scale(2);
-
-//   }
-
-//   60% {
-//     transform: scale(0.5);
-
-//   }
-//   80% {
-//     transform: scale(1.2);
-//   }
-//   90% {
-//     transform: scale(0.7);
-//   }
-//   100% {
-//     top: 0px;
-//     opacity: 1;
-//     transform: scale(1);
-//   }
-// `;
-
 const fadeInWinner = keyframes`
   from {
-    top: -16px;
     opacity: 0;
-    transform: scale(2);
+    transform: scale(0);
   }
   to {
     top: 0px;
@@ -127,7 +101,7 @@ const fadeInWinner = keyframes`
 
 export const Winner = styled.h1`
   position: relative;
-  font-size: 48px;
+  font-size: 40px;
   font-weight: 700;
   opacity: 0;
   top: 0px;
