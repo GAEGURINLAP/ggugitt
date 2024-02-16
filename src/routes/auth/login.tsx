@@ -132,7 +132,7 @@ export default function Login() {
                 },
               })}
               id="email"
-              placeholder="이메일 뭐에요"
+              placeholder="이메일을 입력해주세요"
             />
             {errors.email && <Error>{errors.email.message}</Error>}
             <Input
@@ -144,7 +144,7 @@ export default function Login() {
                 },
               })}
               id="password"
-              placeholder="패스워드 뭐에요"
+              placeholder="패스워드를 입력해주세요"
               type="password"
             />
             {errors.password && <Error>{errors.password.message}</Error>}
@@ -154,7 +154,7 @@ export default function Login() {
               </StyledLink>
             </ForgotPassword>
             <ButtonPrimary
-              label={isLoading ? "Loading..." : "로그인"}
+              label={isLoading ? "로딩 중입니다..." : "로그인"}
               isRadiusFull
               isWidthFull
             />

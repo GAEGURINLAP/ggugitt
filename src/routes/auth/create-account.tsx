@@ -24,23 +24,32 @@ interface FormInputs {
   name: string;
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
 export default function CreateAccount() {
   const [isLoading, setLoading] = useState(false);
   const [isShowAlert, setShowAlert] = useState(false);
-  const [error, setError] = useState("");
+  // const [firebaseError, setFirebaseError] = useState("");
 
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<FormInputs>({});
 
   const onSubmit = async (data: FormInputs) => {
-    const { name, email, password } = data;
+    const { name, email, password, confirmPassword } = data;
+    if (password !== confirmPassword) {
+      setError("confirmPassword", {
+        type: "manual",
+        message: "비밀번호가 일치하지 않습니다.",
+      });
+      return;
+    }
     try {
       setLoading(true);
       const credentials = await createUserWithEmailAndPassword(
@@ -56,7 +65,7 @@ export default function CreateAccount() {
       if (e instanceof FirebaseError) {
         console.log(e.code, e.message);
         setShowAlert(true);
-        setError(e.message);
+        console.log(e.message);
       }
     } finally {
       setLoading(false);
@@ -96,7 +105,7 @@ export default function CreateAccount() {
             })}
             id="name"
             type="text"
-            placeholder="이름이 뭐에요"
+            placeholder="이름을 입력해주세요"
           />
           {errors.name && <Error>{errors.name.message}</Error>}
           <Input
@@ -108,7 +117,7 @@ export default function CreateAccount() {
               },
             })}
             id="email"
-            placeholder="이메일 뭐에요"
+            placeholder="이메일을 입력해주세요"
           />
           {errors.email && <Error>{errors.email.message}</Error>}
           <Input
@@ -120,10 +129,25 @@ export default function CreateAccount() {
               },
             })}
             id="password"
-            placeholder="패스워드 뭐에요"
+            placeholder="패스워드를 입력해주세요"
             type="password"
           />
           {errors.password && <Error>{errors.password.message}</Error>}
+          <Input
+            {...register("confirmPassword", {
+              required: "비밀번호는 필수 입력입니다.",
+              minLength: {
+                value: 8,
+                message: "8자리 이상 비밀번호를 사용하세요.",
+              },
+            })}
+            id="password2"
+            placeholder="패스워드를 한번 더 입력해주세요"
+            type="password"
+          />
+          {errors.confirmPassword && (
+            <Error>{errors.confirmPassword.message}</Error>
+          )}
           <ButtonPrimary
             label={isLoading ? "Loading..." : "회원가입"}
             isRadiusFull
@@ -138,7 +162,7 @@ export default function CreateAccount() {
 
       {isShowAlert && (
         <Alert
-          message={error}
+          message={"다시 한 번 확인해주세요!"}
           buttons={[
             <ButtonPrimary
               label={"확인"}

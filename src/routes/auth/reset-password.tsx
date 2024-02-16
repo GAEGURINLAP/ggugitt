@@ -73,7 +73,7 @@ export default function ForgotPassword() {
               },
             })}
             id="email"
-            placeholder="이메일 뭐에요"
+            placeholder="이메일을 입력해주세요"
           />
           {errors.email && <Error>{errors.email.message}</Error>}
 
