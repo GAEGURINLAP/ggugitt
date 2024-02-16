@@ -21,7 +21,7 @@ import VoterRegister from "./routes/vote-register/voter";
 import CandidateRegister from "./routes/vote-register/candidate";
 import IndexRegister from "./routes/vote-register";
 import VoteResult from "./routes/vote-result";
-import VoteProgress from "./routes/vote-progress";
+// import VoteProgress from "./routes/vote-progress";
 import VoteHistoryResult from "./routes/vote-history-result";
 import Layout from "./component/Layout";
 import CreateAccount from "./routes/auth/create-account";
@@ -31,6 +31,7 @@ import Index from "./routes";
 //   IAuthCheckContext,
 // } from "./store/auth-check-context";
 import LoadingScreen from "./component/LoadingScreen";
+import VoteProgress2 from "./routes/vote-progress copy";
 
 const router = createBrowserRouter([
   {
@@ -80,7 +81,7 @@ const router = createBrowserRouter([
     path: "/vote-progress/:id",
     element: (
       <ProtectedRoute>
-        <VoteProgress />
+        <VoteProgress2 />
       </ProtectedRoute>
     ),
   },
@@ -139,6 +140,7 @@ function App() {
             <RouterProvider router={router} />
           </AuthCheckContext.Provider> */}
           {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
+          {/* <RouterProvider router={router} /> */}
         </Wrapper>
       </Container>
     </>
