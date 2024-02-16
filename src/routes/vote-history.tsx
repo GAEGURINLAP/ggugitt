@@ -23,6 +23,7 @@ import {
   SkeletonName,
   SkeletonStatus,
   SkeletonStatusProgress,
+  HistoryTitle,
 } from "../style/vote-history";
 
 export default function VoteHistory() {
@@ -96,10 +97,10 @@ export default function VoteHistory() {
       <Header />
       <>
         <Wrapper>
-          <Title>
+          <HistoryTitle>
             진행하신 투표 <br />
             히스토리 입니다.
-          </Title>
+          </HistoryTitle>
           {votes.length > 0 ? (
             <List>
               {votes.map((item, index) =>

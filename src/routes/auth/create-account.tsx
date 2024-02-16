@@ -72,7 +72,7 @@ export default function CreateAccount() {
       <Wrapper>
         <Image>
           <img
-            src="/images/illust/il-vote-progress-squre.png"
+            src="/images/illust/il-vote-progress-square.png"
             alt="꾸깃"
             width={180}
             height={180}

@@ -1,6 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import BottomButton01 from "../component/BottomButon01";
-import { Wrapper, Title, NoItem } from "../style/vote-history";
+import BrandingTitle from "/images/logo/lg-brandingtitle.png";
+import {
+  BrandingWrapper,
+  Wrapper,
+  Title,
+  Desc,
+  TextWrapper,
+  Subtitle,
+  HeroImage,
+} from "../style/vote-history";
 
 export default function Landing() {
   const navigate = useNavigate();
@@ -9,20 +18,32 @@ export default function Landing() {
   return (
     <>
       <Wrapper>
-        <Title>
-          오늘의 꾸깃 <br />
-          시작해보세요!
-        </Title>
-        <NoItem>
+        <TextWrapper>
+          <BrandingWrapper>
+            <img src={BrandingTitle} height={48} />
+          </BrandingWrapper>
+          <Desc>
+            <Title>
+              이제 <b>연속적인 투표</b>도 해보세요! <br />
+            </Title>
+            <Subtitle>
+              가끔... 투표가 끊겨서 아쉬운... <br /> 그런 때 있지 않나요?
+            </Subtitle>
+          </Desc>
+        </TextWrapper>
+        <HeroImage>
           <img
-            src="/images/logo/splash.png"
+            src="/images/illust/il-vote-result-square.png"
+            width={500}
             alt="개구린"
-            width={240}
-            height={240}
           />
-        </NoItem>
+        </HeroImage>
       </Wrapper>
-      <BottomButton01 label={"투표 시작하기"} onClick={clickConfirm} />
+      <BottomButton01
+        label={"투표 시작하기"}
+        onClick={clickConfirm}
+        isFloating
+      />
     </>
   );
 }

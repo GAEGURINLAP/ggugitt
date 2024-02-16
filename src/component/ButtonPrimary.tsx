@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-const Wrapper = styled.button<ButtonProps>`
+const Wrapper = styled.button<IButtonProps>`
   width: ${(props) => (props.isWidthFull ? "100%" : "fit-content")};
   min-width: 120px;
   height: ${(props) => (props.size === "Large" ? "64px" : "48px")};
@@ -17,16 +17,18 @@ const Wrapper = styled.button<ButtonProps>`
     background-color: ${(props) => !props.isDisabled && "var(--main-hover)"};
     cursor: ${(props) => (props.isDisabled ? "default" : "pointer")};
   }
+  box-shadow: ${(props) => props.isFloating && "0 4px 24px rgba(0,0,0,0.25)"};
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-use-select: none;
   user-select: none;
 `;
 
-interface ButtonProps {
+interface IButtonProps {
   isWidthFull?: boolean;
   isRadiusFull?: boolean;
   isDisabled?: boolean;
+  isFloating?: boolean;
   size?: string;
   label?: string;
   onClick?: () => void;
@@ -39,7 +41,8 @@ const ButtonPrimary = ({
   isWidthFull,
   isRadiusFull,
   isDisabled,
-}: ButtonProps) => {
+  isFloating,
+}: IButtonProps) => {
   const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
     if (event.key === "Enter") {
       // 엔터 키가 눌렸을 때 실행할 동작
@@ -58,6 +61,7 @@ const ButtonPrimary = ({
       isDisabled={isDisabled}
       label={label}
       size={size}
+      isFloating={isFloating}
     >
       {label}
     </Wrapper>

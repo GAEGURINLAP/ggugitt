@@ -10,14 +10,44 @@ export const Wrapper = styled.div`
   gap: 32px;
 `;
 
+export const TextWrapper = styled.div`
+  display: flex;
+  padding: 0 24px;
+  flex-direction: column;
+  gap: 48px;
+`;
+
+export const BrandingWrapper = styled.div`
+  /* font-size: 64px; */
+`;
+
+export const Desc = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
 export const Title = styled.h1`
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 140%;
+  b {
+    font-weight: 700;
+  }
+`;
+export const HistoryTitle = styled.h1`
   font-size: 32px;
   font-weight: 600;
   line-height: 140%;
   padding: 0 24px;
-  b {
-    color: var(--main);
-  }
+`;
+
+export const Subtitle = styled.div`
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: -4%;
+  color: #525252;
 `;
 
 export const List = styled.div`
@@ -26,13 +56,17 @@ export const List = styled.div`
   padding-bottom: 160px;
 `;
 
-export const NoItem = styled.div`
+export const HeroImage = styled.div`
+  position: absolute;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 48px;
-  gap: 32px;
+  width: 100%;
+  max-width: 500px;
+  /* object-fit: cover; */
+  overflow: hidden;
 `;
 
 export const NoItemLabel = styled.div`

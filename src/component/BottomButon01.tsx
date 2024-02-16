@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
 import ButtonPrimary from "./ButtonPrimary";
 
-const Container = styled.div`
+const Container = styled.div<IBottomButtonProps>`
   position: fixed;
   bottom: 0;
   width: 100%;
   max-width: 500px;
-  background-color: var(--white);
+  background-color: ${(props) => (props.isFloating ? "none" : "var(--white)")};
 `;
 
 const Wrapper = styled.div`
@@ -17,22 +17,29 @@ const Wrapper = styled.div`
   gap: 8px;
 `;
 
-interface BottomButtonProps {
+interface IBottomButtonProps {
   label: string;
   isFixed?: boolean;
   onClick?: () => void;
   isDisabled?: boolean;
+  isFloating?: boolean;
 }
 
-const BottomButton01 = ({ onClick, label, isDisabled }: BottomButtonProps) => {
+const BottomButton01 = ({
+  onClick,
+  label,
+  isDisabled,
+  isFloating,
+}: IBottomButtonProps) => {
   return (
-    <Container>
+    <Container isFloating={isFloating} label={label}>
       <Wrapper>
         <ButtonPrimary
           label={label}
           onClick={onClick}
           isWidthFull
           isDisabled={isDisabled}
+          isFloating={isFloating}
         />
       </Wrapper>
     </Container>

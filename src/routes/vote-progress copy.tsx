@@ -117,7 +117,7 @@ export default function VoteProgress2() {
           title: `${voteName} 꾸깃할 시간이에요!`,
           description: "오늘의 투표 후보는 과연 누구일까요?! \n두구두구두구",
           imageUrl:
-            "https://firebasestorage.googleapis.com/v0/b/bullgaemi-survey.appspot.com/o/il-vote-progress-squre.png?alt=media&token=c6985243-d021-4cb3-a178-4b299a22fdc9",
+            "https://firebasestorage.googleapis.com/v0/b/bullgaemi-survey.appspot.com/o/il-vote-progress-square.png?alt=media&token=c6985243-d021-4cb3-a178-4b299a22fdc9",
           link: {
             mobileWebUrl: "https://ggugitt.com",
             webUrl: "https://ggugitt.com",
