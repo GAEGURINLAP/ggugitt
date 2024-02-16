@@ -166,3 +166,14 @@ export const SkeletonStatusProgress = styled.div`
   width: 30%;
   border-radius: 8px;
 `;
+
+export const NoItem = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid #f2f2f2;
+  &:last-child {
+    border-bottom: none;
+  }
+`;

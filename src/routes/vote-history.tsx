@@ -24,10 +24,13 @@ import {
   SkeletonStatus,
   SkeletonStatusProgress,
   HistoryTitle,
+  NoItem,
 } from "../style/vote-history";
+import Landing from "./landing";
 
 export default function VoteHistory() {
   const [votes, setVotes] = useState<IVote[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -76,6 +79,7 @@ export default function VoteHistory() {
         };
       });
       setVotes(votes);
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
     } finally {
@@ -92,83 +96,91 @@ export default function VoteHistory() {
 
   const skeleton = ["1", "2", "3", "4", "5"];
 
+  if (votes.length > 0) {
+    return (
+      <>
+        <Header />
+        <>
+          <Wrapper>
+            <HistoryTitle>
+              진행하신 투표 <br />
+              히스토리 입니다.
+            </HistoryTitle>
+            {isLoading ? (
+              <List>
+                {skeleton.map((item, index) => (
+                  <SkeletonItem key={`item${item}${index}`}>
+                    <SkeletonWrapperLeft>
+                      <SkeletonName />
+                      <SkeletonStatus>
+                        <SkeletonStatusProgress />
+                      </SkeletonStatus>
+                    </SkeletonWrapperLeft>
+                  </SkeletonItem>
+                ))}
+              </List>
+            ) : (
+              <List>
+                {votes.map((item, index) =>
+                  item.is_complete ? (
+                    <Item
+                      key={`item${index}`}
+                      onClick={() =>
+                        navigate(`/vote-history-result/${item.vote_id}`)
+                      }
+                    >
+                      <WrapperLeft>
+                        <Name>{item.vote_name}</Name>
+                        <Status>
+                          <WinnerLabel>우승자</WinnerLabel>
+                          <WinnerName>{item.vote_winner}</WinnerName>
+                        </Status>
+                      </WrapperLeft>
+                      <WrapperRight>
+                        <Label>투표 결과</Label>
+                        <img
+                          src="/images/icon/common/icon-arrow-left.svg"
+                          width={24}
+                          height={24}
+                          style={{ transform: "rotate(0.5turn)" }}
+                        />
+                      </WrapperRight>
+                    </Item>
+                  ) : (
+                    <Item
+                      key={`item${index}`}
+                      onClick={() => navigate(`/vote-progress/${item.vote_id}`)}
+                    >
+                      <WrapperLeft>
+                        <Name>{item.vote_name}</Name>
+                        <Status>
+                          <StatusProgress>투표 진행중</StatusProgress>
+                        </Status>
+                      </WrapperLeft>
+                      <WrapperRight>
+                        <Label>투표 현황</Label>
+                        <img
+                          src="/images/icon/common/icon-arrow-left.svg"
+                          width={24}
+                          height={24}
+                          style={{ transform: "rotate(0.5turn)" }}
+                        />
+                      </WrapperRight>
+                    </Item>
+                  )
+                )}
+              </List>
+            )}
+          </Wrapper>
+          <BottomButton01 label={"투표 새로 만들기"} onClick={clickSurvey} />
+        </>
+      </>
+    );
+  }
   return (
     <>
       <Header />
-      <>
-        <Wrapper>
-          <HistoryTitle>
-            진행하신 투표 <br />
-            히스토리 입니다.
-          </HistoryTitle>
-          {votes.length > 0 ? (
-            <List>
-              {votes.map((item, index) =>
-                item.is_complete ? (
-                  <Item
-                    key={`item${index}`}
-                    onClick={() =>
-                      navigate(`/vote-history-result/${item.vote_id}`)
-                    }
-                  >
-                    <WrapperLeft>
-                      <Name>{item.vote_name}</Name>
-                      <Status>
-                        <WinnerLabel>우승자</WinnerLabel>
-                        <WinnerName>{item.vote_winner}</WinnerName>
-                      </Status>
-                    </WrapperLeft>
-                    <WrapperRight>
-                      <Label>투표 결과</Label>
-                      <img
-                        src="/images/icon/common/icon-arrow-left.svg"
-                        width={24}
-                        height={24}
-                        style={{ transform: "rotate(0.5turn)" }}
-                      />
-                    </WrapperRight>
-                  </Item>
-                ) : (
-                  <Item
-                    key={`item${index}`}
-                    onClick={() => navigate(`/vote-progress/${item.vote_id}`)}
-                  >
-                    <WrapperLeft>
-                      <Name>{item.vote_name}</Name>
-                      <Status>
-                        <StatusProgress>투표 진행중</StatusProgress>
-                      </Status>
-                    </WrapperLeft>
-                    <WrapperRight>
-                      <Label>투표 현황</Label>
-                      <img
-                        src="/images/icon/common/icon-arrow-left.svg"
-                        width={24}
-                        height={24}
-                        style={{ transform: "rotate(0.5turn)" }}
-                      />
-                    </WrapperRight>
-                  </Item>
-                )
-              )}
-            </List>
-          ) : (
-            <List>
-              {skeleton.map((item, index) => (
-                <SkeletonItem key={`item${item}${index}`}>
-                  <SkeletonWrapperLeft>
-                    <SkeletonName />
-                    <SkeletonStatus>
-                      <SkeletonStatusProgress />
-                    </SkeletonStatus>
-                  </SkeletonWrapperLeft>
-                </SkeletonItem>
-              ))}
-            </List>
-          )}
-        </Wrapper>
-        <BottomButton01 label={"투표 새로 만들기"} onClick={clickSurvey} />
-      </>
+      <Landing />
     </>
   );
 }

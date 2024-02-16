@@ -10,11 +10,19 @@ import {
   Subtitle,
   HeroImage,
 } from "../style/vote-history";
+import { auth } from "../firebase";
 
 export default function Landing() {
   const navigate = useNavigate();
 
+  const user = auth.currentUser;
+
   const clickConfirm = () => navigate("/login");
+
+  const clickSurvey = () => {
+    navigate("/vote-register");
+  };
+
   return (
     <>
       <Wrapper>
@@ -41,7 +49,7 @@ export default function Landing() {
       </Wrapper>
       <BottomButton01
         label={"투표 시작하기"}
-        onClick={clickConfirm}
+        onClick={user === null ? clickConfirm : clickSurvey}
         isFloating
       />
     </>
