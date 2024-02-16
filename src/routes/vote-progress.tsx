@@ -52,8 +52,8 @@ import { IVoteList } from "./vote-register/candidate";
 // import Toast from "../component/Toast";
 import { GuideText } from "../style/vote-register";
 import LoadingScreen from "../component/LoadingScreen";
-import ButtonThird from "../component/ButtonThird";
-import ButtonErrorText from "../component/ButtonErrorText";
+// import ButtonThird from "../component/ButtonThird";
+// import ButtonErrorText from "../component/ButtonErrorText";
 
 export interface IVote {
   vote_id: number;
