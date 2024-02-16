@@ -8,7 +8,6 @@ import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import {
   Wrapper,
-  Title,
   List,
   Item,
   WrapperLeft,
@@ -24,7 +23,6 @@ import {
   SkeletonStatus,
   SkeletonStatusProgress,
   HistoryTitle,
-  NoItem,
 } from "../style/vote-history";
 import Landing from "./landing";
 
