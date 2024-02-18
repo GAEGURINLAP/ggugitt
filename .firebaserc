@@ -1,20 +1,20 @@
 {
   "projects": {
-    "default": "bullgaemi-survey",
-    "prd": "bullgaemi-survey"
+    "default": "ggugitt-dev",
+    "prd": "ggugitt-prd"
   },
   "targets": {
-    "bullgaemi-survey": {
+    "ggugitt-dev": {
       "hosting": {
-        "bullgaemi-survey": [
-          "bullgaemi-survey"
+        "ggugitt-dev": [
+          "ggugitt-dev"
         ]
       }
     },
-    "bullgaemi-survey-prd": {
+    "ggugitt-prd": {
       "hosting": {
-        "bullgaemi-survey-prd": [
-          "bullgaemi-survey-prd"
+        "ggugitt-prd": [
+          "ggugitt-prd"
         ]
       }
     }
