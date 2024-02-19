@@ -175,8 +175,10 @@ export default function Vote() {
           {
             title: "당장 투표하러 가기",
             link: {
-              mobileWebUrl: `https://ggugitt.com/vote/${NewID}`,
-              webUrl: `https://ggugitt.com/vote/${NewID}`,
+              mobileWebUrl: `${
+                import.meta.env.VITE_APP_BASE_URL
+              }/vote${NewID}}`,
+              webUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote${NewID}}`,
             },
           },
         ],

@@ -83,8 +83,10 @@ export default function CandidateRegister() {
           {
             title: "당장 투표하러 가기",
             link: {
-              mobileWebUrl: `https://ggugitt.com/vote/${voteId}`,
-              webUrl: `https://ggugitt.com/vote/${voteId}`,
+              mobileWebUrl: `${
+                import.meta.env.VITE_APP_BASE_URL
+              }/vote${voteId}}`,
+              webUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote${voteId}}`,
             },
           },
         ],

@@ -60,8 +60,10 @@ export default function VoteHistoryResult() {
           {
             title: "당장 확인하러 가기",
             link: {
-              mobileWebUrl: `https://ggugitt.com/vote-result/${id}`,
-              webUrl: `https://ggugitt.com/vote-result/${id}`,
+              mobileWebUrl: `${
+                import.meta.env.VITE_APP_BASE_URL
+              }/vote-result${id}}`,
+              webUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote-result${id}}`,
             },
           },
         ],
