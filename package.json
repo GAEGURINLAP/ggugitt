@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "predeploy": "npm run build",
     "host:dev": "firebase use default && vite --host",
-    "host:prd": "firebase use prd && vite production --host",
+    "host:prd": "firebase use prd && vite -m production --host",
     "deploy:dev": "firebase use default && vite build --mode development && firebase deploy --only hosting:ggugitt-dev",
     "deploy:prd": "firebase use prd && vite build && firebase deploy --only hosting:ggugitt-prd"
   },
