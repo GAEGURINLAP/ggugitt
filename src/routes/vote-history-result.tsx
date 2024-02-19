@@ -36,7 +36,6 @@ export default function VoteHistoryResult() {
   const { id } = useParams();
 
   const user = auth.currentUser;
-
   const shareKakao = () => {
     if (window.Kakao) {
       const kakao = window.Kakao;
@@ -62,8 +61,8 @@ export default function VoteHistoryResult() {
             link: {
               mobileWebUrl: `${
                 import.meta.env.VITE_APP_BASE_URL
-              }/vote-result${id}}`,
-              webUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote-result${id}}`,
+              }/vote-result/${id}}`,
+              webUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote-result/${id}}`,
             },
           },
         ],

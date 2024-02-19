@@ -177,8 +177,8 @@ export default function Vote() {
             link: {
               mobileWebUrl: `${
                 import.meta.env.VITE_APP_BASE_URL
-              }/vote${NewID}}`,
-              webUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote${NewID}}`,
+              }/vote/${NewID}}`,
+              webUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote/${NewID}}`,
             },
           },
         ],

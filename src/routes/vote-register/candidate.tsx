@@ -85,8 +85,8 @@ export default function CandidateRegister() {
             link: {
               mobileWebUrl: `${
                 import.meta.env.VITE_APP_BASE_URL
-              }/vote${voteId}}`,
-              webUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote${voteId}}`,
+              }/vote/${voteId}}`,
+              webUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote/${voteId}}`,
             },
           },
         ],
