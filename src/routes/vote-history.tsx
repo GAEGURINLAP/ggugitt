@@ -120,7 +120,7 @@ export default function VoteHistory() {
         <>
           <Wrapper>
             <HistoryTitle>
-              진행하셨던!!? 투표 <br />
+              진행하셨던(github action 테스트) 투표 <br />
               히스토리 입니다.
             </HistoryTitle>
             <List>
