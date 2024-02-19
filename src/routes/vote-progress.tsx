@@ -131,8 +131,8 @@ export default function VoteProgress() {
             link: {
               mobileWebUrl: `${
                 import.meta.env.VITE_APP_BASE_URL
-              }/vote/${voteId}}`,
-              webUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote/${voteId}}`,
+              }/vote/${voteId}`,
+              webUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote/${voteId}`,
             },
           },
         ],
@@ -302,6 +302,8 @@ export default function VoteProgress() {
     }
   };
 
+  // const test = `${import.meta.env.VITE_APP_BASE_URL}/vote/${voteId}`;
+
   return (
     <>
       <Helmet>
@@ -430,8 +432,10 @@ export default function VoteProgress() {
             </Wrapper>
             <BottomButton01
               label={"투표 링크 공유하기"}
-              // onClick={() => handleCopyClipBoard(`${baseURL}/vote/${id}`)}
               onClick={() => shareKakao()}
+              // onClick={() => {
+              //   console.log(test);
+              // }}
             />
           </>
         )

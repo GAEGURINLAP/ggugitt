@@ -62,7 +62,7 @@ export default function VoteHistoryResult() {
               mobileWebUrl: `${
                 import.meta.env.VITE_APP_BASE_URL
               }/vote-result/${id}}`,
-              webUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote-result/${id}}`,
+              webUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote-result/${id}`,
             },
           },
         ],
