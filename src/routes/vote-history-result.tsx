@@ -36,7 +36,6 @@ export default function VoteHistoryResult() {
   const { id } = useParams();
 
   const user = auth.currentUser;
-
   const shareKakao = () => {
     if (window.Kakao) {
       const kakao = window.Kakao;
@@ -52,16 +51,18 @@ export default function VoteHistoryResult() {
           imageUrl:
             "https://firebasestorage.googleapis.com/v0/b/bullgaemi-survey.appspot.com/o/il-vote-result-squre.png?alt=media&token=29255ba5-472c-49ce-ae52-aa4d60012c70",
           link: {
-            mobileWebUrl: "https://ggugitt.com",
-            webUrl: "https://ggugitt.com",
+            mobileWebUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
+            webUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
           },
         },
         buttons: [
           {
             title: "당장 확인하러 가기",
             link: {
-              mobileWebUrl: `https://ggugitt.com/vote-result/${id}`,
-              webUrl: `https://ggugitt.com/vote-result/${id}`,
+              mobileWebUrl: `${
+                import.meta.env.VITE_APP_BASE_URL
+              }/vote-result/${id}}`,
+              webUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote-result/${id}`,
             },
           },
         ],

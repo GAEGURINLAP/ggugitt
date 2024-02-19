@@ -121,16 +121,18 @@ export default function VoteProgress() {
           imageUrl:
             "https://firebasestorage.googleapis.com/v0/b/bullgaemi-survey.appspot.com/o/il-vote-progress-squre.png?alt=media&token=c6985243-d021-4cb3-a178-4b299a22fdc9",
           link: {
-            mobileWebUrl: "https://ggugitt.com",
-            webUrl: "https://ggugitt.com",
+            mobileWebUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
+            webUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
           },
         },
         buttons: [
           {
             title: "당장 투표하러 가기",
             link: {
-              mobileWebUrl: `https://ggugitt.com/vote/${voteId}`,
-              webUrl: `https://ggugitt.com/vote/${voteId}`,
+              mobileWebUrl: `${
+                import.meta.env.VITE_APP_BASE_URL
+              }/vote/${voteId}`,
+              webUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote/${voteId}`,
             },
           },
         ],
@@ -259,11 +261,11 @@ export default function VoteProgress() {
   };
 
   const clickVoteComplete = () => {
-    // if (vote?.total_votes_cnt === 0) {
-    //   setIsLoading(false);
-    //   setIsShowAlertFail(true);
-    //   return;
-    // }
+    if (vote?.total_votes_cnt === 0) {
+      setIsLoading(false);
+      setIsShowAlertFail(true);
+      return;
+    }
     setIsShowAlertComplete(true);
   };
 
@@ -299,6 +301,8 @@ export default function VoteProgress() {
       navigate(`/vote-history-result/${id}`);
     }
   };
+
+  // const test = `${import.meta.env.VITE_APP_BASE_URL}/vote/${voteId}`;
 
   return (
     <>
@@ -428,8 +432,10 @@ export default function VoteProgress() {
             </Wrapper>
             <BottomButton01
               label={"투표 링크 공유하기"}
-              // onClick={() => handleCopyClipBoard(`${baseURL}/vote/${id}`)}
               onClick={() => shareKakao()}
+              // onClick={() => {
+              //   console.log(test);
+              // }}
             />
           </>
         )
