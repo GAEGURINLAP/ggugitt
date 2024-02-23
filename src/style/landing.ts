@@ -2,10 +2,9 @@ import styled from "@emotion/styled";
 
 export const Wrapper = styled.div`
   padding-top: 120px;
-  padding-bottom: 80px;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 48px;
 `;
 
 export const TextWrapper = styled.div`
@@ -15,9 +14,7 @@ export const TextWrapper = styled.div`
   gap: 48px;
 `;
 
-export const BrandingWrapper = styled.div`
-  /* font-size: 64px; */
-`;
+export const BrandingWrapper = styled.div``;
 
 export const Desc = styled.div`
   display: flex;
@@ -55,12 +52,8 @@ export const List = styled.div`
 `;
 
 export const HeroImage = styled.div`
-  position: absolute;
-  bottom: 0;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  padding: 0 24px;
   width: 100%;
   max-width: 500px;
   overflow: hidden;

@@ -9,7 +9,7 @@ import {
   TextWrapper,
   Subtitle,
   HeroImage,
-} from "../style/vote-history";
+} from "../style/landing";
 import { auth } from "../firebase";
 
 export default function Landing() {
@@ -40,7 +40,13 @@ export default function Landing() {
           </Desc>
         </TextWrapper>
         <HeroImage>
-          <img src="/images/illust/il-landing.png" width={500} alt="개구린" />
+          <img
+            src="/images/illust/il-vote-result-square.png"
+            style={{ overflow: "hidden", borderRadius: "8px" }}
+            width={375}
+            height={375}
+            alt="개구린"
+          />
         </HeroImage>
       </Wrapper>
       <BottomButton01
