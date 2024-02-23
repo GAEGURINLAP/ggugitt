@@ -26,6 +26,9 @@ import {
   Member,
   MemberList,
   Title,
+  VoteContent,
+  VoteItem,
+  VoteWrapper,
   VoterContainer,
   Wrapper,
 } from "../../style/vote-register";
@@ -205,6 +208,7 @@ export default function CandidateRegister() {
     formState: { errors },
   } = useForm<IVoteList>({});
 
+  console.log("voteList?", voteList);
   return (
     <>
       {isLoading && <LoadingScreen isDim />}
@@ -257,6 +261,23 @@ export default function CandidateRegister() {
                 <Error>{errors.name.message}</Error>
               ) : (
                 <GuideText>ex) 김꾸깃</GuideText>
+              )}
+              {voteList.length > 0 && (
+                <VoteWrapper>
+                  {voteList?.map((item, index) => (
+                    <VoteItem key={`item${index}`}>
+                      <VoteContent>
+                        {item.name}
+                        <img
+                          src="/images/icon/common/icon-x-circle.svg"
+                          width={20}
+                          style={{ cursor: "pointer" }}
+                          onClick={() => clickDeleteItem(item)}
+                        />
+                      </VoteContent>
+                    </VoteItem>
+                  ))}
+                </VoteWrapper>
               )}
             </FormContainer>
             <VoterContainer>
