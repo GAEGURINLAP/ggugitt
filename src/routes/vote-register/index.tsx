@@ -21,6 +21,8 @@ export default function IndexRegister() {
   const [votes, setVotes] = useState<IVote[]>([]);
   const [voterList, setVoterList] = useState<String[]>([]);
 
+  const [isShowAlreadyAlert, setIsShowAlreadyAlert] = useState(false);
+
   const navigate = useNavigate();
 
   const user = auth.currentUser;
@@ -75,8 +77,7 @@ export default function IndexRegister() {
     const { member_name } = data;
 
     if (voterList.some((name) => name === member_name)) {
-      // setIsShowAlreadyAlert(true);
-      alert("이미 추가한 이름이오");
+      setIsShowAlreadyAlert(true);
       return;
     } else {
       const newVoteItems = [...voterList, member_name];
@@ -127,6 +128,18 @@ export default function IndexRegister() {
           <Outlet />
         )}
       </VoteRegisterContext.Provider>
+      {isShowAlreadyAlert && (
+        <Alert
+          message={"이미 추가한 팀원이에요!"}
+          buttons={[
+            <ButtonPrimary
+              label={"확인"}
+              onClick={() => setIsShowAlreadyAlert(false)}
+              isWidthFull
+            />,
+          ]}
+        />
+      )}
     </>
   );
 }

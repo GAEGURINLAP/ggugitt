@@ -119,13 +119,6 @@ export default function Vote() {
 
     const newVote = votes.find((vote) => vote.vote_id == id);
 
-    // const voteID = snapshot.docs.pop()?.data().vote_id;
-    // setVoteID(voteID);
-
-    // if (!newVote) {
-    //   navigate("/not-found");
-    // }
-
     setVote(newVote);
   };
 
@@ -164,8 +157,7 @@ export default function Vote() {
         content: {
           title: `${vote?.vote_name} 꾸깃할 시간이에요!`,
           description: "오늘의 투표 후보는 과연 누구일까요?! \n두구두구두구",
-          imageUrl:
-            "https://firebasestorage.googleapis.com/v0/b/bullgaemi-survey.appspot.com/o/il-vote-progress-squre.png?alt=media&token=c6985243-d021-4cb3-a178-4b299a22fdc9",
+          imageUrl: `${import.meta.env.VITE_KAKAO_THUMB_VOTE}`,
           link: {
             mobileWebUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
             webUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
@@ -254,7 +246,7 @@ export default function Vote() {
       </Helmet>
       {isShowAlertConfirm ? (
         <Success
-          message={"투표 완료 되었습니다!"}
+          message={"투표가 완료 되었어요!"}
           label="다른 팀원 투표 강요하기"
           isShowButton
           onClick={() => shareKakao()}
@@ -312,15 +304,15 @@ export default function Vote() {
                           pattern: {
                             value: /^[^a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]*$/,
                             message:
-                              "특수문자,공백,숫자,영문은 입력이 불가능합니다.",
+                              "특수문자,공백,숫자,영문은 입력이 불가능해요.",
                           },
                           minLength: {
                             value: 2,
-                            message: "이름은 2자 이상이어야 합니다.",
+                            message: "이름은 2자 이상이어야 해요.",
                           },
                           maxLength: {
                             value: 10,
-                            message: "이름은 10자를 초과할 수 없습니다.",
+                            message: "이름은 10자를 초과할 수 없어요.",
                           },
                         })}
                         placeholder="이름을 입력해주세요"
@@ -343,8 +335,8 @@ export default function Vote() {
 
       {isShowAlertVoterFail && (
         <Alert
-          message={"투표권이 없는 이름입니다! ㅠㅠ"}
-          subMessage={"이름을 정확히 입력해주셔야 합니다."}
+          message={"투표권이 없는 이름이군요..!"}
+          subMessage={"이름을 정확히 입력해주셔야 해요!"}
           isShowSubMessege
           buttons={[
             <ButtonPrimary
@@ -357,7 +349,7 @@ export default function Vote() {
       )}
       {isShowAlertAlreadyVoter && (
         <Alert
-          message={"이미 투표한 팀원입니다!"}
+          message={"이미 투표한 팀원이에요!"}
           buttons={[
             <ButtonPrimary
               label={"확인"}
@@ -370,7 +362,7 @@ export default function Vote() {
 
       {isShowAlertVote && (
         <Alert
-          message={"선택한 팀원으로 투표 하시겠습니까?"}
+          message={"선택한 팀원으로 투표 하시겠어요?"}
           buttons={[
             <ButtonSecondary
               label={"취소"}
@@ -387,7 +379,7 @@ export default function Vote() {
       )}
       {vote?.is_complete && (
         <Alert
-          message={"이미 종료된 투표입니다!"}
+          message={"이미 종료된 투표에요!!"}
           buttons={[
             <ButtonPrimary
               label={"확인"}

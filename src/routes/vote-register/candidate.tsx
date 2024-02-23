@@ -20,6 +20,7 @@ import {
   Form,
   FormContainer,
   FormWrapper,
+  GuideText,
   Input,
   Label,
   Member,
@@ -72,8 +73,7 @@ export default function CandidateRegister() {
         content: {
           title: `${voteName} 꾸깃할 시간이에요!`,
           description: "오늘의 투표 후보는 과연 누구일까요?! \n두구두구두구",
-          imageUrl:
-            "https://firebasestorage.googleapis.com/v0/b/bullgaemi-survey.appspot.com/o/il-vote-progress-squre.png?alt=media&token=c6985243-d021-4cb3-a178-4b299a22fdc9",
+          imageUrl: `${import.meta.env.VITE_KAKAO_THUMB_VOTE}`,
           link: {
             mobileWebUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
             webUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
@@ -208,13 +208,14 @@ export default function CandidateRegister() {
     formState: { errors },
   } = useForm<IVoteList>({});
 
+  console.log("voteList?", voteList);
   return (
     <>
       {isLoading && <LoadingScreen isDim />}
 
       {isComplete ? (
         <Success
-          message={"투표 등록이 완료 되었습니다!"}
+          message={"투표 등록이 완료 되었어요!"}
           label="투표 링크 공유하기"
           isShowButton
           isShowSecondaryButton
@@ -228,52 +229,56 @@ export default function CandidateRegister() {
               투표를 진행할 <br /> 후보를 등록해주세요
             </Title>
             <FormContainer>
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                <Form
-                  onSubmit={handleSubmit((data) => {
-                    addItem(data);
-                    reset();
-                  })}
-                >
-                  <FormWrapper>
-                    <Input
-                      {...register("name", {
-                        required: true,
-                        pattern: {
-                          value: /^[^a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]*$/,
-                          message:
-                            "특수문자,공백,숫자,영문은 입력이 불가능합니다.",
-                        },
-                        minLength: {
-                          value: 2,
-                          message: "이름은 2자 이상이어야 합니다.",
-                        },
-                        maxLength: {
-                          value: 10,
-                          message: "이름은 10자를 초과할 수 없습니다.",
-                        },
-                      })}
-                      placeholder="후보 이름을 입력해주세요"
-                    />
-                  </FormWrapper>
-                </Form>
-                {errors.name && <Error>{errors.name.message}</Error>}
-              </div>
-              <VoteWrapper>
-                {voteList?.map((item, index) => (
-                  <VoteItem key={`item${index}`}>
-                    <VoteContent>
-                      {item.name}
-                      <img
-                        src="/images/icon/common/icon-x-circle.svg"
-                        width={20}
-                        style={{ cursor: "pointer" }}
-                        onClick={() => clickDeleteItem(item)}
-                      />
-                    </VoteContent>
-                  </VoteItem>
-                ))}
-              </VoteWrapper>
+              <Form
+                onSubmit={handleSubmit((data) => {
+                  addItem(data);
+                  reset();
+                })}
+              >
+                <FormWrapper>
+                  <Input
+                    {...register("name", {
+                      required: true,
+                      pattern: {
+                        value: /^[^a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]*$/,
+                        message:
+                          "특수문자,공백,숫자,영문은 입력이 불가능 해요.",
+                      },
+                      minLength: {
+                        value: 2,
+                        message: "이름은 2자 이상이어야 해요.",
+                      },
+                      maxLength: {
+                        value: 10,
+                        message: "이름은 10자를 초과할 수 없어요.",
+                      },
+                    })}
+                    placeholder="후보 이름을 정자로 입력해주세요"
+                  />
+                </FormWrapper>
+              </Form>
+              {errors.name ? (
+                <Error>{errors.name.message}</Error>
+              ) : (
+                <GuideText>ex) 김꾸깃</GuideText>
+              )}
+              {voteList.length > 0 && (
+                <VoteWrapper>
+                  {voteList?.map((item, index) => (
+                    <VoteItem key={`item${index}`}>
+                      <VoteContent>
+                        {item.name}
+                        <img
+                          src="/images/icon/common/icon-x-circle.svg"
+                          width={20}
+                          style={{ cursor: "pointer" }}
+                          onClick={() => clickDeleteItem(item)}
+                        />
+                      </VoteContent>
+                    </VoteItem>
+                  ))}
+                </VoteWrapper>
+              )}
             </FormContainer>
             <VoterContainer>
               <Label>등록한 팀원</Label>
@@ -321,7 +326,7 @@ export default function CandidateRegister() {
       )}
       {isShowAlert && (
         <Alert
-          message={"입력한 후보가 맞습니까?"}
+          message={"입력한 후보들이 전부 맞을까요?"}
           buttons={[
             <ButtonSecondary
               label={"취소"}
@@ -338,7 +343,7 @@ export default function CandidateRegister() {
       )}
       {isShowAlreadyAlert && (
         <Alert
-          message={"이미 추가한 후보입니다!"}
+          message={"이미 추가한 후보에요!"}
           buttons={[
             <ButtonPrimary
               label={"확인"}

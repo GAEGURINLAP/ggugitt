@@ -40,11 +40,7 @@ export default function Landing() {
           </Desc>
         </TextWrapper>
         <HeroImage>
-          <img
-            src="/images/illust/il-vote-result-square.png"
-            width={500}
-            alt="개구린"
-          />
+          <img src="/images/illust/il-landing.png" width={500} alt="개구린" />
         </HeroImage>
       </Wrapper>
       <BottomButton01

@@ -14,6 +14,7 @@ import {
   Form,
   FormContainer,
   FormWrapper,
+  GuideText,
   Input,
   Title,
   VoteContent,
@@ -26,7 +27,6 @@ export default function VoterRegister() {
   const { voterList, addItem, deleteItem } = useContext(VoteRegisterContext);
 
   const [isShowAlert, setIsShowAlert] = useState(false);
-  const [isShowAlreadyAlert, setIsShowAlreadyAlert] = useState(false);
 
   const navigate = useNavigate();
 
@@ -56,42 +56,42 @@ export default function VoterRegister() {
       <>
         <Wrapper>
           <Title>
-            경기에 참여한 <br /> 팀원을 먼저 등록해주세요
+            투표할 사람들의
+            <br /> 이름을 등록해주세요
           </Title>
           <FormContainer>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <Form
-                onSubmit={handleSubmit((data) => {
-                  addItem(data);
-                  reset();
-                })}
-              >
-                <FormWrapper>
-                  <Input
-                    {...register("member_name", {
-                      required: true,
-                      pattern: {
-                        value: /^[^a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]*$/,
-                        message:
-                          "특수문자,공백,숫자,영문은 입력이 불가능합니다.",
-                      },
-                      minLength: {
-                        value: 2,
-                        message: "이름은 2자 이상이어야 합니다.",
-                      },
-                      maxLength: {
-                        value: 10,
-                        message: "이름은 10자를 초과할 수 없습니다.",
-                      },
-                    })}
-                    placeholder="팀원 이름을 입력해주세요"
-                  />
-                </FormWrapper>
-              </Form>
-              {errors.member_name && (
-                <Error>{errors.member_name.message}</Error>
-              )}
-            </div>
+            <Form
+              onSubmit={handleSubmit((data) => {
+                addItem(data);
+                reset();
+              })}
+            >
+              <FormWrapper>
+                <Input
+                  {...register("member_name", {
+                    required: true,
+                    pattern: {
+                      value: /^[^a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]*$/,
+                      message: "특수문자,공백,숫자,영문은 입력이 불가능해요.",
+                    },
+                    minLength: {
+                      value: 2,
+                      message: "이름은 2자 이상이어야 해요.",
+                    },
+                    maxLength: {
+                      value: 10,
+                      message: "이름은 10자를 초과할 수 없어요.",
+                    },
+                  })}
+                  placeholder="이름을 정자로 입력해주세요"
+                />
+              </FormWrapper>
+            </Form>
+            {errors.member_name ? (
+              <Error>{errors.member_name.message}</Error>
+            ) : (
+              <GuideText>ex) 김꾸깃</GuideText>
+            )}
             <VoteWrapper>
               {voterList.map((item, index) => (
                 <VoteItem key={`item${index}`}>
@@ -143,18 +143,6 @@ export default function VoterRegister() {
             <ButtonPrimary
               label={"등록하기"}
               onClick={onRegister}
-              isWidthFull
-            />,
-          ]}
-        />
-      )}
-      {isShowAlreadyAlert && (
-        <Alert
-          message={"이미 추가한 팀원입니다!"}
-          buttons={[
-            <ButtonPrimary
-              label={"확인"}
-              onClick={() => setIsShowAlreadyAlert(false)}
               isWidthFull
             />,
           ]}
