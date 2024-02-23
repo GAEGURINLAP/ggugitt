@@ -164,8 +164,7 @@ export default function Vote() {
         content: {
           title: `${vote?.vote_name} 꾸깃할 시간이에요!`,
           description: "오늘의 투표 후보는 과연 누구일까요?! \n두구두구두구",
-          imageUrl:
-            "https://firebasestorage.googleapis.com/v0/b/bullgaemi-survey.appspot.com/o/il-vote-progress-squre.png?alt=media&token=c6985243-d021-4cb3-a178-4b299a22fdc9",
+          imageUrl: `${import.meta.env.VITE_KAKAO_THUMB_VOTE}`,
           link: {
             mobileWebUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
             webUrl: `${import.meta.env.VITE_APP_BASE_URL}`,

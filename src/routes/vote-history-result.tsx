@@ -48,8 +48,7 @@ export default function VoteHistoryResult() {
         content: {
           title: `${vote?.vote_name}의 우승자는 과연?!`,
           description: "긴장하고 들어오세요! 하 궁금해...",
-          imageUrl:
-            "https://firebasestorage.googleapis.com/v0/b/bullgaemi-survey.appspot.com/o/il-vote-result-squre.png?alt=media&token=29255ba5-472c-49ce-ae52-aa4d60012c70",
+          imageUrl: `${import.meta.env.VITE_KAKAO_THUMB_VOTE_RESULT}`,
           link: {
             mobileWebUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
             webUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
