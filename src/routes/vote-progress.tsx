@@ -260,11 +260,11 @@ export default function VoteProgress() {
   };
 
   const clickVoteComplete = () => {
-    // if (vote?.total_votes_cnt === 0) {
-    //   setIsLoading(false);
-    //   setIsShowAlertFail(true);
-    //   return;
-    // }
+    if (vote?.total_votes_cnt === 0) {
+      setIsLoading(false);
+      setIsShowAlertFail(true);
+      return;
+    }
     setIsShowAlertComplete(true);
   };
 
