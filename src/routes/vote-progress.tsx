@@ -301,8 +301,6 @@ export default function VoteProgress() {
     }
   };
 
-  // const test = `${import.meta.env.VITE_APP_BASE_URL}/vote/${voteId}`;
-
   return (
     <>
       <Helmet>
