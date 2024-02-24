@@ -260,11 +260,11 @@ export default function VoteProgress() {
   };
 
   const clickVoteComplete = () => {
-    // if (vote?.total_votes_cnt === 0) {
-    //   setIsLoading(false);
-    //   setIsShowAlertFail(true);
-    //   return;
-    // }
+    if (vote?.total_votes_cnt === 0) {
+      setIsLoading(false);
+      setIsShowAlertFail(true);
+      return;
+    }
     setIsShowAlertComplete(true);
   };
 
@@ -300,8 +300,6 @@ export default function VoteProgress() {
       navigate(`/vote-history-result/${id}`);
     }
   };
-
-  // const test = `${import.meta.env.VITE_APP_BASE_URL}/vote/${voteId}`;
 
   return (
     <>
