@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
 
-import { db } from "../firebase";
+import { db } from "../../firebase";
 import {
   collection,
   getDocs,
@@ -12,17 +12,17 @@ import {
   where,
 } from "firebase/firestore";
 
-import useFetchVotes from "../hooks/useFetchVotes";
-import useShareKaKao from "../hooks/useShareKakao";
+import useFetchVotes from "../../hooks/useFetchVotes";
+import useShareKaKao from "../../hooks/useShareKakao";
 
-import Alert from "../component/Alert";
-import BottomButton01 from "../component/BottomButon01";
-import ButtonSecondary from "../component/ButtonSecondary";
-import ButtonPrimary from "../component/ButtonPrimary";
-import LoadingScreen from "../component/LoadingScreen";
-import Success from "../component/Success";
+import Alert from "../../component/Alert";
+import BottomButton01 from "../../component/BottomButon01";
+import ButtonSecondary from "../../component/ButtonSecondary";
+import ButtonPrimary from "../../component/ButtonPrimary";
+import LoadingScreen from "../../component/LoadingScreen";
+import Success from "../../component/Success";
 
-import { IVoteList } from "./vote-register/candidate";
+import { IVoteList } from "../vote-register/candidate";
 
 import {
   Wrapper,
@@ -32,9 +32,9 @@ import {
   FormWrapper,
   GuideText,
   Input,
-} from "../style/vote-register";
-import { CurrentTitle, CurrentVote, VoteItem } from "./home";
-import { VoteForm } from "../style/vote";
+} from "../../style/vote-register";
+import { CurrentTitle, CurrentVote, VoteItem } from "../home";
+import { VoteForm } from "../../style/vote";
 
 export interface VoteItemProps {
   isSelected: boolean;

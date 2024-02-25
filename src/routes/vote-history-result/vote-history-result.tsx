@@ -1,10 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
 
-import useFetchVotes from "../hooks/useFetchVotes";
-import useShareKaKao from "../hooks/useShareKakao";
+import useFetchVotes from "../../hooks/useFetchVotes";
+import useShareKaKao from "../../hooks/useShareKakao";
 
 import {
   Wrapper,
@@ -18,13 +18,13 @@ import {
   VotesCnt,
   Bar,
   Fill,
-} from "./home";
-import { WrapperMid, Title } from "../style/vote-result";
+} from "../home";
+import { WrapperMid, Title } from "../../style/vote-result";
 
-import Header from "../component/Header";
-import LoadingScreen from "../component/LoadingScreen";
-import BottomButton01 from "../component/BottomButon01";
-import ButtonPrimary from "../component/ButtonPrimary";
+import Header from "../../component/Header";
+import LoadingScreen from "../../component/LoadingScreen";
+import BottomButton01 from "../../component/BottomButon01";
+import ButtonPrimary from "../../component/ButtonPrimary";
 
 export default function VoteHistoryResult() {
   const navigate = useNavigate();

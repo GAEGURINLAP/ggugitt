@@ -1,6 +1,6 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
-import { VoteItemProps } from '../routes/vote';
+import { VoteItemProps } from "../routes/vote/vote";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -52,8 +52,9 @@ export const VoteItem = styled.div<VoteItemProps>`
   align-items: center;
   font-size: 18px;
   line-height: 32px;
-  color: ${({ isSelected }) => (isSelected ? 'var(--white)' : 'var(--black)')};
-  background-color: ${({ isSelected }) => (isSelected ? 'var(--main)' : '#ededed')};
+  color: ${({ isSelected }) => (isSelected ? "var(--white)" : "var(--black)")};
+  background-color: ${({ isSelected }) =>
+    isSelected ? "var(--main)" : "#ededed"};
   border-radius: 100px;
   transition: all 0.2s ease;
   cursor: pointer;

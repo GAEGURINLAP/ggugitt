@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import BottomButton01 from "../component/BottomButon01";
+import BottomButton01 from "../../component/BottomButon01";
 import BrandingTitle from "/images/logo/lg-brandingtitle.png";
 import {
   BrandingWrapper,
@@ -9,8 +9,8 @@ import {
   TextWrapper,
   Subtitle,
   HeroImage,
-} from "../style/landing";
-import { auth } from "../firebase";
+} from "../../style/landing";
+import { auth } from "../../firebase";
 
 export default function Landing() {
   const navigate = useNavigate();

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { auth, db } from "../firebase";
+import { auth, db } from "../../firebase";
 
 import styled from "@emotion/styled";
 
@@ -24,23 +24,23 @@ import {
   Label,
   MemberList,
   Member,
-} from "./home";
+} from "../home";
 
-import { WrapperMid, Title } from "../style/vote-result";
-import { GuideText } from "../style/vote-register";
+import { WrapperMid, Title } from "../../style/vote-result";
+import { GuideText } from "../../style/vote-register";
 
-import useFetchVotes from "../hooks/useFetchVotes";
-import useShareKaKao from "../hooks/useShareKakao";
+import useFetchVotes from "../../hooks/useFetchVotes";
+import useShareKaKao from "../../hooks/useShareKakao";
 
-import { IVoteList } from "./vote-register/candidate";
+import { IVoteList } from "../vote-register/candidate";
 
-import Header from "../component/Header";
-import Alert from "../component/Alert";
-import ButtonPrimary from "../component/ButtonPrimary";
-import ButtonSecondary from "../component/ButtonSecondary";
-import ButtonError from "../component/ButtonError";
-import BottomButton01 from "../component/BottomButon01";
-import LoadingScreen from "../component/LoadingScreen";
+import Header from "../../component/Header";
+import Alert from "../../component/Alert";
+import ButtonPrimary from "../../component/ButtonPrimary";
+import ButtonSecondary from "../../component/ButtonSecondary";
+import ButtonError from "../../component/ButtonError";
+import BottomButton01 from "../../component/BottomButon01";
+import LoadingScreen from "../../component/LoadingScreen";
 
 export interface IVote {
   vote_id: number;

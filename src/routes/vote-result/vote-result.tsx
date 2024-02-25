@@ -1,9 +1,9 @@
 import { collection, getDocs, query } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "../../firebase";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { IVote } from "./home";
-import LoadingScreen from "../component/LoadingScreen";
+import { IVote } from "../home";
+import LoadingScreen from "../../component/LoadingScreen";
 import { Helmet } from "react-helmet-async";
 import AniResult from "/images/animation/ani-vote-result-2.gif";
 
@@ -16,7 +16,7 @@ import {
   BG,
   WrapperMid,
   Title,
-} from "../style/vote-result";
+} from "../../style/vote-result";
 
 export default function VoteResult() {
   const [vote, setVote] = useState<IVote>();

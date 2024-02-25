@@ -6,33 +6,26 @@ import { auth } from "./firebase";
 
 import { Global } from "@emotion/react";
 
-import Login from "./routes/auth/login";
-
-import ProtectedRoute from "./component/ProtectedRoute";
-
 import { Container, Wrapper } from "./style/layout";
 import global from "./style/global";
-import ResetPaswrd from "./routes/auth/reset-password";
 // import Splash from "./component/Splash";
 
-import NotFound from "./routes/not-found";
-import Vote from "./routes/vote";
-import VoterRegister from "./routes/vote-register/voter";
-import CandidateRegister from "./routes/vote-register/candidate";
-import IndexRegister from "./routes/vote-register";
-import VoteResult from "./routes/vote-result";
-import VoteHistoryResult from "./routes/vote-history-result";
 import Layout from "./component/Layout";
-import CreateAccount from "./routes/auth/create-account";
-import Index from "./routes";
-
 import LoadingScreen from "./component/LoadingScreen";
-import VoteProgress from "./routes/vote-progress";
+import ProtectedRoute from "./component/ProtectedRoute";
 
-// import {
-//   // AuthCheckContext,
-//   IAuthCheckContext,
-// } from "./store/auth-check-context";
+import CreateAccount from "./routes/auth/create-account";
+import Login from "./routes/auth/login";
+import ResetPaswrd from "./routes/auth/reset-password";
+import Index from "./routes/home/index";
+import Vote from "./routes/vote/vote";
+import IndexRegister from "./routes/vote-register/index";
+import VoterRegister from "./routes/vote-register/voter";
+import VoteProgress from "./routes/vote-progress/vote-progress";
+import CandidateRegister from "./routes/vote-register/candidate";
+import VoteResult from "./routes/vote-result/vote-result";
+import VoteHistoryResult from "./routes/vote-history-result/vote-history-result";
+import NotFound from "./routes/404/not-found";
 
 const router = createBrowserRouter([
   {
@@ -137,11 +130,7 @@ function App() {
       <Container>
         <Wrapper>
           <Global styles={global} />
-          {/* <AuthCheckContext.Provider value={ctxValue}>
-            <RouterProvider router={router} />
-          </AuthCheckContext.Provider> */}
           {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
-          {/* <RouterProvider router={router} /> */}
         </Wrapper>
       </Container>
     </>
