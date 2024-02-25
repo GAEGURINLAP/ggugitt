@@ -24,48 +24,23 @@ import Header from "../component/Header";
 import LoadingScreen from "../component/LoadingScreen";
 import BottomButton01 from "../component/BottomButon01";
 import ButtonPrimary from "../component/ButtonPrimary";
+import useShareKaKao from "../hooks/useShareKakao";
 
 export default function VoteHistoryResult() {
   const navigate = useNavigate();
 
   const { id } = useParams();
+  const newId = Number(id);
 
   const user = auth.currentUser;
 
-  const shareKakao = () => {
-    if (window.Kakao) {
-      const kakao = window.Kakao;
-      if (!kakao.isInitialized()) {
-        kakao.init(import.meta.env.VITE_KAKAO_KEY);
-      }
+  const { vote, isLoading } = useFetchVotes({ id: newId });
+  const { initKakao, kakaoShareSendDefault } = useShareKaKao();
 
-      kakao.Link.sendDefault({
-        objectType: "feed",
-        content: {
-          title: `${vote?.vote_name}의 우승자는 과연?!`,
-          description: "긴장하고 들어오세요! 하 궁금해...",
-          imageUrl: `${import.meta.env.VITE_KAKAO_THUMB_VOTE_RESULT}`,
-          link: {
-            mobileWebUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
-            webUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
-          },
-        },
-        buttons: [
-          {
-            title: "당장 확인하러 가기",
-            link: {
-              mobileWebUrl: `${
-                import.meta.env.VITE_APP_BASE_URL
-              }/vote-result/${id}`,
-              webUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote-result/${id}`,
-            },
-          },
-        ],
-      });
-    }
+  const handleKaKaoSharingBtnClick = () => {
+    initKakao();
+    kakaoShareSendDefault({ vote, id: newId });
   };
-
-  const { vote, isLoading } = useFetchVotes({ id: id as string });
 
   return (
     <>
@@ -122,7 +97,7 @@ export default function VoteHistoryResult() {
             </Wrapper>
             <BottomButton01
               label={"투표 결과 공유하기"}
-              onClick={() => shareKakao()}
+              onClick={handleKaKaoSharingBtnClick}
             />
           </>
         ) : (
