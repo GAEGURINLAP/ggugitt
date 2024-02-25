@@ -1,4 +1,4 @@
-import { IVote } from "../routes/home";
+import { IVote } from "../service/vote/type";
 
 interface IUseShareKaKao {
   vote: IVote | undefined;
