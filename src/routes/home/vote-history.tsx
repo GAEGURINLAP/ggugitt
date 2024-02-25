@@ -1,13 +1,15 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+
+import { auth, db } from "../../firebase";
+
 import Header from "../../component/Header";
 import BottomButton01 from "../../component/BottomButon01";
 
 import { IVote } from "../../service/vote/type";
 
 import { Label } from "../home/style";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
-import { auth, db } from "../../firebase";
 import {
   Wrapper,
   List,
@@ -26,6 +28,7 @@ import {
   SkeletonStatusProgress,
   HistoryTitle,
 } from "../../style/vote-history";
+
 import Landing from "./landing";
 
 export default function VoteHistory() {
