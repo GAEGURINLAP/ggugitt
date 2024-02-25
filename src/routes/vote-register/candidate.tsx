@@ -1,19 +1,17 @@
-import { useContext, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { VoteRegisterContext } from "../../store/vote-register-context";
 
+import { auth, db } from "../../firebase";
 import {
   addDoc,
   collection,
-  doc,
   getDocs,
   limit,
   orderBy,
   query,
-  updateDoc,
 } from "firebase/firestore";
-import { auth, db } from "../../firebase";
 
 import {
   Error,
@@ -40,6 +38,8 @@ import Alert from "../../component/Alert";
 import ButtonSecondary from "../../component/ButtonSecondary";
 import ButtonPrimary from "../../component/ButtonPrimary";
 import Header from "../../component/Header";
+import useShareKaKao from "../../hooks/useShareKakao";
+import useFetchVotes from "../../hooks/useFetchVotes";
 
 export interface IVoteList {
   name: string;
@@ -49,61 +49,42 @@ export interface IVoteList {
 export default function CandidateRegister() {
   const [voteId, setVoteId] = useState();
   const [voteList, setVoteList] = useState<IVoteList[]>([]);
-  const [voteName, setVoteName] = useState<String>();
-
-  const [isLoading, setIsLoading] = useState(false);
   const [isShowAlert, setIsShowAlert] = useState(false);
   const [isShowAlreadyAlert, setIsShowAlreadyAlert] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
-  const [isToast, setIsToast] = useState(false);
 
   const { voterList } = useContext(VoteRegisterContext);
 
   const navigate = useNavigate();
 
-  const shareKakao = () => {
-    if (window.Kakao) {
-      const kakao = window.Kakao;
-      if (!kakao.isInitialized()) {
-        kakao.init(import.meta.env.VITE_KAKAO_KEY);
-      }
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<IVoteList>({});
 
-      kakao.Link.sendDefault({
-        objectType: "feed",
-        content: {
-          title: `${voteName} 꾸깃할 시간이에요!`,
-          description: "오늘의 투표 후보는 과연 누구일까요?! \n두구두구두구",
-          imageUrl: `${import.meta.env.VITE_KAKAO_THUMB_VOTE}`,
-          link: {
-            mobileWebUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
-            webUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
-          },
-        },
-        buttons: [
-          {
-            title: "당장 투표하러 가기",
-            link: {
-              mobileWebUrl: `${
-                import.meta.env.VITE_APP_BASE_URL
-              }/vote/${voteId}`,
-              webUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote/${voteId}`,
-            },
-          },
-        ],
-      });
-    }
+  const { vote, isLoading, setIsLoading } = useFetchVotes({
+    id: voteId,
+  });
+
+  const { initKakao, kakaoShareVote } = useShareKaKao();
+
+  const clickSharingKaKaoVote = () => {
+    initKakao();
+    kakaoShareVote({ vote, id: voteId });
   };
 
-  const onRegister = async () => {
-    const user = auth.currentUser;
+  const user = auth.currentUser;
 
+  // 기능: 후보자 등록 완료
+  const onRegister = async () => {
     const currentDate = new Date();
     const formattedDate = `${currentDate.getFullYear()}년 ${
       currentDate.getMonth() + 1
     }월 ${currentDate.getDate()}일`;
     const currentTime = Date.now();
     const closeTime = currentTime + 2 * 60 * 1000; // 2분을 밀리초로 변환
-    setVoteName(formattedDate);
 
     const votesQuery = query(
       collection(db, "vote"),
@@ -112,7 +93,7 @@ export default function CandidateRegister() {
     );
     const snapshot = await getDocs(votesQuery);
 
-    const voteID = (snapshot.docs.pop()?.data().vote_id || 0) + 1;
+    const voteId = (snapshot.docs.pop()?.data().vote_id || 0) + 1;
 
     try {
       setIsLoading(true);
@@ -125,7 +106,7 @@ export default function CandidateRegister() {
       );
 
       await addDoc(collection(db, "vote"), {
-        vote_id: voteID,
+        vote_id: voteId,
         vote_list: voteList,
         voter_list: voterList,
         vote_name: `${formattedDate}`,
@@ -139,25 +120,16 @@ export default function CandidateRegister() {
         user_name: user?.displayName || "Anonymous",
         create_at: currentTime,
       });
-
-      setVoteId(voteID);
-
-      const timeUntilClose = closeTime - currentTime;
-
-      const voteDocRef = doc(collection(db, "vote"), voteID);
-
-      setTimeout(() => {
-        updateDoc(voteDocRef, { is_complete: true });
-      }, timeUntilClose);
-    } catch (e) {
-      console.log(e);
-      setIsLoading(false);
+      setVoteId(voteId);
+    } catch (error) {
+      console.error("Kakao share error:", error);
     } finally {
       setIsComplete(true);
       setIsLoading(false);
     }
   };
 
+  // 기능: 후보자 추가
   const addItem = async (data: IVoteList) => {
     const { name } = data;
     const newVoteItem = { name, votes_cnt: 0 };
@@ -171,44 +143,27 @@ export default function CandidateRegister() {
     }
   };
 
+  // 이벤트: 등록하기
+  const clickRegister = () => {
+    setIsShowAlert(true);
+  };
+
+  // 이벤트: 아이템 제거
+  const clickDeleteItem = (item: IVoteList) => {
+    deleteItem(item);
+  };
+
+  // 기능: 후보자 삭제
   const deleteItem = (itemToDelete: IVoteList) => {
     const updatedVoteItems = voteList.filter((item) => item !== itemToDelete);
     setVoteList(updatedVoteItems);
   };
 
-  useEffect(() => {
-    let timeout: NodeJS.Timeout;
-    if (isToast) {
-      timeout = setTimeout(() => {
-        setIsToast(false);
-      }, 1200);
-    }
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [isToast]);
-
-  const clickRegister = () => {
-    setIsShowAlert(true);
-  };
-
-  const clickDeleteItem = (item: IVoteList) => {
-    deleteItem(item);
-  };
-
+  // 기능: 투표자 등록 되돌아가기
   const clickNavigateVoter = () => {
     navigate("/vote-register");
   };
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<IVoteList>({});
-
-  console.log("voteList?", voteList);
   return (
     <>
       {isLoading && <LoadingScreen isDim />}
@@ -219,7 +174,7 @@ export default function CandidateRegister() {
           label="투표 링크 공유하기"
           isShowButton
           isShowSecondaryButton
-          onClick={() => shareKakao()}
+          onClick={clickSharingKaKaoVote}
         />
       ) : (
         <>
