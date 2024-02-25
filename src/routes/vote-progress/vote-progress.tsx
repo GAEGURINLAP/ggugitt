@@ -24,15 +24,13 @@ import {
   Label,
   MemberList,
   Member,
-} from "../home";
+} from "../home/style";
 
 import { WrapperMid, Title } from "../../style/vote-result";
 import { GuideText } from "../../style/vote-register";
 
 import useFetchVotes from "../../hooks/useFetchVotes";
 import useShareKaKao from "../../hooks/useShareKakao";
-
-import { IVoteList } from "../vote-register/candidate";
 
 import Header from "../../component/Header";
 import Alert from "../../component/Alert";
@@ -41,23 +39,6 @@ import ButtonSecondary from "../../component/ButtonSecondary";
 import ButtonError from "../../component/ButtonError";
 import BottomButton01 from "../../component/BottomButon01";
 import LoadingScreen from "../../component/LoadingScreen";
-
-export interface IVote {
-  vote_id: number;
-  vote_list: IVoteList[];
-  voter_list: string[];
-  vote_name: string;
-  vote_winner: string;
-  total_votes_cnt: number;
-  available_votes_cnt: number;
-  already_voters: string[];
-  is_complete: boolean;
-  close_time: number;
-  user_id: string;
-  user_name: string;
-  create_at: Date;
-  id: string;
-}
 
 export const CurrentTitleContainer = styled.div`
   display: flex;

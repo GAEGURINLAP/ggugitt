@@ -41,10 +41,7 @@ import Header from "../../component/Header";
 import useShareKaKao from "../../hooks/useShareKakao";
 import useFetchVotes from "../../hooks/useFetchVotes";
 
-export interface IVoteList {
-  name: string;
-  votes_cnt: number;
-}
+import { IVoteList } from "../../service/vote/type";
 
 export default function CandidateRegister() {
   const [voteId, setVoteId] = useState();

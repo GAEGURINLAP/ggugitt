@@ -18,7 +18,7 @@ import {
   VotesCnt,
   Bar,
   Fill,
-} from "../home";
+} from "../home/style";
 import { WrapperMid, Title } from "../../style/vote-result";
 
 import Header from "../../component/Header";

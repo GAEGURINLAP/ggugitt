@@ -22,8 +22,6 @@ import ButtonPrimary from "../../component/ButtonPrimary";
 import LoadingScreen from "../../component/LoadingScreen";
 import Success from "../../component/Success";
 
-import { IVoteList } from "../vote-register/candidate";
-
 import {
   Wrapper,
   Error,
@@ -33,27 +31,9 @@ import {
   GuideText,
   Input,
 } from "../../style/vote-register";
-import { CurrentTitle, CurrentVote, VoteItem } from "../home";
+
+import { CurrentTitle, CurrentVote, VoteItem } from "../home/style";
 import { VoteForm } from "../../style/vote";
-
-export interface VoteItemProps {
-  isSelected: boolean;
-}
-
-export interface IVote {
-  user_id: string;
-  user_name: string;
-  vote_id: number;
-  vote_list: IVoteList[];
-  voter_list: string[];
-  vote_name: string;
-  total_votes_cnt: number;
-  available_votes_cnt: number;
-  already_voters: string[];
-  is_complete: boolean;
-  create_at: Date;
-  id: string;
-}
 
 export interface IFormInput {
   name: string;

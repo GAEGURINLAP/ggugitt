@@ -1,7 +1,9 @@
 import Header from "../../component/Header";
 import BottomButton01 from "../../component/BottomButon01";
 
-import { IVote, Label } from "../home";
+import { IVote } from "../../service/vote/type";
+
+import { Label } from "../home/style";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";

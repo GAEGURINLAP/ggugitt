@@ -1,11 +1,14 @@
-import { collection, getDocs, query } from "firebase/firestore";
-import { db } from "../../firebase";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { IVote } from "../home";
-import LoadingScreen from "../../component/LoadingScreen";
 import { Helmet } from "react-helmet-async";
+
+import { db } from "../../firebase";
+import { collection, getDocs, query } from "firebase/firestore";
+
+import LoadingScreen from "../../component/LoadingScreen";
 import AniResult from "/images/animation/ani-vote-result-2.gif";
+
+import { IVote } from "../../service/vote/type";
 
 import {
   Wrapper,

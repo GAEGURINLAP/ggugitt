@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import { auth, db } from "../firebase";
 
-import { IVote } from "../routes/home";
+import { IVote } from "../service/vote/type";
 
 interface IUseFetchVotes {
   id: number | undefined;

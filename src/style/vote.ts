@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-import { VoteItemProps } from "../routes/vote/vote";
+import { IVoteItemProps } from "../service/vote/type";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -37,7 +37,7 @@ export const VoteForm = styled.form`
   gap: 8px;
 `;
 
-export const VoteItem = styled.div<VoteItemProps>`
+export const VoteItem = styled.div<IVoteItemProps>`
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-use-select: none;
