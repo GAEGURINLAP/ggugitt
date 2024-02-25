@@ -4,14 +4,14 @@ import { db } from "../firebase";
 import { IVote } from "../routes/home";
 
 interface IUseFetchVotes {
-  id: string | undefined;
+  id: number | undefined;
 }
 
 export default function useFetchVotes({ id }: IUseFetchVotes) {
   const [vote, setVote] = useState<IVote>();
   const [isLoading, setIsLoading] = useState(true);
 
-  const newId = Number(id);
+  // const newId = Number(id);
 
   const fetchVotes = async () => {
     try {
@@ -52,7 +52,7 @@ export default function useFetchVotes({ id }: IUseFetchVotes) {
         };
       });
 
-      const newVote = votes.find((vote) => vote.vote_id === newId);
+      const newVote = votes.find((vote) => vote.vote_id === id);
       setVote(newVote);
     } catch (err) {
       console.error(err);
