@@ -1,6 +1,6 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
-import { VoteItemProps } from '../routes/vote';
+import { IVoteItemProps } from "../service/vote/type";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -37,7 +37,7 @@ export const VoteForm = styled.form`
   gap: 8px;
 `;
 
-export const VoteItem = styled.div<VoteItemProps>`
+export const VoteItem = styled.div<IVoteItemProps>`
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-use-select: none;
@@ -52,8 +52,9 @@ export const VoteItem = styled.div<VoteItemProps>`
   align-items: center;
   font-size: 18px;
   line-height: 32px;
-  color: ${({ isSelected }) => (isSelected ? 'var(--white)' : 'var(--black)')};
-  background-color: ${({ isSelected }) => (isSelected ? 'var(--main)' : '#ededed')};
+  color: ${({ isSelected }) => (isSelected ? "var(--white)" : "var(--black)")};
+  background-color: ${({ isSelected }) =>
+    isSelected ? "var(--main)" : "#ededed"};
   border-radius: 100px;
   transition: all 0.2s ease;
   cursor: pointer;

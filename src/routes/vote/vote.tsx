@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
-
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
 
-import { db } from "../firebase";
+import { db } from "../../firebase";
 import {
   collection,
   getDocs,
@@ -13,14 +12,15 @@ import {
   where,
 } from "firebase/firestore";
 
-import Alert from "../component/Alert";
-import BottomButton01 from "../component/BottomButon01";
-import ButtonSecondary from "../component/ButtonSecondary";
-import ButtonPrimary from "../component/ButtonPrimary";
-import LoadingScreen from "../component/LoadingScreen";
-import Success from "../component/Success";
+import useFetchVotes from "../../hooks/useFetchVotes";
+import useShareKaKao from "../../hooks/useShareKakao";
 
-import { IVoteList } from "./vote-register/candidate";
+import Alert from "../../component/Alert";
+import BottomButton01 from "../../component/BottomButon01";
+import ButtonSecondary from "../../component/ButtonSecondary";
+import ButtonPrimary from "../../component/ButtonPrimary";
+import LoadingScreen from "../../component/LoadingScreen";
+import Success from "../../component/Success";
 
 import {
   Wrapper,
@@ -30,40 +30,20 @@ import {
   FormWrapper,
   GuideText,
   Input,
-} from "../style/vote-register";
-import { CurrentTitle, CurrentVote, VoteItem } from "./home";
-import { VoteForm } from "../style/vote";
+} from "../../style/vote-register";
 
-export interface VoteItemProps {
-  isSelected: boolean;
-}
-
-export interface IVote {
-  user_id: string;
-  user_name: string;
-  vote_id: number;
-  vote_list: IVoteList[];
-  voter_list: string[];
-  vote_name: string;
-  total_votes_cnt: number;
-  available_votes_cnt: number;
-  already_voters: string[];
-  is_complete: boolean;
-  create_at: Date;
-  id: string;
-}
+import { CurrentTitle, CurrentVote, VoteItem } from "../home/style";
+import { VoteForm } from "../../style/vote";
 
 export interface IFormInput {
   name: string;
 }
 
 export default function Vote() {
-  const [vote, setVote] = useState<IVote>();
   const [alreadyVoter, setAlreadyVoter] = useState<String>();
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
     null
   );
-  const [isLoading, setIsLoading] = useState(false);
   const [isShowAlertVote, setShowAlertVote] = useState(false);
   const [isShowAlertConfirm, setShowAlertConfirm] = useState(false);
   const [isShowAlertVoterFail, setIsShowAlertVoterFail] = useState(false);
@@ -73,8 +53,7 @@ export default function Vote() {
   const navigate = useNavigate();
 
   const { id } = useParams();
-
-  const NewID = Number(id);
+  const newId = Number(id);
 
   const {
     register,
@@ -82,44 +61,12 @@ export default function Vote() {
     formState: { errors },
   } = useForm<IFormInput>();
 
-  const fetchVotes = async () => {
-    const q = query(collection(db, "vote"));
+  const { vote, isLoading, setIsLoading } = useFetchVotes({ id: newId });
+  const { initKakao, kakaoShareVote } = useShareKaKao();
 
-    const snapshot = await getDocs(q);
-
-    const votes = snapshot.docs.map((doc) => {
-      const {
-        user_id,
-        user_name,
-        vote_id,
-        vote_list,
-        voter_list,
-        vote_name,
-        total_votes_cnt,
-        available_votes_cnt,
-        already_voters,
-        is_complete,
-        create_at,
-      } = doc.data();
-      return {
-        user_id,
-        user_name,
-        vote_id,
-        vote_list,
-        voter_list,
-        vote_name,
-        total_votes_cnt,
-        available_votes_cnt,
-        already_voters,
-        is_complete,
-        create_at,
-        id: doc.id,
-      };
-    });
-
-    const newVote = votes.find((vote) => vote.vote_id == id);
-
-    setVote(newVote);
+  const clickSharingKaKaoVote = () => {
+    initKakao();
+    kakaoShareVote({ vote, id: newId });
   };
 
   const clickVote = () => {
@@ -128,12 +75,10 @@ export default function Vote() {
 
   const clickConfim = async (data: IFormInput) => {
     const { name } = data;
-
     setAlreadyVoter(name);
 
     if (vote?.already_voters.some((item) => item === name)) {
       setIsShowAlertAlreadyVoter(true);
-
       return;
     }
 
@@ -142,39 +87,6 @@ export default function Vote() {
       setAlreadyVoter(name);
     } else {
       setIsShowAlertVoterFail(true);
-    }
-  };
-
-  const shareKakao = () => {
-    if (window.Kakao) {
-      const kakao = window.Kakao;
-      if (!kakao.isInitialized()) {
-        kakao.init(import.meta.env.VITE_KAKAO_KEY);
-      }
-
-      kakao.Link.sendDefault({
-        objectType: "feed",
-        content: {
-          title: `${vote?.vote_name} 꾸깃할 시간이에요!`,
-          description: "오늘의 투표 후보는 과연 누구일까요?! \n두구두구두구",
-          imageUrl: `${import.meta.env.VITE_KAKAO_THUMB_VOTE}`,
-          link: {
-            mobileWebUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
-            webUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
-          },
-        },
-        buttons: [
-          {
-            title: "당장 투표하러 가기",
-            link: {
-              mobileWebUrl: `${
-                import.meta.env.VITE_APP_BASE_URL
-              }/vote/${NewID}}`,
-              webUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote/${NewID}`,
-            },
-          },
-        ],
-      });
     }
   };
 
@@ -192,7 +104,7 @@ export default function Vote() {
 
       const AlreadyVoters = [...(vote?.already_voters || []), alreadyVoter];
 
-      const q = query(collection(db, "vote"), where("vote_id", "==", NewID));
+      const q = query(collection(db, "vote"), where("vote_id", "==", newId));
 
       const querySnapshot = await getDocs(q);
 
@@ -214,7 +126,7 @@ export default function Vote() {
           });
         } catch (err) {
           setIsLoading(false);
-          alert(err);
+          console.log("Firebase Error Message", err);
         } finally {
           setIsLoading(false);
           setSelectedItemIndex(null);
@@ -227,13 +139,8 @@ export default function Vote() {
     alert("선택된 index가 없습니다!");
   };
 
-  useEffect(() => {
-    fetchVotes();
-  }, [id]);
-
   return (
     <>
-      {/* <LoadingScreen /> */}
       <Helmet>
         <title>꾸깃 - 투표하기</title>
         <meta name="description" content="투표하기" />
@@ -249,7 +156,7 @@ export default function Vote() {
           message={"투표가 완료 되었어요!"}
           label="다른 팀원 투표 강요하기"
           isShowButton
-          onClick={() => shareKakao()}
+          onClick={clickSharingKaKaoVote}
         />
       ) : isVoter ? (
         <>
@@ -328,7 +235,6 @@ export default function Vote() {
               </FormContainer>
             </CurrentVote>
           </Wrapper>
-          <BottomButton01 onClick={handleSubmit(clickConfim)} label={"확인"} />
           <BottomButton01 onClick={handleSubmit(clickConfim)} label={"확인"} />
         </>
       )}

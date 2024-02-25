@@ -1,17 +1,18 @@
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
-import { auth, db } from "../../firebase";
-
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
-import { IVote } from "../home";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { auth, db } from "../../firebase";
 
-import Alert from "../../component/Alert";
-import ButtonPrimary from "../../component/ButtonPrimary";
 import {
   IVoteRegisterContext,
   VoteRegisterContext,
 } from "../../store/vote-register-context";
+
+import Alert from "../../component/Alert";
+import ButtonPrimary from "../../component/ButtonPrimary";
+
+import { IVote } from "../../service/vote/type";
 
 export interface IFormInput {
   member_name: string;

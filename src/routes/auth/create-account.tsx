@@ -30,7 +30,6 @@ interface FormInputs {
 export default function CreateAccount() {
   const [isLoading, setLoading] = useState(false);
   const [isShowAlert, setShowAlert] = useState(false);
-  // const [firebaseError, setFirebaseError] = useState("");
 
   const navigate = useNavigate();
 
