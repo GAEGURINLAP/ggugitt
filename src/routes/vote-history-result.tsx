@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
-import { collection, getDocs, query } from "firebase/firestore";
-import { auth, db } from "../firebase";
+import { auth } from "../firebase";
+
+import useFetchVotes from "../hooks/useFetchVotes";
 
 import {
   Wrapper,
@@ -16,26 +17,21 @@ import {
   VotesCnt,
   Bar,
   Fill,
-  IVote,
 } from "./home";
-
 import { WrapperMid, Title } from "../style/vote-result";
 
 import Header from "../component/Header";
 import LoadingScreen from "../component/LoadingScreen";
 import BottomButton01 from "../component/BottomButon01";
 import ButtonPrimary from "../component/ButtonPrimary";
-import { Helmet } from "react-helmet-async";
 
 export default function VoteHistoryResult() {
-  const [vote, setVote] = useState<IVote>();
-  const [isLoading, setIsLoading] = useState(true);
-
   const navigate = useNavigate();
 
   const { id } = useParams();
 
   const user = auth.currentUser;
+
   const shareKakao = () => {
     if (window.Kakao) {
       const kakao = window.Kakao;
@@ -69,57 +65,7 @@ export default function VoteHistoryResult() {
     }
   };
 
-  const fetchVotes = async () => {
-    try {
-      const votesQuery = query(collection(db, "vote"));
-      const snapshot = await getDocs(votesQuery);
-
-      const votes = snapshot.docs.map((doc) => {
-        const {
-          vote_id,
-          vote_list,
-          voter_list,
-          vote_name,
-          vote_winner,
-          total_votes_cnt,
-          available_votes_cnt,
-          already_voters,
-          is_complete,
-          close_time,
-          user_id,
-          user_name,
-          create_at,
-        } = doc.data();
-        return {
-          vote_id,
-          vote_list,
-          voter_list,
-          vote_name,
-          vote_winner,
-          total_votes_cnt,
-          available_votes_cnt,
-          already_voters,
-          is_complete,
-          close_time,
-          user_id,
-          user_name,
-          create_at,
-          id: doc.id,
-        };
-      });
-
-      const newVote = votes.find((vote) => vote.vote_id == id);
-      setVote(newVote);
-    } catch (err) {
-      alert(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchVotes();
-  }, [id]);
+  const { vote, isLoading } = useFetchVotes({ id: id as string });
 
   return (
     <>
