@@ -16,7 +16,7 @@ export default function useShareKaKao() {
     }
   };
 
-  const kakaoShareSendDefault = ({ vote, id }: IUseShareKaKao) => {
+  const kakaoShareVoteReuslt = ({ vote, id }: IUseShareKaKao) => {
     try {
       window.Kakao.Share.sendDefault({
         objectType: "feed",
@@ -48,6 +48,6 @@ export default function useShareKaKao() {
 
   return {
     initKakao,
-    kakaoShareSendDefault,
+    kakaoShareVoteReuslt,
   };
 }

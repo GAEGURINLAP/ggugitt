@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { auth } from "../firebase";
 
 import useFetchVotes from "../hooks/useFetchVotes";
+import useShareKaKao from "../hooks/useShareKakao";
 
 import {
   Wrapper,
@@ -24,22 +25,20 @@ import Header from "../component/Header";
 import LoadingScreen from "../component/LoadingScreen";
 import BottomButton01 from "../component/BottomButon01";
 import ButtonPrimary from "../component/ButtonPrimary";
-import useShareKaKao from "../hooks/useShareKakao";
 
 export default function VoteHistoryResult() {
   const navigate = useNavigate();
-
   const { id } = useParams();
   const newId = Number(id);
 
   const user = auth.currentUser;
 
   const { vote, isLoading } = useFetchVotes({ id: newId });
-  const { initKakao, kakaoShareSendDefault } = useShareKaKao();
+  const { initKakao, kakaoShareVoteReuslt } = useShareKaKao();
 
   const handleKaKaoSharingBtnClick = () => {
     initKakao();
-    kakaoShareSendDefault({ vote, id: newId });
+    kakaoShareVoteReuslt({ vote, id: newId });
   };
 
   return (
