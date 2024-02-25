@@ -16,6 +16,34 @@ export default function useShareKaKao() {
     }
   };
 
+  const kakaoShareVote = ({ vote, id }: IUseShareKaKao) => {
+    try {
+      window.Kakao.Share.sendDefault({
+        objectType: "feed",
+        content: {
+          title: `${vote?.vote_name} 꾸깃할 시간이에요!`,
+          description: "오늘의 투표 후보는 과연 누구일까요?! \n두구두구두구",
+          imageUrl: import.meta.env.VITE_KAKAO_THUMB_VOTE,
+          link: {
+            mobileWebUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
+            webUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
+          },
+        },
+        buttons: [
+          {
+            title: "당장 투표하러 가기",
+            link: {
+              mobileWebUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote/${id}`,
+              webUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote/${id}`,
+            },
+          },
+        ],
+      });
+    } catch (error) {
+      console.error("Kakao share error:", error);
+    }
+  };
+
   const kakaoShareVoteReuslt = ({ vote, id }: IUseShareKaKao) => {
     try {
       window.Kakao.Share.sendDefault({
@@ -48,6 +76,7 @@ export default function useShareKaKao() {
 
   return {
     initKakao,
+    kakaoShareVote,
     kakaoShareVoteReuslt,
   };
 }

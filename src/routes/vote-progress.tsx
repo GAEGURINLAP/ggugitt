@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
-import styled from "@emotion/styled";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { auth, db } from "../firebase";
 
-// const { Kakao } = window;
+import styled from "@emotion/styled";
 
 import {
   Wrapper,
@@ -24,36 +26,21 @@ import {
   Member,
 } from "./home";
 
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  limit,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
-import { auth, db } from "../firebase";
-import { useNavigate, useParams } from "react-router-dom";
 import { WrapperMid, Title } from "../style/vote-result";
+import { GuideText } from "../style/vote-register";
+
+import useFetchVotes from "../hooks/useFetchVotes";
+import useShareKaKao from "../hooks/useShareKakao";
+
+import { IVoteList } from "./vote-register/candidate";
+
 import Header from "../component/Header";
-// import LoadingScreen from "../component/LoadingScreen";
-
 import Alert from "../component/Alert";
-
 import ButtonPrimary from "../component/ButtonPrimary";
 import ButtonSecondary from "../component/ButtonSecondary";
 import ButtonError from "../component/ButtonError";
-
 import BottomButton01 from "../component/BottomButon01";
-
-import { IVoteList } from "./vote-register/candidate";
-// import Toast from "../component/Toast";
-import { GuideText } from "../style/vote-register";
 import LoadingScreen from "../component/LoadingScreen";
-// import ButtonThird from "../component/ButtonThird";
-// import ButtonErrorText from "../component/ButtonErrorText";
 
 export interface IVote {
   vote_id: number;
@@ -84,161 +71,47 @@ export const RefreshWrapper = styled.div`
 `;
 
 export default function VoteProgress() {
-  const [vote, setVote] = useState<IVote>();
-  const [voteName, setVoteName] = useState<String>();
-  const [voteList, setVoteList] = useState<IVoteList[]>([]);
-  const [voterList, setVoterList] = useState<string[]>([]);
-  const [voteId, setVoteId] = useState();
-  const [notVoterList, setNotVoterList] = useState<string[]>([]);
-
   const [isShowAlertComplete, setIsShowAlertComplete] = useState(false);
   const [isShowAlertDeleteConfirm, setIsShowAlertDeleteConfirm] =
     useState(false);
   const [isShowAlertDelete, setIsShowAlertDelete] = useState(false);
   const [isShowAlertFail, setIsShowAlertFail] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
 
   const { id } = useParams();
-
-  const NewID = Number(id);
+  const newId = Number(id);
 
   const user = auth.currentUser;
 
-  const shareKakao = () => {
-    if (window.Kakao) {
-      const kakao = window.Kakao;
-      if (!kakao.isInitialized()) {
-        kakao.init(import.meta.env.VITE_KAKAO_KEY);
-      }
+  const { vote, notVoterList, isLoading, setIsLoading, voteQuery } =
+    useFetchVotes({
+      id: newId,
+    });
 
-      kakao.Link.sendDefault({
-        objectType: "feed",
-        content: {
-          title: `${voteName} 꾸깃할 시간이에요!`,
-          description: "오늘의 투표 후보는 과연 누구일까요?! \n두구두구두구",
-          imageUrl: `${import.meta.env.VITE_KAKAO_THUMB_VOTE}`,
-          link: {
-            mobileWebUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
-            webUrl: `${import.meta.env.VITE_APP_BASE_URL}`,
-          },
-        },
-        buttons: [
-          {
-            title: "당장 투표하러 가기",
-            link: {
-              mobileWebUrl: `${
-                import.meta.env.VITE_APP_BASE_URL
-              }/vote/${voteId}`,
-              webUrl: `${import.meta.env.VITE_APP_BASE_URL}/vote/${voteId}`,
-            },
-          },
-        ],
-      });
-    }
+  const { initKakao, kakaoShareVote } = useShareKaKao();
+
+  const clickSharingKaKaoVote = () => {
+    initKakao();
+    kakaoShareVote({ vote, id: newId });
   };
 
-  const executeVoteQuery = async (userId: string | undefined) => {
-    const q = query(
-      collection(db, "vote"),
-      where("user_id", "==", userId),
-      where("vote_id", "==", NewID),
-      limit(1)
-    );
-    const querySnapshot = await getDocs(q);
-    return querySnapshot;
-  };
-
-  const fetchVotes = async () => {
-    try {
-      const querySnapshot = await executeVoteQuery(user?.uid);
-
-      const voteDoc = querySnapshot.docs[0];
-
-      if (voteDoc) {
-        const {
-          vote_id,
-          vote_list,
-          voter_list,
-          vote_name,
-          vote_winner,
-          total_votes_cnt,
-          available_votes_cnt,
-          already_voters,
-          is_complete,
-          close_time,
-          user_id,
-          user_name,
-          create_at,
-        } = voteDoc.data();
-
-        // 여기에서 필요한 데이터를 사용합니다.
-        setVote({
-          vote_id,
-          vote_list,
-          voter_list,
-          vote_name,
-          vote_winner,
-          total_votes_cnt,
-          available_votes_cnt,
-          already_voters,
-          is_complete,
-          close_time,
-          user_id,
-          user_name,
-          create_at,
-          id: voteDoc.id,
-        });
-      }
-
-      // const newVote = votes.find((vote) => vote.vote_id == id);
-      // setVote(newVote);
-
-      const voteName = querySnapshot.docs.pop()?.data().vote_name;
-      setVoteName(voteName);
-      const voteList = querySnapshot.docs.pop()?.data().vote_list;
-      setVoteList(voteList);
-
-      const voterList = querySnapshot.docs.pop()?.data().voter_list;
-      setVoterList(voterList);
-
-      const alreadyVoterList = querySnapshot.docs.pop()?.data().already_voters;
-      // setAlreadyVoterList(alreadyVoterList);
-
-      const notVoterList = voterList.filter(
-        (voter: string) => !alreadyVoterList.includes(voter)
-      );
-
-      setNotVoterList(notVoterList);
-
-      const voteId = querySnapshot.docs.pop()?.data().vote_id;
-      setVoteId(voteId);
-      // setIsLoading(false);
-    } catch (err) {
-      console.log("Firebase Error Message", err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchVotes();
-  }, [id]);
-
+  // 이벤트: 투표 삭제 여부
   const clickDelete = () => {
     setIsShowAlertDeleteConfirm(true);
   };
 
+  // 이벤트: 투표 삭제 완료
   const clickDeleteComplete = () => {
     setIsShowAlertDelete(false);
     navigate(0);
   };
 
+  // 기능: 투표 삭제
   const onDelete = async () => {
     setIsLoading(true);
 
-    const querySnapshot = await executeVoteQuery(user?.uid);
+    const querySnapshot = await voteQuery(user?.uid);
 
     try {
       setIsShowAlertDeleteConfirm(false);
@@ -252,13 +125,13 @@ export default function VoteProgress() {
       }
     } catch (e) {
       console.log(e);
-      // setIsLoading(false);
     } finally {
       setIsShowAlertDelete(true);
       navigate("/");
     }
   };
 
+  // 이벤트: 투표 종료 여부
   const clickVoteComplete = () => {
     if (vote?.total_votes_cnt === 0) {
       setIsLoading(false);
@@ -268,36 +141,29 @@ export default function VoteProgress() {
     setIsShowAlertComplete(true);
   };
 
+  // 기능: 투표 종료
   const onVoteComplete = async () => {
     setIsLoading(true);
 
-    const querySnapshot = await executeVoteQuery(user?.uid);
+    const querySnapshot = await voteQuery(user?.uid);
 
     if (!querySnapshot.empty) {
       const latestDoc = querySnapshot.docs[0];
       const voteDocRef = doc(db, "vote", latestDoc.id);
 
-      // const highestVote = voteList.reduce(
-      //   (prev, current) =>
-      //     current.votes_cnt > prev.votes_cnt ? current : prev,
-      //   { name: "", votes_cnt: -1 }
-      // );
-
-      let highestVote = { name: "", votes_cnt: -1 };
-
-      voteList.forEach((current) => {
-        if (current.votes_cnt > highestVote.votes_cnt) {
-          highestVote = current;
-        }
-      });
+      const highestVote = vote?.vote_list.reduce(
+        (prev, current) =>
+          current.votes_cnt > prev.votes_cnt ? current : prev,
+        { name: "", votes_cnt: -1 }
+      );
 
       // 문서 업데이트
       await updateDoc(voteDocRef, {
         is_complete: true,
-        vote_winner: highestVote.name,
+        vote_winner: highestVote?.name,
       });
       setIsLoading(false);
-      navigate(`/vote-history-result/${id}`);
+      navigate(`/vote-history-result/${newId}`);
     }
   };
 
@@ -386,7 +252,7 @@ export default function VoteProgress() {
                 <VoterContainer>
                   <Label>유권자</Label>
                   <MemberList>
-                    {voterList.map((member, index) => (
+                    {vote?.voter_list.map((member, index) => (
                       <Member key={`member${index}`}>{member}</Member>
                     ))}
                   </MemberList>
@@ -429,10 +295,7 @@ export default function VoteProgress() {
             </Wrapper>
             <BottomButton01
               label={"투표 링크 공유하기"}
-              onClick={() => shareKakao()}
-              // onClick={() => {
-              //   console.log(test);
-              // }}
+              onClick={clickSharingKaKaoVote}
             />
           </>
         )

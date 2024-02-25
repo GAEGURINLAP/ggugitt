@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { collection, getDocs, query } from "firebase/firestore";
-import { db } from "../firebase";
+
+import { collection, getDocs, limit, query, where } from "firebase/firestore";
+import { auth, db } from "../firebase";
+
 import { IVote } from "../routes/home";
 
 interface IUseFetchVotes {
@@ -9,16 +11,30 @@ interface IUseFetchVotes {
 
 export default function useFetchVotes({ id }: IUseFetchVotes) {
   const [vote, setVote] = useState<IVote>();
+  const [notVoterList, setNotVoterList] = useState<string[]>([]);
+
   const [isLoading, setIsLoading] = useState(true);
 
-  // const newId = Number(id);
+  const user = auth.currentUser;
+
+  const voteQuery = async (userId: string | undefined) => {
+    const q = query(
+      collection(db, "vote"),
+      where("user_id", "==", userId),
+      where("vote_id", "==", id),
+      limit(1)
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot;
+  };
 
   const fetchVotes = async () => {
     try {
-      const votesQuery = query(collection(db, "vote"));
-      const snapshot = await getDocs(votesQuery);
+      const querySnapshot = await voteQuery(user?.uid);
+      console.log("user?.uid", user?.uid);
 
-      const votes = snapshot.docs.map((doc) => {
+      const voteDoc = querySnapshot.docs[0];
+      if (voteDoc) {
         const {
           vote_id,
           vote_list,
@@ -33,8 +49,9 @@ export default function useFetchVotes({ id }: IUseFetchVotes) {
           user_id,
           user_name,
           create_at,
-        } = doc.data();
-        return {
+        } = voteDoc.data();
+
+        setVote({
           vote_id,
           vote_list,
           voter_list,
@@ -48,14 +65,19 @@ export default function useFetchVotes({ id }: IUseFetchVotes) {
           user_id,
           user_name,
           create_at,
-          id: doc.id,
-        };
-      });
+          id: voteDoc.id,
+        });
 
-      const newVote = votes.find((vote) => vote.vote_id === id);
-      setVote(newVote);
+        const voterList = voteDoc.data().voter_list;
+
+        const alreadyVoterList = voteDoc.data().already_voters;
+        const notVoterList = voterList.filter(
+          (voter: string) => !alreadyVoterList.includes(voter)
+        );
+        setNotVoterList(notVoterList);
+      }
     } catch (err) {
-      console.error(err);
+      console.log("Firebase Error Message", err);
     } finally {
       setIsLoading(false);
     }
@@ -65,5 +87,5 @@ export default function useFetchVotes({ id }: IUseFetchVotes) {
     fetchVotes();
   }, [id]);
 
-  return { vote, isLoading };
+  return { vote, notVoterList, isLoading, setIsLoading, voteQuery };
 }
