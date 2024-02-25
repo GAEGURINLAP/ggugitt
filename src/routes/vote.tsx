@@ -75,14 +75,14 @@ export default function Vote() {
   const { id } = useParams();
   const newId = Number(id);
 
-  const { vote, isLoading, setIsLoading } = useFetchVotes({ id: newId });
-  const { initKakao, kakaoShareVote } = useShareKaKao();
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInput>();
+
+  const { vote, isLoading, setIsLoading } = useFetchVotes({ id: newId });
+  const { initKakao, kakaoShareVote } = useShareKaKao();
 
   const clickSharingKaKaoVote = () => {
     initKakao();
