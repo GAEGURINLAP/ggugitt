@@ -5,7 +5,7 @@ name: Deploy to Firebase Hosting on PR
 on: pull_request
 jobs:
   build_and_preview:
-    environment: GGUGITT_DEV
+    environment: GGUGITT_PRD
     if: "${{ github.event.pull_request.head.repo.full_name == github.repository }}"
     runs-on: ubuntu-latest
     env:
@@ -35,5 +35,5 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_GGUGITT_DEV }}"
-          projectId: ggugitt-dev
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_GGUGITT_PRD }}"
+          projectId: ggugitt-prd
