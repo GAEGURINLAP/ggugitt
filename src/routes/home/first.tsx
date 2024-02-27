@@ -12,7 +12,7 @@ import {
 } from "../../style/landing";
 import { auth } from "../../firebase";
 
-export default function Landing() {
+export default function First() {
   const navigate = useNavigate();
 
   const user = auth.currentUser;

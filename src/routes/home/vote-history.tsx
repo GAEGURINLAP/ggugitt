@@ -29,7 +29,7 @@ import {
   HistoryTitle,
 } from "../../style/vote-history";
 
-import Landing from "./landing";
+import Landing from "./first";
 
 export default function VoteHistory() {
   const [votes, setVotes] = useState<IVote[]>([]);
