@@ -1,6 +1,6 @@
 import { auth } from "../../firebase";
 
-import Landing from "./landing";
+import Landing from "./first";
 import VoteHistory from "./vote-history";
 
 export default function Index() {
