@@ -233,7 +233,7 @@ export default function CandidateRegister() {
               )}
             </FormContainer>
             <VoterContainer>
-              <Label>등록한 팀원</Label>
+              <Label>등록된 투표자</Label>
               <MemberList>
                 {voterList?.map((member: String, index: number) => (
                   <Member key={`member${index}`}>{member}</Member>
