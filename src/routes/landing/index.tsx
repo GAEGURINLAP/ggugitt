@@ -1,3 +1,20 @@
+import { BrandingWrapper, GNB, Menu } from './style';
+
+import BrandingTitleSm from '/images/logo/lg-brandingtitle-sm.png';
+import MenuButton from '/images/icon/common/icon-menu.svg';
+
 export default function Landing() {
-  return <div>랜딩이 될 예정</div>;
+  return (
+    <>
+      <GNB>
+        <BrandingWrapper>
+          <img src={BrandingTitleSm} height={20} />
+        </BrandingWrapper>
+        <Menu>
+          <img src={MenuButton} height={24} />
+        </Menu>
+      </GNB>
+      <div>랜딩이 될 예정</div>
+    </>
+  );
 }
