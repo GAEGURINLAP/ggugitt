@@ -7,7 +7,7 @@ export const GNB = styled.div`
   padding: 0 24px;
   align-items: center;
   width: 100%;
-  height: 64px;
+  height: 48px;
   background-color: white;
 `;
 
