@@ -15,6 +15,7 @@ export default function Landing() {
         </Menu>
       </GNB>
       <div>랜딩이 될 예정</div>
+      <div>바디가 들어갈 공간</div>
     </>
   );
 }
