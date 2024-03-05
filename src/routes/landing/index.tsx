@@ -17,6 +17,7 @@ export default function Landing() {
       <div>랜딩이 될 예정</div>
       <div>바디가 들어갈 공간</div>
       <div>서브 바디가 들어갈 공간</div>
+      <div>섹션이 들어갈 공간</div>
     </>
   );
 }
