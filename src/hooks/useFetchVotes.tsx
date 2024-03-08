@@ -7,9 +7,10 @@ import { IVote } from "../service/vote/type";
 
 interface IUseFetchVotes {
   id: number | undefined;
+  isJustVote?: boolean;
 }
 
-export default function useFetchVotes({ id }: IUseFetchVotes) {
+export default function useFetchVotes({ id, isJustVote }: IUseFetchVotes) {
   const [vote, setVote] = useState<IVote>();
   const [notVoterList, setNotVoterList] = useState<string[]>([]);
 
@@ -18,12 +19,14 @@ export default function useFetchVotes({ id }: IUseFetchVotes) {
   const user = auth.currentUser;
 
   const voteQuery = async (userId: string | undefined) => {
-    const q = query(
-      collection(db, "vote"),
-      where("user_id", "==", userId),
-      where("vote_id", "==", id),
-      limit(1)
-    );
+    const q = isJustVote
+      ? query(collection(db, "vote"), where("user_id", "==", userId), limit(1))
+      : query(
+          collection(db, "vote"),
+          where("user_id", "==", userId),
+          where("vote_id", "==", id),
+          limit(1)
+        );
     const querySnapshot = await getDocs(q);
     return querySnapshot;
   };
@@ -31,7 +34,6 @@ export default function useFetchVotes({ id }: IUseFetchVotes) {
   const fetchVotes = async () => {
     try {
       const querySnapshot = await voteQuery(user?.uid);
-      console.log("user?.uid", user?.uid);
 
       const voteDoc = querySnapshot.docs[0];
       if (voteDoc) {
@@ -74,6 +76,7 @@ export default function useFetchVotes({ id }: IUseFetchVotes) {
         const notVoterList = voterList.filter(
           (voter: string) => !alreadyVoterList.includes(voter)
         );
+
         setNotVoterList(notVoterList);
       }
     } catch (err) {

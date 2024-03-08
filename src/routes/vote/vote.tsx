@@ -61,7 +61,10 @@ export default function Vote() {
     formState: { errors },
   } = useForm<IFormInput>();
 
-  const { vote, isLoading, setIsLoading } = useFetchVotes({ id: newId });
+  const { vote, isLoading, setIsLoading } = useFetchVotes({
+    id: newId,
+    isJustVote: true,
+  });
   const { initKakao, kakaoShareVote } = useShareKaKao();
 
   const clickSharingKaKaoVote = () => {
