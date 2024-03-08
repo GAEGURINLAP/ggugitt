@@ -20,7 +20,7 @@ export default function useFetchVotes({ id, isJustVote }: IUseFetchVotes) {
 
   const voteQuery = async (userId: string | undefined) => {
     const q = isJustVote
-      ? query(collection(db, "vote"), where("user_id", "==", userId), limit(1))
+      ? query(collection(db, "vote"), where("vote_id", "==", id), limit(1))
       : query(
           collection(db, "vote"),
           where("user_id", "==", userId),
