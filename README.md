@@ -57,6 +57,6 @@
 
 ## Contact
 
-**인스타그램** **|** @ggu_gitt
+**인스타그램** **|** [@ggu_gitt](https://www.instagram.com/ggu_gitt)
 
 **디스콰이엇** **|** https://disquiet.io/@extreme0728
