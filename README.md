@@ -51,7 +51,7 @@
 - **Vite**: 현업에서 사용하고 있는 Vite로부터 실제로 Dev Server의 구동 속도, 빌드에서 훌륭한 퍼포먼스를 체감하였기 때문에 React + Vite 조합으로 프로젝트를 생성하기로 결정했습니다.
 - **react-hook-form**: 공부할 때도 느꼈지만 React에서 Form의 에러를 비롯하여 다양한 케이스를 직접 State로 관리한다는 것은 너무 비용이 많이 드는 일이었기 때문에 react-hook-form을 선택하였습니다.
 - **Emotion**: 그동안 스타일은 css와 scss로만 만들었었는데, CSS-in-JS 프레임워크로 재사용이 가능한 컴포넌트로 만들어 사용한다는 점에 매료되어 Emotion을 선택하였습니다.
-- **Fiebase**: Firebase를 알게되었기 때문에 혼자서 프로젝트를 시작할 용기를 얻게 되었습니다. Firebase는 Authentication(인증), Firestore(데이터베이스), FCN(푸시 알람) 등의 기능을 제공하기 때문에 백엔드에 대한 지식이 없이도 데이터를 설계하고 CRUD를 손쉽게 해낼 수 있으며, 로그인과 푸시 알람까지 해결할 수 있습니다. 앞으로도 Firebase를 적극 사용할 것이지만, 다음 프로젝트에서는 Firebase와 비견되고 있는 Supabase를 사용해 볼 예정입니다.
+- **Firebase**: Firebase를 알게되었기 때문에 혼자서 프로젝트를 시작할 용기를 얻게 되었습니다. Firebase는 Authentication(인증), Firestore(데이터베이스), FCN(푸시 알람) 등의 기능을 제공하기 때문에 백엔드에 대한 지식이 없이도 데이터를 설계하고 CRUD를 손쉽게 해낼 수 있으며, 로그인과 푸시 알람까지 해결할 수 있습니다. 앞으로도 Firebase를 적극 사용할 것이지만, 다음 프로젝트에서는 Firebase와 비견되고 있는 Supabase를 사용해 볼 예정입니다.
 
 <br>
 
