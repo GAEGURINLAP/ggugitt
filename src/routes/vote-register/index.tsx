@@ -131,7 +131,7 @@ export default function IndexRegister() {
       </VoteRegisterContext.Provider>
       {isShowAlreadyAlert && (
         <Alert
-          message={"이미 추가한 팀원이에요!"}
+          message={"이미 추가한 투표자에요!"}
           buttons={[
             <ButtonPrimary
               label={"확인"}

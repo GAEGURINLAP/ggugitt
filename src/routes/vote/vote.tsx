@@ -157,7 +157,7 @@ export default function Vote() {
       {isShowAlertConfirm ? (
         <Success
           message={"투표가 완료 되었어요!"}
-          label="다른 팀원 투표 강요하기"
+          label="투표 링크 공유하기"
           isShowButton
           onClick={clickSharingKaKaoVote}
         />
@@ -258,7 +258,7 @@ export default function Vote() {
       )}
       {isShowAlertAlreadyVoter && (
         <Alert
-          message={"이미 투표한 팀원이에요!"}
+          message={"이미 투표한 투표자에요!"}
           buttons={[
             <ButtonPrimary
               label={"확인"}
@@ -271,7 +271,7 @@ export default function Vote() {
 
       {isShowAlertVote && (
         <Alert
-          message={"선택한 팀원으로 투표 하시겠어요?"}
+          message={"선택한 투표 항목으로 투표 하시겠어요?"}
           buttons={[
             <ButtonSecondary
               label={"취소"}
