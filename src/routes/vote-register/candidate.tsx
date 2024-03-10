@@ -18,7 +18,7 @@ import {
   Form,
   FormContainer,
   FormWrapper,
-  GuideText,
+  // GuideText,
   Input,
   Label,
   Member,
@@ -178,7 +178,7 @@ export default function CandidateRegister() {
           <Header isNavigator path="vote-register" />
           <Wrapper>
             <Title>
-              투표를 진행할 <br /> 후보를 등록해주세요
+              투표 항목을 <br /> 등록해주세요
             </Title>
             <FormContainer>
               <Form
@@ -205,15 +205,11 @@ export default function CandidateRegister() {
                         message: "이름은 10자를 초과할 수 없어요.",
                       },
                     })}
-                    placeholder="후보 이름을 정자로 입력해주세요"
+                    placeholder="투표 항목을 입력해주세요"
                   />
                 </FormWrapper>
               </Form>
-              {errors.name ? (
-                <Error>{errors.name.message}</Error>
-              ) : (
-                <GuideText>ex) 김꾸깃</GuideText>
-              )}
+              {errors.name && <Error>{errors.name.message}</Error>}
               {voteList.length > 0 && (
                 <VoteWrapper>
                   {voteList?.map((item, index) => (
@@ -264,7 +260,7 @@ export default function CandidateRegister() {
           )}
           {!voterList && (
             <Alert
-              message={"팀원을 먼저 등록해주세요!"}
+              message={"투표자를 먼저 등록해주세요!"}
               buttons={[
                 <ButtonPrimary
                   label={"등록하러 가기"}
@@ -278,7 +274,7 @@ export default function CandidateRegister() {
       )}
       {isShowAlert && (
         <Alert
-          message={"입력한 후보들이 전부 맞을까요?"}
+          message={"입력한 투표 항목이 전부 맞을까요?"}
           buttons={[
             <ButtonSecondary
               label={"취소"}
