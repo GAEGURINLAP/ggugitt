@@ -55,6 +55,16 @@
 
 <br>
 
+## 어떤 과정을 겪었었는가?
+개발하면서 겪은 고민들과 트러블 슈팅에 대해서 일지를 작성하고 있습니다.
+
+- [프로젝트 시작 과정](https://velog.io/@byungsker/MOM-%ED%88%AC%ED%91%9C-%EC%84%9C%EB%B9%84%EC%8A%A4-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%8B%9C%EC%9E%91)
+- [개발 시작](https://velog.io/@byungsker/MOM-%ED%88%AC%ED%91%9C-%EC%84%9C%EB%B9%84%EC%8A%A4-%EA%B0%9C%EB%B0%9C%EC%9D%98-%EC%8B%9C%EC%9E%91)
+- [데이터 설계 우여곡절기](https://velog.io/@byungsker/MOM-%ED%88%AC%ED%91%9C-%EC%84%9C%EB%B9%84%EC%8A%A4-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%84%A4%EA%B3%84)
+
+<br/>
+
+
 ## Contact
 
 **인스타그램** **|** [@ggu_gitt](https://www.instagram.com/ggu_gitt)
