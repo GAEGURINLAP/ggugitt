@@ -1,9 +1,6 @@
 # 꾸준히 한 곳에서의 연속적인 투표, 꾸깃
 
-<p align="center">
-  <img src="https://github.com/GAEGURINLAP/ggugitt/assets/72309817/d578a909-88e5-41d2-8d19-707a8569b250">
-  <img src="https://github.com/GAEGURINLAP/ggugitt/assets/72309817/c3c1aae0-ee91-4130-be98-1fc097dae4eb">
-</p>
+<img width="374" alt="스크린샷 2024-03-13 오후 10 16 56" src="https://github.com/GAEGURINLAP/ggugitt/assets/72309817/2ee3ed06-027f-4bdf-a40b-fbc231048be7">
 
 # 👩‍💻 멤버
 
@@ -13,25 +10,61 @@
 | ------------------ | ----------- |
 | Frontend & Backend | Design      |
 
-
+<br>
 
 ## 왜 필요한가?
 
 카카오톡의 투표 기능은 아무래도 목적이 약속을 정하기와 같이 단발성 투표에 있기 때문에, 데이터를 취합하는데는 적합하지 않다는 아쉬움이 있었습니다. 아마추어 스포츠 팀에서는, **투표한 데이터로 DB를 형성하고 싶은 니즈**가 있습니다. 이 데이터를 이용하여 월간, 연간, n년간의 통계를 만들어 팀원들의 동기 부여 및 역량 증진에 사용하고자 하는 목표가 있기 때문입니다.
 
+<br>
+
 ## 어떤 기능이 들어가는가?
 
 주요 기능은 다음과 같습니다.
 
-- 투표 등록하기
-- 팀으로 등록 되어있는 팀원들에게 링크 보내기(카톡 링크, 푸시 알림)
-- 투표하기
-- 투표 결과보기
-- 투표 히스토리 보기
+- [투표 등록하기](#1-투표-등록하기)
+- [투표하기](#2-투표하기)
+  - 투표 링크 보내기(카카오톡 공유)
+- [투표 히스토리 보기](#3-투표-히스토리)
+  - 진행중인 투표 현황 보기
+  - 종료된 투표 결과 보기
+- [투표 결과보기](#4-투표-결과보기)
 
 이 서비스의 방향성은 **_투표 등록자는 조금 불편하게, 투표자는 간편하게_** 입니다. 아마추어 스포츠 팀의 운영진 입장에서는 속상하게도, 카카오톡 투표하기로 받는 투표조차 응답을 제 때 받기 쉽지 않다는 페인 포인트가 있었습니다. 때문에 마치 구글폼 응답을 받는 것처럼, 투표자들은 공유받은 링크를 열어 **'단순히 투표만'** 하면 되도록 방향성을 잡고 기능을 만들 예정입니다.
 
-## 어떤 기술을 쓸 것인가?
+<br>
+
+### 1. 투표 등록하기
+
+![투표등록_2](https://github.com/GAEGURINLAP/ggugitt/assets/72309817/6003f65d-4d67-478a-838e-6c7b714ab7c6)
+
+<br>
+
+### 2. 투표하기
+
+- 투표 링크 보내기(카카오톡 공유)
+- 투표하기
+
+<img src="https://github.com/GAEGURINLAP/ggugitt/assets/72309817/be9d7f33-fe8c-4a34-9e0b-7ec6278d4503" height="640px" />
+
+<br>
+
+### 3. 투표 히스토리
+
+- 진행중인 투표 현황 보기
+- 종료된 투표 결과 보기
+
+![투표_히스토리](https://github.com/GAEGURINLAP/ggugitt/assets/72309817/fdcf71d9-cb5f-4db8-bdf1-dcfbff2a3fee)
+
+<br>
+
+### 4. 투표 결과보기
+
+<img src="https://github.com/GAEGURINLAP/ggugitt/assets/72309817/78c99c72-bec3-4350-8ca8-9aac317a11f4" height="640px" />
+
+<br>
+
+## 어떤 기술을 사용했는가?
 
 <br>
 
@@ -56,6 +89,7 @@
 <br>
 
 ## 어떤 과정을 겪었었는가?
+
 개발하면서 겪은 고민들과 트러블 슈팅에 대해서 일지를 작성하고 있습니다.
 
 - [프로젝트 시작 과정](https://velog.io/@byungsker/MOM-%ED%88%AC%ED%91%9C-%EC%84%9C%EB%B9%84%EC%8A%A4-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%8B%9C%EC%9E%91)
@@ -64,9 +98,7 @@
 
 <br/>
 
-
 ## Contact
 
-**인스타그램** **|** [@ggu_gitt](https://www.instagram.com/ggu_gitt)
-
-**디스콰이엇** **|** https://disquiet.io/@extreme0728
+**인스타그램 |** [@ggu_gitt](https://www.instagram.com/ggu_gitt)
+**디스콰이엇 |** https://disquiet.io/@extreme0728
