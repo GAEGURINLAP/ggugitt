@@ -19,8 +19,18 @@ export interface IFormInput {
 }
 
 export default function IndexRegister() {
+  const storedVoterListString = localStorage.getItem("voterList");
+
+  const storedVoterList = storedVoterListString
+    ? JSON.parse(storedVoterListString)
+    : [];
+
   const [votes, setVotes] = useState<IVote[]>([]);
-  const [voterList, setVoterList] = useState<String[]>([]);
+  const [voterList, setVoterList] = useState<String[]>(storedVoterList);
+
+  useEffect(() => {
+    localStorage.setItem("voterList", JSON.stringify(voterList));
+  }, [voterList]);
 
   const [isShowAlreadyAlert, setIsShowAlreadyAlert] = useState(false);
 
@@ -97,19 +107,19 @@ export default function IndexRegister() {
     deleteItem: deleteItem,
   };
 
-  const preventClose = (e: BeforeUnloadEvent) => {
-    e.preventDefault();
-    e.returnValue = "";
-  };
+  // const preventClose = (e: BeforeUnloadEvent) => {
+  //   e.preventDefault();
+  //   e.returnValue = "";
+  // };
 
-  useEffect(() => {
-    (() => {
-      window.addEventListener("beforeunload", preventClose);
-    })();
-    return () => {
-      window.removeEventListener("beforeunload", preventClose);
-    };
-  }, []);
+  // useEffect(() => {
+  //   (() => {
+  //     window.addEventListener("beforeunload", preventClose);
+  //   })();
+  //   return () => {
+  //     window.removeEventListener("beforeunload", preventClose);
+  //   };
+  // }, []);
 
   return (
     <>
