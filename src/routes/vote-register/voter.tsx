@@ -54,7 +54,7 @@ export default function VoterRegister() {
 
   return (
     <>
-      <Header />
+      <Header isNavigator path="" />
       <Wrapper>
         <Title>
           투표자들의

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { VoteRegisterContext } from "../../store/vote-register-context";
@@ -44,13 +44,23 @@ import useFetchVotes from "../../hooks/useFetchVotes";
 import { IVoteList } from "../../service/vote/type";
 
 export default function CandidateRegister() {
+  const storedVoteListString = localStorage.getItem("voteList");
+
+  const storedVoteList = storedVoteListString
+    ? JSON.parse(storedVoteListString)
+    : [];
+
   const [voteId, setVoteId] = useState();
-  const [voteList, setVoteList] = useState<IVoteList[]>([]);
+  const [voteList, setVoteList] = useState<IVoteList[]>(storedVoteList);
   const [isShowAlert, setIsShowAlert] = useState(false);
   const [isShowAlreadyAlert, setIsShowAlreadyAlert] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
 
   const { voterList } = useContext(VoteRegisterContext);
+
+  useEffect(() => {
+    localStorage.setItem("voteList", JSON.stringify(voteList));
+  }, [voteList]);
 
   const navigate = useNavigate();
 
@@ -123,6 +133,8 @@ export default function CandidateRegister() {
     } finally {
       setIsComplete(true);
       setIsLoading(false);
+      localStorage.removeItem("voteList");
+      localStorage.removeItem("voterList");
     }
   };
 
