@@ -95,6 +95,8 @@ export default function VoteHistory() {
 
   const clickSurvey = () => {
     navigate("/vote-register");
+    localStorage.removeItem("voterList");
+    localStorage.removeItem("voteList");
   };
 
   const skeleton = ["1", "2", "3", "4", "5"];
