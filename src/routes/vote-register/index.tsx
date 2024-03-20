@@ -107,20 +107,6 @@ export default function IndexRegister() {
     deleteItem: deleteItem,
   };
 
-  // const preventClose = (e: BeforeUnloadEvent) => {
-  //   e.preventDefault();
-  //   e.returnValue = "";
-  // };
-
-  // useEffect(() => {
-  //   (() => {
-  //     window.addEventListener("beforeunload", preventClose);
-  //   })();
-  //   return () => {
-  //     window.removeEventListener("beforeunload", preventClose);
-  //   };
-  // }, []);
-
   return (
     <>
       <VoteRegisterContext.Provider value={ctxValue}>
