@@ -287,7 +287,7 @@ export default function VoteProgress() {
             width={240}
             height={240}
           />
-          <Title>다른 유저의 투표입니다!</Title>
+          <Title>다른 유저의 투표에요!</Title>
           <ButtonPrimary
             label="메인으로 가기"
             isWidthFull
