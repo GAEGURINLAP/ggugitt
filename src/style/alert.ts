@@ -45,7 +45,7 @@ export const Message = styled.div`
   font-size: 16px;
 `;
 export const SubMessage = styled.div`
-  font-size: 12px;
+  font-size: 11px;
   color: #a2a2a2;
 `;
 
