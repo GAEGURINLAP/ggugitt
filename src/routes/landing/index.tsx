@@ -8,12 +8,12 @@ import {
   Section01Title,
   Section01TitleWrapper,
   Wrapper,
-} from './style';
+} from "./style";
 
-import BrandingTitleSm from '/images/logo/lg-brandingtitle-sm.png';
-import MenuButton from '/images/icon/common/icon-menu.svg';
-import Section01Img from '/images/illust/il-landing-section-01.webp';
-import ButtonPrimary from '../../component/ButtonPrimary';
+import BrandingTitleSm from "/images/logo/lg-brandingtitle-sm.png";
+import MenuButton from "/images/icon/common/icon-menu.svg";
+import Section01Img from "/images/illust/il-landing-section-01.webp";
+import ButtonPrimary from "../../component/ButtonPrimary";
 
 export default function Landing() {
   return (
@@ -34,7 +34,7 @@ export default function Landing() {
             </Section01Title>
             <Section01Desc>
               가끔... 투표가 끊겨서 아쉬운, <br />
-              그런 때 있지 않나요?
+              그런 때 있지 않나요? 그렇죠
             </Section01Desc>
             <ButtonPrimary label="첫 투표 시작하기" />
           </Section01TitleWrapper>
