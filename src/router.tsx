@@ -17,6 +17,7 @@ import VoteResult from "./routes/vote-result/vote-result";
 import VoteHistoryResult from "./routes/vote-history-result/vote-history-result";
 import NotFound from "./routes/404/not-found";
 import Landing from "./routes/landing";
+import MyPage from "./routes/mypage";
 
 export const router = createBrowserRouter([
   {
@@ -39,6 +40,14 @@ export const router = createBrowserRouter([
   },
   { path: "/create-account", element: <CreateAccount /> },
   { path: "/reset-password", element: <ResetPaswrd /> },
+  {
+    path: "/mypage",
+    element: (
+      <ProtectedRoute>
+        <MyPage />
+      </ProtectedRoute>
+    ),
+  },
   {
     path: "/vote-register",
     element: (

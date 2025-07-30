@@ -57,7 +57,10 @@ export default function Header({ isNavigator, path }: IHeaderProp) {
           </ButtonWrap>
 
           <WrapperRight>
-            <Name>
+            <Name
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate("/mypage")}
+            >
               <b>{userName}</b>님
             </Name>
             <img
