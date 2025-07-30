@@ -38,7 +38,7 @@ import Alert from "../../component/Alert";
 import ButtonSecondary from "../../component/ButtonSecondary";
 import ButtonPrimary from "../../component/ButtonPrimary";
 import Header from "../../component/Header";
-import useShareKaKao from "../../hooks/useShareKakao";
+// import useShareKaKao from "../../hooks/useShareKakao";
 import useFetchVotes from "../../hooks/useFetchVotes";
 
 import { IVoteList } from "../../service/vote/type";
@@ -75,12 +75,12 @@ export default function CandidateRegister() {
     id: voteId,
   });
 
-  const { initKakao, kakaoShareVote } = useShareKaKao();
+  // const { initKakao, kakaoShareVote } = useShareKaKao();
 
-  const clickSharingKaKaoVote = () => {
-    initKakao();
-    kakaoShareVote({ vote, id: voteId });
-  };
+  // const clickSharingKaKaoVote = () => {
+  //   initKakao();
+  //   kakaoShareVote({ vote, id: voteId });
+  // };
 
   const user = auth.currentUser;
 
@@ -180,10 +180,10 @@ export default function CandidateRegister() {
       {isComplete ? (
         <Success
           message={"투표 등록이 완료 되었어요!"}
-          label="투표 링크 공유하기"
-          isShowButton
-          isShowSecondaryButton
-          onClick={clickSharingKaKaoVote}
+          // label="투표 링크 공유하기"
+          // isShowButton
+          // isShowSecondaryButton
+          // onClick={clickSharingKaKaoVote}
         />
       ) : (
         <>

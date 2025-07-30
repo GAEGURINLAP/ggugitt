@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
-import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
-import { auth, db } from '../../firebase';
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { auth, db } from "../../firebase";
 
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 import {
   Wrapper,
@@ -24,21 +24,21 @@ import {
   Label,
   MemberList,
   Member,
-} from '../home/style';
+} from "../home/style";
 
-import { WrapperMid, Title } from '../../style/vote-result';
-import { GuideText } from '../../style/vote-register';
+import { WrapperMid, Title } from "../../style/vote-result";
+import { GuideText } from "../../style/vote-register";
 
-import useFetchVotes from '../../hooks/useFetchVotes';
-import useShareKaKao from '../../hooks/useShareKakao';
+import useFetchVotes from "../../hooks/useFetchVotes";
+// import useShareKaKao from '../../hooks/useShareKakao';
 
-import Header from '../../component/Header';
-import Alert from '../../component/Alert';
-import ButtonPrimary from '../../component/ButtonPrimary';
-import ButtonSecondary from '../../component/ButtonSecondary';
-import ButtonError from '../../component/ButtonError';
-import BottomButton01 from '../../component/BottomButon01';
-import LoadingScreen from '../../component/LoadingScreen';
+import Header from "../../component/Header";
+import Alert from "../../component/Alert";
+import ButtonPrimary from "../../component/ButtonPrimary";
+import ButtonSecondary from "../../component/ButtonSecondary";
+import ButtonError from "../../component/ButtonError";
+import BottomButton01 from "../../component/BottomButon01";
+import LoadingScreen from "../../component/LoadingScreen";
 
 export const CurrentTitleContainer = styled.div`
   display: flex;
@@ -53,7 +53,8 @@ export const RefreshWrapper = styled.div`
 
 export default function VoteProgress() {
   const [isShowAlertComplete, setIsShowAlertComplete] = useState(false);
-  const [isShowAlertDeleteConfirm, setIsShowAlertDeleteConfirm] = useState(false);
+  const [isShowAlertDeleteConfirm, setIsShowAlertDeleteConfirm] =
+    useState(false);
   const [isShowAlertDelete, setIsShowAlertDelete] = useState(false);
   const [isShowAlertFail, setIsShowAlertFail] = useState(false);
 
@@ -64,16 +65,17 @@ export default function VoteProgress() {
 
   const user = auth.currentUser;
 
-  const { vote, notVoterList, isLoading, setIsLoading, voteQuery } = useFetchVotes({
-    id: newId,
-  });
+  const { vote, notVoterList, isLoading, setIsLoading, voteQuery } =
+    useFetchVotes({
+      id: newId,
+    });
 
-  const { initKakao, kakaoShareVote } = useShareKaKao();
+  // const { initKakao, kakaoShareVote } = useShareKaKao();
 
-  const clickSharingKaKaoVote = () => {
-    initKakao();
-    kakaoShareVote({ vote, id: newId });
-  };
+  // const clickSharingKaKaoVote = () => {
+  //   initKakao();
+  //   kakaoShareVote({ vote, id: newId });
+  // };
 
   // 이벤트: 투표 삭제 여부
   const clickDelete = () => {
@@ -96,7 +98,7 @@ export default function VoteProgress() {
       setIsShowAlertDeleteConfirm(false);
       if (!querySnapshot.empty) {
         const latestDoc = querySnapshot.docs[0];
-        const voteDocRef = doc(db, 'vote', latestDoc.id);
+        const voteDocRef = doc(db, "vote", latestDoc.id);
 
         // 문서 삭제
         await deleteDoc(voteDocRef);
@@ -106,7 +108,7 @@ export default function VoteProgress() {
       console.log(e);
     } finally {
       setIsShowAlertDelete(true);
-      navigate('/');
+      navigate("/");
     }
   };
 
@@ -128,11 +130,12 @@ export default function VoteProgress() {
 
     if (!querySnapshot.empty) {
       const latestDoc = querySnapshot.docs[0];
-      const voteDocRef = doc(db, 'vote', latestDoc.id);
+      const voteDocRef = doc(db, "vote", latestDoc.id);
 
       const highestVote = vote?.vote_list.reduce(
-        (prev, current) => (current.votes_cnt > prev.votes_cnt ? current : prev),
-        { name: '', votes_cnt: -1 }
+        (prev, current) =>
+          current.votes_cnt > prev.votes_cnt ? current : prev,
+        { name: "", votes_cnt: -1 }
       );
 
       // 문서 업데이트
@@ -151,7 +154,10 @@ export default function VoteProgress() {
         <title>꾸깃 - 투표 현황</title>
         <meta name="description" content="투표 현황" />
         <meta property="og:title" content="꾸깃" />
-        <meta property="og:image" content="/images/illust/il-vote-progress-landscape.png" />
+        <meta
+          property="og:image"
+          content="/images/illust/il-vote-progress-landscape.png"
+        />
         <meta property="og:url" content="https://ggugitt.com/vote-progress" />
       </Helmet>
 
@@ -170,7 +176,13 @@ export default function VoteProgress() {
                   </CurrentTitle>
                   <RefreshWrapper>
                     <Refresh onClick={() => navigate(0)}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
                         <path
                           fillRule="evenodd"
                           clipRule="evenodd"
@@ -187,7 +199,9 @@ export default function VoteProgress() {
                   <VoteResult key={`item${index}`}>
                     <Content>
                       <Name>{item.name}</Name>
-                      <VotesCnt isVoteWinner={item.name === vote?.vote_winner}>{item.votes_cnt}명</VotesCnt>
+                      <VotesCnt isVoteWinner={item.name === vote?.vote_winner}>
+                        {item.votes_cnt}명
+                      </VotesCnt>
                     </Content>
                     <Bar>
                       <Fill
@@ -211,67 +225,111 @@ export default function VoteProgress() {
                 <Label>투표하지 않은 사람들</Label>
                 <MemberList>
                   {notVoterList.length > 0 ? (
-                    notVoterList.map((voter, index) => <Member key={`voter${index}`}>{voter}</Member>)
+                    notVoterList.map((voter, index) => (
+                      <Member key={`voter${index}`}>{voter}</Member>
+                    ))
                   ) : (
-                    <GuideText style={{ marginTop: '4px' }}>모두 투표를 완료했습니다!</GuideText>
+                    <GuideText style={{ marginTop: "4px" }}>
+                      모두 투표를 완료했습니다!
+                    </GuideText>
                   )}
                 </MemberList>
               </VoterContainer>
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  width: '100%',
-                  gap: '8px',
-                  marginTop: '24px',
+                  display: "flex",
+                  flexDirection: "row",
+                  width: "100%",
+                  gap: "8px",
+                  marginTop: "24px",
                 }}
               >
-                <ButtonError label={'투표 삭제하기'} onClick={clickDelete} isWidthFull />
-                <ButtonPrimary label={'투표 종료하기'} onClick={clickVoteComplete} isWidthFull />
+                <ButtonError
+                  label={"투표 삭제하기"}
+                  onClick={clickDelete}
+                  isWidthFull
+                />
+                <ButtonPrimary
+                  label={"투표 종료하기"}
+                  onClick={clickVoteComplete}
+                  isWidthFull
+                />
               </div>
             </CurrentVote>
           </Wrapper>
-          <BottomButton01 label={'투표 링크 공유하기'} onClick={clickSharingKaKaoVote} />
+          {/* <BottomButton01 label={'투표 링크 공유하기'} onClick={clickSharingKaKaoVote} /> */}
         </>
       ) : (
         <WrapperMid>
-          <img src="/images/illust/illust-noitem.svg" width={240} height={240} />
+          <img
+            src="/images/illust/illust-noitem.svg"
+            width={240}
+            height={240}
+          />
           <Title>다른 유저의 투표에요!</Title>
-          <ButtonPrimary label="메인으로 가기" isWidthFull onClick={() => navigate('/')} />
+          <ButtonPrimary
+            label="메인으로 가기"
+            isWidthFull
+            onClick={() => navigate("/")}
+          />
         </WrapperMid>
       )}
 
       {isShowAlertComplete && (
         <Alert
-          message={'정말 투표를 종료하실건가요?'}
+          message={"정말 투표를 종료하실건가요?"}
           buttons={[
-            <ButtonSecondary label={'취소'} onClick={() => setIsShowAlertComplete(false)} isWidthFull />,
-            <ButtonPrimary label={'종료하기'} onClick={onVoteComplete} isWidthFull />,
+            <ButtonSecondary
+              label={"취소"}
+              onClick={() => setIsShowAlertComplete(false)}
+              isWidthFull
+            />,
+            <ButtonPrimary
+              label={"종료하기"}
+              onClick={onVoteComplete}
+              isWidthFull
+            />,
           ]}
         />
       )}
 
       {isShowAlertDeleteConfirm && (
         <Alert
-          message={'정말 투표를 삭제하시겠습니까?'}
+          message={"정말 투표를 삭제하시겠습니까?"}
           buttons={[
-            <ButtonSecondary label={'취소'} onClick={() => setIsShowAlertDeleteConfirm(false)} isWidthFull />,
-            <ButtonError label={'삭제하기'} onClick={onDelete} isWidthFull />,
+            <ButtonSecondary
+              label={"취소"}
+              onClick={() => setIsShowAlertDeleteConfirm(false)}
+              isWidthFull
+            />,
+            <ButtonError label={"삭제하기"} onClick={onDelete} isWidthFull />,
           ]}
         />
       )}
 
       {isShowAlertDelete && (
         <Alert
-          message={'투표를 삭제하였습니다.'}
-          buttons={[<ButtonPrimary label={'확인'} onClick={clickDeleteComplete} isWidthFull />]}
+          message={"투표를 삭제하였습니다."}
+          buttons={[
+            <ButtonPrimary
+              label={"확인"}
+              onClick={clickDeleteComplete}
+              isWidthFull
+            />,
+          ]}
         />
       )}
 
       {isShowAlertFail && (
         <Alert
-          message={'아직 투표한 사람이 없습니다!'}
-          buttons={[<ButtonPrimary label={'확인'} onClick={() => setIsShowAlertFail(false)} isWidthFull />]}
+          message={"아직 투표한 사람이 없습니다!"}
+          buttons={[
+            <ButtonPrimary
+              label={"확인"}
+              onClick={() => setIsShowAlertFail(false)}
+              isWidthFull
+            />,
+          ]}
         />
       )}
     </>
