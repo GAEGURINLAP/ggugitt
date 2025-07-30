@@ -168,9 +168,11 @@ export default function CandidateRegister() {
     setVoteList(updatedVoteItems);
   };
 
-  // 기능: 투표자 등록 되돌아가기
   const clickNavigateVoter = () => {
     navigate("/vote-register");
+  };
+  const clickNavigateCurrentVote = () => {
+    navigate("/");
   };
 
   return (
@@ -180,10 +182,10 @@ export default function CandidateRegister() {
       {isComplete ? (
         <Success
           message={"투표 등록이 완료 되었어요!"}
-          // label="투표 링크 공유하기"
-          // isShowButton
-          // isShowSecondaryButton
-          // onClick={clickSharingKaKaoVote}
+          label="투표 보러가기"
+          isShowButton
+          isShowSecondaryButton
+          onClick={clickNavigateCurrentVote}
         />
       ) : (
         <>
