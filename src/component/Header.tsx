@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Alert from "./Alert";
 import ButtonSecondary from "./ButtonSecondary";
 import ButtonPrimary from "./ButtonPrimary";
+import DevBadge from "./DevBadge";
 
 import { auth } from "../firebase";
 import {
@@ -57,6 +58,7 @@ export default function Header({ isNavigator, path }: IHeaderProp) {
           </ButtonWrap>
 
           <WrapperRight>
+            <DevBadge />
             <Name
               style={{ cursor: "pointer" }}
               onClick={() => navigate("/mypage")}

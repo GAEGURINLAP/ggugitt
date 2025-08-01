@@ -11,8 +11,16 @@ export const Wrapper = styled.div`
   padding-top: 120px;
 `;
 
-export const Title = styled.h1`
+export const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   margin-top: 24px;
+`;
+
+export const Title = styled.h1`
   font-size: 32px;
   font-weight: 300;
   b {

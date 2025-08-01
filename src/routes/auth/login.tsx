@@ -10,6 +10,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 
 import Alert from "../../component/Alert";
 import ButtonPrimary from "../../component/ButtonPrimary";
+import DevBadge from "../../component/DevBadge";
 
 import {
   Error,
@@ -20,6 +21,7 @@ import {
   StyledLink,
   Switcher,
   Title,
+  TitleContainer,
   Wrapper,
 } from "../../style/form";
 
@@ -126,9 +128,12 @@ export default function Login() {
               height={180}
             />
           </Image>
-          <Title>
-            <b>꾸깃</b> 로그인
-          </Title>
+          <TitleContainer>
+            <Title>
+              <b>꾸깃</b> 로그인
+            </Title>
+            <DevBadge />
+          </TitleContainer>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Input
               {...register("email", {
