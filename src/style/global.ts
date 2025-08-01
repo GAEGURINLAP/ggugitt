@@ -215,6 +215,11 @@ const global = css`
     // 시도하는 메인 컬러
     --main: #00a4a9;
     --main-hover: #019398;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
   }
 
   a {
