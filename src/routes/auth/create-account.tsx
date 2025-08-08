@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
+import * as Sentry from "@sentry/react";
 
 import Alert from "../../component/Alert";
 import ButtonPrimary from "../../component/ButtonPrimary";
@@ -64,7 +65,44 @@ export default function CreateAccount() {
       if (e instanceof FirebaseError) {
         console.log(e.code, e.message);
         setShowAlert(true);
-        console.log(e.message);
+        Sentry.captureException(e, {
+          tags: {
+            location: "create-account-page",
+            action: "sign-up",
+            errorType: "firebase-auth",
+            errorCode: e.code,
+            environment: window.location.hostname.includes("localhost")
+              ? "local"
+              : window.location.hostname.includes("ggugitt-dev.web.app")
+              ? "development"
+              : window.location.hostname.includes("ggugitt.com")
+              ? "production"
+              : "unknown",
+            project: "ggugitt",
+          },
+          extra: {
+            userInput: {
+              name: name,
+              email: email,
+              passwordLength: password.length,
+              confirmPasswordLength: confirmPassword.length,
+            },
+            errorDetails: {
+              code: e.code,
+              message: e.message,
+              stack: e.stack,
+            },
+            formValidation: {
+              passwordMatch: password === confirmPassword,
+              nameLength: name.length,
+              emailValid: /\S+@\S+\.\S+/.test(email),
+            },
+          },
+          user: {
+            email: email,
+            username: name,
+          },
+        });
       }
     } finally {
       setLoading(false);

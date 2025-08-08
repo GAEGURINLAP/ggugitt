@@ -7,6 +7,7 @@ import styled from "@emotion/styled";
 import { auth } from "../../firebase";
 import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import * as Sentry from "@sentry/react";
 
 import Alert from "../../component/Alert";
 import ButtonPrimary from "../../component/ButtonPrimary";
@@ -44,16 +45,10 @@ export const ButtonKakao = styled.div`
 `;
 
 export default function Login() {
-  // Todo
-  // 계정 생성
-  // 사용자 이름 설정
-  // home page로 리다이렉션
-
   const user = auth.currentUser;
 
   const [isLoading, setLoading] = useState(false);
   const [isShowAlert, setShowAlert] = useState(false);
-  // const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
@@ -80,7 +75,27 @@ export default function Login() {
       if (e instanceof FirebaseError) {
         setShowAlert(true);
         console.log(e.message);
-        // setError(e.message);
+
+        Sentry.captureException(e, {
+          tags: {
+            location: "login-page",
+            action: "sign-in",
+            errorType: "firebase-auth",
+            environment: window.location.hostname.includes("localhost")
+              ? "local"
+              : window.location.hostname.includes("ggugitt-dev.web.app")
+              ? "development"
+              : window.location.hostname.includes("ggugitt.com")
+              ? "production"
+              : "unknown",
+            project: "ggugitt",
+          },
+          extra: {
+            email: email,
+            errorCode: e.code,
+            errorMessage: e.message,
+          },
+        });
       }
     } finally {
       setLoading(false);
