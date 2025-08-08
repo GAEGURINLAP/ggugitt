@@ -85,7 +85,6 @@ export default function VoteHistory() {
       setIsLoading(false);
     } catch (err) {
       console.log(err);
-    } finally {
     }
   };
 
