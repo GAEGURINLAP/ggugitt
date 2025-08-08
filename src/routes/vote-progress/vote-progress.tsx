@@ -30,7 +30,7 @@ import { WrapperMid, Title } from "../../style/vote-result";
 import { GuideText } from "../../style/vote-register";
 
 import useFetchVotes from "../../hooks/useFetchVotes";
-// import useShareKaKao from '../../hooks/useShareKakao';
+import useShareKaKao from "../../hooks/useShareKakao";
 
 import Header from "../../component/Header";
 import Alert from "../../component/Alert";
@@ -70,12 +70,12 @@ export default function VoteProgress() {
       id: newId,
     });
 
-  // const { initKakao, kakaoShareVote } = useShareKaKao();
+  const { initKakao, kakaoShareVote } = useShareKaKao();
 
-  // const clickSharingKaKaoVote = () => {
-  //   initKakao();
-  //   kakaoShareVote({ vote, id: newId });
-  // };
+  const clickSharingKaKaoVote = () => {
+    initKakao();
+    kakaoShareVote({ vote, id: newId });
+  };
 
   // 이벤트: 투표 삭제 여부
   const clickDelete = () => {
@@ -257,7 +257,10 @@ export default function VoteProgress() {
               </div>
             </CurrentVote>
           </Wrapper>
-          {/* <BottomButton01 label={'투표 링크 공유하기'} onClick={clickSharingKaKaoVote} /> */}
+          <BottomButton01
+            label={"투표 링크 공유하기"}
+            onClick={clickSharingKaKaoVote}
+          />
         </>
       ) : (
         <WrapperMid>

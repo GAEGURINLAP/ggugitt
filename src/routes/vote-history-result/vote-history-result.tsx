@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { auth } from "../../firebase";
 
 import useFetchVotes from "../../hooks/useFetchVotes";
-// import useShareKaKao from "../../hooks/useShareKakao";
+import useShareKaKao from "../../hooks/useShareKakao";
 
 import {
   Wrapper,
@@ -34,12 +34,12 @@ export default function VoteHistoryResult() {
   const user = auth.currentUser;
 
   const { vote, isLoading } = useFetchVotes({ id: newId });
-  // const { initKakao, kakaoShareVoteReuslt } = useShareKaKao();
+  const { initKakao, kakaoShareVoteReuslt } = useShareKaKao();
 
-  // const handleKaKaoSharingBtnClick = () => {
-  //   initKakao();
-  //   kakaoShareVoteReuslt({ vote, id: newId });
-  // };
+  const handleKaKaoSharingBtnClick = () => {
+    initKakao();
+    kakaoShareVoteReuslt({ vote, id: newId });
+  };
 
   return (
     <>
@@ -94,10 +94,10 @@ export default function VoteHistoryResult() {
                 </VoteResultList>
               </CurrentVote>
             </Wrapper>
-            {/* <BottomButton01
+            <BottomButton01
               label={"투표 결과 공유하기"}
               onClick={handleKaKaoSharingBtnClick}
-            /> */}
+            />
           </>
         ) : (
           <WrapperMid>

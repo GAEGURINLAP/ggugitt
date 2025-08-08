@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore";
 
 import useFetchVotes from "../../hooks/useFetchVotes";
-// import useShareKaKao from "../../hooks/useShareKakao";
+import useShareKaKao from "../../hooks/useShareKakao";
 
 import Alert from "../../component/Alert";
 import BottomButton01 from "../../component/BottomButon01";
@@ -65,12 +65,12 @@ export default function Vote() {
     id: newId,
     isJustVote: true,
   });
-  // const { initKakao, kakaoShareVote } = useShareKaKao();
+  const { initKakao, kakaoShareVote } = useShareKaKao();
 
-  // const clickSharingKaKaoVote = () => {
-  //   initKakao();
-  //   kakaoShareVote({ vote, id: newId });
-  // };
+  const clickSharingKaKaoVote = () => {
+    initKakao();
+    kakaoShareVote({ vote, id: newId });
+  };
 
   const clickVote = () => {
     setShowAlertVote(true);
@@ -157,9 +157,9 @@ export default function Vote() {
       {isShowAlertConfirm ? (
         <Success
           message={"투표가 완료 되었어요!"}
-          // label="투표 링크 공유하기"
-          // isShowButton
-          // onClick={clickSharingKaKaoVote}
+          label="투표 링크 공유하기"
+          isShowButton
+          onClick={clickSharingKaKaoVote}
         />
       ) : isVoter ? (
         <>
