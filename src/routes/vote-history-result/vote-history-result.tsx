@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 
 import { auth } from "../../firebase";
@@ -22,9 +23,12 @@ import {
 import { WrapperMid, Title } from "../../style/vote-result";
 
 import Header from "../../component/Header";
+import Alert from "../../component/Alert";
+import Toast from "../../component/Toast";
 import LoadingScreen from "../../component/LoadingScreen";
 import BottomButton01 from "../../component/BottomButon01";
 import ButtonPrimary from "../../component/ButtonPrimary";
+import ButtonSecondary from "../../component/ButtonSecondary";
 
 export default function VoteHistoryResult() {
   const navigate = useNavigate();
@@ -35,10 +39,31 @@ export default function VoteHistoryResult() {
 
   const { vote, isLoading } = useFetchVotes({ id: newId });
   const { initKakao, kakaoShareVoteReuslt } = useShareKaKao();
+  const [isShowAlertShare, setIsShowAlertShare] = useState(false);
+  const [isToast, setIsToast] = useState(false);
 
   const handleKaKaoSharingBtnClick = () => {
+    setIsShowAlertShare(true);
+  };
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(
+        `${import.meta.env.VITE_APP_BASE_URL}/vote-result/${newId}`
+      );
+      setIsToast(true);
+      setTimeout(() => setIsToast(false), 1200);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsShowAlertShare(false);
+    }
+  };
+
+  const handleShareKakao = () => {
     initKakao();
     kakaoShareVoteReuslt({ vote, id: newId });
+    setIsShowAlertShare(false);
   };
 
   return (
@@ -98,6 +123,24 @@ export default function VoteHistoryResult() {
               label={"투표 결과 공유하기"}
               onClick={handleKaKaoSharingBtnClick}
             />
+            {isShowAlertShare && (
+              <Alert
+                message={"공유 방법을 선택해 주세요."}
+                buttons={[
+                  <ButtonSecondary
+                    label={"주소 복사"}
+                    onClick={handleCopyLink}
+                    isWidthFull
+                  />,
+                  <ButtonPrimary
+                    label={"카카오톡 공유하기"}
+                    onClick={handleShareKakao}
+                    isWidthFull
+                  />,
+                ]}
+              />
+            )}
+            {isToast && <Toast message={"주소가 복사되었습니다"} />}
           </>
         ) : (
           <WrapperMid>

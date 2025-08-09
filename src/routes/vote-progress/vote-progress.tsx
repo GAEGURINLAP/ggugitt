@@ -39,6 +39,7 @@ import ButtonSecondary from "../../component/ButtonSecondary";
 import ButtonError from "../../component/ButtonError";
 import BottomButton01 from "../../component/BottomButon01";
 import LoadingScreen from "../../component/LoadingScreen";
+import Toast from "../../component/Toast";
 
 export const CurrentTitleContainer = styled.div`
   display: flex;
@@ -71,10 +72,31 @@ export default function VoteProgress() {
     });
 
   const { initKakao, kakaoShareVote } = useShareKaKao();
+  const [isShowAlertShare, setIsShowAlertShare] = useState(false);
+  const [isToast, setIsToast] = useState(false);
 
   const clickSharingKaKaoVote = () => {
+    setIsShowAlertShare(true);
+  };
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(
+        `${import.meta.env.VITE_APP_BASE_URL}/vote/${newId}`
+      );
+      setIsToast(true);
+      setTimeout(() => setIsToast(false), 1200);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsShowAlertShare(false);
+    }
+  };
+
+  const handleShareKakao = () => {
     initKakao();
     kakaoShareVote({ vote, id: newId });
+    setIsShowAlertShare(false);
   };
 
   // 이벤트: 투표 삭제 여부
@@ -261,6 +283,24 @@ export default function VoteProgress() {
             label={"투표 링크 공유하기"}
             onClick={clickSharingKaKaoVote}
           />
+          {isShowAlertShare && (
+            <Alert
+              message={"공유 방법을 선택해 주세요."}
+              buttons={[
+                <ButtonSecondary
+                  label={"주소 복사"}
+                  onClick={handleCopyLink}
+                  isWidthFull
+                />,
+                <ButtonPrimary
+                  label={"카카오톡 공유"}
+                  onClick={handleShareKakao}
+                  isWidthFull
+                />,
+              ]}
+            />
+          )}
+          {isToast && <Toast message={"주소가 복사되었습니다"} />}
         </>
       ) : (
         <WrapperMid>
