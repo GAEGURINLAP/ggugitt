@@ -82,7 +82,7 @@ export const Item = styled.div`
   &:last-child {
     border-bottom: none;
   }
-  &:hover {
+  &:active {
     background-color: #f2f2f2;
   }
 `;

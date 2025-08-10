@@ -10,10 +10,14 @@ const Wrapper = styled.button<ButtonProps>`
   align-items: center;
   justify-content: center;
   color: var(--main);
-  /* border: 1px solid var(--main); */
   box-shadow: 0 0 0 1px var(--main) inset;
   transition: all 0.2s ease;
-  &:hover {
+  /* &:hover {
+    color: var(--white);
+    background-color: var(--main);
+    border: none;
+  } */
+  &:active {
     color: var(--white);
     background-color: var(--main);
     border: none;

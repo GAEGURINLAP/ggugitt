@@ -13,9 +13,12 @@ const Wrapper = styled.button<IButtonProps>`
   background-color: ${(props) =>
     props.isDisabled ? "#e6e6e6" : "var(--main);"};
   transition: all 0.2s ease;
-  &:hover {
+  /* &:hover {
     background-color: ${(props) => !props.isDisabled && "var(--main-hover)"};
     cursor: ${(props) => (props.isDisabled ? "default" : "pointer")};
+  } */
+  &:active {
+    background-color: ${(props) => !props.isDisabled && "var(--main-hover)"};
   }
   box-shadow: ${(props) => props.isFloating && "0 4px 24px rgba(0,0,0,0.25)"};
   -webkit-user-select: none;
@@ -45,7 +48,6 @@ const ButtonPrimary = ({
 }: IButtonProps) => {
   const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
     if (event.key === "Enter") {
-      // 엔터 키가 눌렸을 때 실행할 동작
       if (onClick && !isDisabled) {
         onClick();
       }
