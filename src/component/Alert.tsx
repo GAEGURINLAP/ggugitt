@@ -17,6 +17,8 @@ interface AlertProps {
   isShowTitle?: boolean;
   isShowSubMessege?: boolean;
   buttons: React.ReactNode[];
+  isCloseOnDimClick?: boolean;
+  onDimClick?: () => void;
 }
 
 const Alert = ({
@@ -26,11 +28,25 @@ const Alert = ({
   buttons,
   isShowTitle,
   isShowSubMessege,
+  isCloseOnDimClick = false,
+  onDimClick,
 }: AlertProps) => {
   return (
     <>
-      <Dim>
-        <Container>
+      <Dim
+        onPointerDown={() => {
+          if (!isCloseOnDimClick) return;
+          if (onDimClick) onDimClick();
+        }}
+      >
+        <Container
+          onPointerDown={(e: React.PointerEvent<HTMLDivElement>) => {
+            e.stopPropagation();
+          }}
+          onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+            e.stopPropagation();
+          }}
+        >
           <Wrapper>
             {isShowTitle && <Title>{title}</Title>}
             <MessageWrapper>

@@ -286,6 +286,8 @@ export default function VoteProgress() {
           {isShowAlertShare && (
             <Alert
               message={"공유 방법을 선택해 주세요."}
+              isCloseOnDimClick
+              onDimClick={() => setIsShowAlertShare(false)}
               buttons={[
                 <ButtonSecondary
                   label={"주소 복사"}

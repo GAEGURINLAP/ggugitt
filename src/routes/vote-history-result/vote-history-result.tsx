@@ -126,6 +126,8 @@ export default function VoteHistoryResult() {
             {isShowAlertShare && (
               <Alert
                 message={"공유 방법을 선택해 주세요."}
+                isCloseOnDimClick
+                onDimClick={() => setIsShowAlertShare(false)}
                 buttons={[
                   <ButtonSecondary
                     label={"주소 복사"}
@@ -133,7 +135,7 @@ export default function VoteHistoryResult() {
                     isWidthFull
                   />,
                   <ButtonPrimary
-                    label={"카카오톡 공유하기"}
+                    label={"카카오톡 공유"}
                     onClick={handleShareKakao}
                     isWidthFull
                   />,
