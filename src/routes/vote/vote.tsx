@@ -1,16 +1,9 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { Helmet } from "react-helmet-async";
 
 import { db } from "../../firebase";
-import {
-  collection,
-  getDocs,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, query, updateDoc, where } from "firebase/firestore";
 
 import useFetchVotes from "../../hooks/useFetchVotes";
 import useShareKaKao from "../../hooks/useShareKakao";
@@ -23,15 +16,7 @@ import LoadingScreen from "../../component/LoadingScreen";
 import Success from "../../component/Success";
 import Toast from "../../component/Toast";
 
-import {
-  Wrapper,
-  Error,
-  Form,
-  FormContainer,
-  FormWrapper,
-  GuideText,
-  Input,
-} from "../../style/vote-register";
+import { Wrapper, Error, Form, FormContainer, FormWrapper, GuideText, Input } from "../../style/vote-register";
 
 import { CurrentTitle, CurrentVote, VoteItem } from "../home/style";
 import { VoteForm } from "../../style/vote";
@@ -42,9 +27,7 @@ export interface IFormInput {
 
 export default function Vote() {
   const [alreadyVoter, setAlreadyVoter] = useState<String>();
-  const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
-    null
-  );
+  const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null);
   const [isShowAlertVote, setShowAlertVote] = useState(false);
   const [isShowAlertConfirm, setShowAlertConfirm] = useState(false);
   const [isShowAlertVoterFail, setIsShowAlertVoterFail] = useState(false);
@@ -77,9 +60,7 @@ export default function Vote() {
 
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(
-        `${import.meta.env.VITE_APP_BASE_URL}/vote/${newId}`
-      );
+      await navigator.clipboard.writeText(`${import.meta.env.VITE_APP_BASE_URL}/vote/${newId}`);
       setIsToast(true);
       setTimeout(() => setIsToast(false), 1200);
     } catch (error) {
@@ -142,9 +123,7 @@ export default function Vote() {
           const voteDocRef = querySnapshot.docs[0].ref;
           await updateDoc(voteDocRef, {
             vote_list: vote?.vote_list.map((item, index) =>
-              index === selectedItemIndex
-                ? { ...item, votes_cnt: VotesCnt }
-                : item
+              index === selectedItemIndex ? { ...item, votes_cnt: VotesCnt } : item
             ),
             total_votes_cnt: TotalVotesCnt,
             available_votes_cnt: AvailableVotesCnt,
@@ -167,16 +146,6 @@ export default function Vote() {
 
   return (
     <>
-      <Helmet>
-        <title>꾸깃 - 투표하기</title>
-        <meta name="description" content="투표하기" />
-        <meta property="og:title" content="꾸깃" />
-        <meta
-          property="og:image"
-          content="/images/illust/il-vote-progress-landscape.png"
-        />
-        <meta property="og:url" content="https://ggugitt.com/vote" />
-      </Helmet>
       {isShowAlertConfirm ? (
         <Success
           message={"투표가 완료 되었어요!"}
@@ -236,8 +205,7 @@ export default function Vote() {
                           required: true,
                           pattern: {
                             value: /^[^a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]*$/,
-                            message:
-                              "특수문자,공백,숫자,영문은 입력이 불가능해요.",
+                            message: "특수문자,공백,숫자,영문은 입력이 불가능해요.",
                           },
                           minLength: {
                             value: 2,
@@ -252,11 +220,7 @@ export default function Vote() {
                       />
                     </FormWrapper>
                   </Form>
-                  {errors.name ? (
-                    <Error>{errors.name.message}</Error>
-                  ) : (
-                    <GuideText>ex) 김꾸깃</GuideText>
-                  )}
+                  {errors.name ? <Error>{errors.name.message}</Error> : <GuideText>ex) 김꾸깃</GuideText>}
                 </div>
               </FormContainer>
             </CurrentVote>
@@ -270,25 +234,13 @@ export default function Vote() {
           message={"투표권이 없는 이름이군요..!"}
           subMessage={"이름을 정확히 입력해주셔야 해요!"}
           isShowSubMessege
-          buttons={[
-            <ButtonPrimary
-              label={"다시 입력"}
-              onClick={() => setIsShowAlertVoterFail(false)}
-              isWidthFull
-            />,
-          ]}
+          buttons={[<ButtonPrimary label={"다시 입력"} onClick={() => setIsShowAlertVoterFail(false)} isWidthFull />]}
         />
       )}
       {isShowAlertAlreadyVoter && (
         <Alert
           message={"이미 투표한 투표자에요!"}
-          buttons={[
-            <ButtonPrimary
-              label={"확인"}
-              onClick={() => setIsShowAlertAlreadyVoter(false)}
-              isWidthFull
-            />,
-          ]}
+          buttons={[<ButtonPrimary label={"확인"} onClick={() => setIsShowAlertAlreadyVoter(false)} isWidthFull />]}
         />
       )}
 
@@ -296,16 +248,8 @@ export default function Vote() {
         <Alert
           message={"선택한 투표 항목으로 투표 하시겠어요?"}
           buttons={[
-            <ButtonSecondary
-              label={"취소"}
-              onClick={() => setShowAlertVote(false)}
-              isWidthFull
-            />,
-            <ButtonPrimary
-              label={"투표하기"}
-              onClick={onRegister}
-              isWidthFull
-            />,
+            <ButtonSecondary label={"취소"} onClick={() => setShowAlertVote(false)} isWidthFull />,
+            <ButtonPrimary label={"투표하기"} onClick={onRegister} isWidthFull />,
           ]}
         />
       )}
@@ -315,16 +259,8 @@ export default function Vote() {
           isCloseOnDimClick
           onDimClick={() => setIsShowAlertShare(false)}
           buttons={[
-            <ButtonSecondary
-              label={"주소 복사"}
-              onClick={handleCopyLink}
-              isWidthFull
-            />,
-            <ButtonPrimary
-              label={"카카오톡 공유"}
-              onClick={handleShareKakao}
-              isWidthFull
-            />,
+            <ButtonSecondary label={"주소 복사"} onClick={handleCopyLink} isWidthFull />,
+            <ButtonPrimary label={"카카오톡 공유"} onClick={handleShareKakao} isWidthFull />,
           ]}
         />
       )}
@@ -332,13 +268,7 @@ export default function Vote() {
       {vote?.is_complete && (
         <Alert
           message={"이미 종료된 투표에요!!"}
-          buttons={[
-            <ButtonPrimary
-              label={"확인"}
-              onClick={() => navigate("/")}
-              isWidthFull
-            />,
-          ]}
+          buttons={[<ButtonPrimary label={"확인"} onClick={() => navigate("/")} isWidthFull />]}
         />
       )}
     </>
